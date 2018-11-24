@@ -1,0 +1,30 @@
+.fez123-form-card{
+    &:before{
+        content: "";
+        display: block;
+        position: absolute;
+        width: 90%;
+        height: 7px;
+        left: 5%;
+        bottom: -7px;
+        border: 1px solid #efefef;
+        border-top: 0;
+    }
+
+    &:after{
+        content: "";
+        display: block;
+        position: absolute;
+        width: 80%;
+        height: 7px;
+        left: 10%;
+        bottom: -14px;
+        border: 1px solid #efefef;
+        border-top: 0;
+    }
+
+    .dropdown-menu{
+        top: 10px;
+        left: 10px;
+    }
+}

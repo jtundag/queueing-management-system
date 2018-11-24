@@ -1,0 +1,43 @@
+.side-navbar{
+    @include activeRouterLink;
+
+    .subnav-collapsed:after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: -5px;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        border-left: 8px solid $outlineColor;
+        transform: translateY(-50%);
+    }
+}
+
+.side-subnavbar{
+    @include activeRouterLink;
+}
+
+.builder-nav{
+    &>a{
+        color: $textColor;
+    }
+    
+    & > a.router-link-exact-active {
+        color: $primaryColor;
+        position: relative;
+    }
+
+    &>a.router-link-exact-active:before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 4px;
+        background: #12d9a9;
+        top: 0;
+    }
+    
+    & > a > span{
+        font-size: 3.15rem;
+    }
+}

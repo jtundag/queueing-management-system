@@ -1,0 +1,20 @@
+.no-outline{
+    outline: 0 !important;
+
+    &:active,
+    &:focus{
+        outline: 0 !important;
+    }
+}
+
+.fez123-button{
+    &-primary{
+        background-color: $primaryColor;
+        color: white;
+    }
+
+    &-primary:hover,
+    &-primary:active{
+        background-color: darken($primaryColor, 7%);
+    }
+}

@@ -1,0 +1,31 @@
+@import '~@/assets/fezicons.css';
+
+@font-face{
+    font-family: 'Josefin Sans';
+    src: '~@/assets/fonts/JosefinSans-Regular.ttf' format('truetype');
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Josefin Sans';
+    src: '~@/assets/fonts/JosefinSans-Light.ttf' format('truetype');
+    font-style: normal;
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: 'Josefin Sans';
+    src: '~@/assets/fonts/JosefinSans-Bold.ttf' format('truetype');
+    font-style: normal;
+    font-weight: bold;
+}
+
+body {
+    font-family: $fontFamily;
+    color: $textColor;
+}
+
+.primary-text{
+    color: $textColor;
+}

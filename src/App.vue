@@ -1,29 +1,129 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+	<div class="flex bg-white fez123-border-bottom justify-between">
+		<div class="flex">
+			<div class="text-center">
+				<button type="button" 
+					class="no-outline fez123-border-right"
+					@click="toggleSideNavbar">
+					<span class="text-5xl"
+						:class="{ 'fez-list': !hasSideNavbar, 'fez-close': hasSideNavbar }"></span>
+				</button>
+			</div>
+			<div class="p-4">
+				<router-link to="/" class="nav-logo no-underline primary-text">Queue Management System</router-link>
+			</div>
+		</div>
+		<div class="flex-initial">
+			<div class="flex flex-row">
+				<div>
+					<button type="button" class="no-outline" title="Notifications" v-tippy="{ placement: 'left', arrow: true }">
+						<span class="fez-bell text-5xl"></span>
+					</button>
+				</div>
+				<div class="mr-3">
+					<button type="button" class="no-outline" title="My Account" v-tippy="{ placement: 'left', arrow: true }">
+						<span class="fez-user text-5xl"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="flex main-content">
+		<div class="flex-none w-12 h-full bg-white pt-10 fez123-border-right side-navbar"
+			key="mainnav"
+			v-if="hasSideNavbar" style="animation-duration: .3s">
+			<div class="flex-column">
+				<div v-for="(link, index) in navLinks"
+				:key="index">
+					<router-link :title="link.title" 
+					class="text-5xl no-underline primary-text relative" 
+					:to="link.link" 
+					v-tippy="{ placement: 'right', arrow: true }"
+					v-if="link.link"
+					@click.native="hideSubnavLinks">
+						<span :class="link.icon" 
+						class="align-middle"></span>
+					</router-link>
+					<div :title="link.title" 
+						class="text-5xl no-underline primary-text cursor-pointer relative"
+						:class="{ 'subnav-collapsed': link.subnav == subnavLinks, 'router-link-exact-active': $route.name == link.name }" 
+						:to="link.link" 
+						v-tippy="{ placement: 'right', arrow: true }"
+						v-if="!link.link"
+						@click="showSubnavLinksOf(link)">
+						<span :class="link.icon" 
+						class="align-middle"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="flex-none h-full w-48 bg-white pt-6 fez123-border-right side-subnavbar" 
+		key="subnav"
+		v-if="subnavLinks && hasSideNavbar">
+			<router-link v-for="(link, index) in subnavLinks"
+				:to="link.link"
+				class="no-underline primary-text block relative"
+				:key="index">
+				<span :class="link.icon" 
+					class="text-4xl align-middle"></span>
+				<span class="align-middle">
+					{{ link.title }}
+				</span>
+			</router-link>
+		</div>
+		<router-view/>
+	</div>
+		<FullLoader v-if="isFullLoading"/>
   </div>
 </template>
 
+<script>
+import FullLoader from '@/components/FullLoader.vue'
+import { mapGetters } from 'vuex'
+import _ from 'lodash'
+
+export default {
+	created(){
+		setTimeout(() => {
+			this.$store.dispatch('toggleFullLoader', false)
+		}, 1000)
+		console.log(this.$route.meta)
+	},
+	components: {
+		FullLoader
+	},
+  data() {
+    return {
+			hasSideNavbar: true,
+			subnavActiveLink: null
+		};
+	},
+	methods: {
+		toggleSideNavbar(){
+			this.hasSideNavbar = !this.hasSideNavbar
+		},
+		showSubnavLinksOf(link){
+			if(_.isEqual(link.subnav, this.subnavLinks)) return this.hideSubnavLinks()
+			this.subnavActiveLink = link
+			this.$store.dispatch('showSubnavLinksOf', link)
+		},
+		hideSubnavLinks(){
+			this.subnavActiveLink = null
+			this.$store.commit('SUBNAV_LINKS', null)
+		}
+	},
+	computed: {
+		...mapGetters({
+			isFullLoading: 'isFullLoading',
+			navLinks: 'navLinks',
+			subnavLinks: 'subnavLinks'
+		})
+	}
+};
+</script>
+
+
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+@import "@/assets/scss/main.scss";
 </style>

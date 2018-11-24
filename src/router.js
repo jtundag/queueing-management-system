@@ -2,22 +2,33 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 
+import NestedRouteView from './views/NestedRouteView.vue'
+
+import Users from './views/Users/Users.vue'
+
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'dashboard',
       component: Home
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+    }, {
+      path: '/users',
+      component: NestedRouteView,
+      name: 'users',
+      children: [{
+        path: '/',
+        name: 'users',
+        component: Users
+      },
+      {
+        path: '/users/create',
+        name: 'users',
+        component: Users
+      }]
     }
   ]
 })

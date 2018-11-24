@@ -1,0 +1,16 @@
+@mixin activeRouterLink {
+    .router-link-exact-active {
+        background-color: $linkHoverBgColor;
+        color: $primaryColor;
+        position: relative;
+    }
+
+    .router-link-exact-active:before {
+        content: "";
+        position: absolute;
+        width: 4px;
+        height: 100%;
+        background: #12d9a9;
+        top: 0;
+    }
+}
