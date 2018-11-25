@@ -47,7 +47,7 @@
 					</router-link>
 					<div :title="link.title" 
 						class="text-5xl no-underline primary-text cursor-pointer relative"
-						:class="{ 'subnav-collapsed': link.subnav == subnavLinks, 'router-link-exact-active': $route.name == link.name }" 
+						:class="{ 'subnav-collapsed': (link.subnav && link.subnav == subnavLinks), 'router-link-exact-active': $route.name == link.name }" 
 						:to="link.link" 
 						v-tippy="{ placement: 'right', arrow: true }"
 						v-if="!link.link"
@@ -88,7 +88,6 @@ export default {
 		setTimeout(() => {
 			this.$store.dispatch('toggleFullLoader', false)
 		}, 1000)
-		console.log(this.$route.meta)
 	},
 	components: {
 		FullLoader
