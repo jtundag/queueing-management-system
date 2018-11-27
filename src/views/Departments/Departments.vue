@@ -1,7 +1,7 @@
 <template>
-    <ContentContainer title="Users">
+    <ContentContainer title="Departments">
         <IconInput icon="fez-search" 
-        placeholder="Search people..." 
+        placeholder="Search department..." 
         name="search_field" 
         v-model="searchKeyword"
         @tailing-icon-clicked="clearKeyword"/>
@@ -10,35 +10,23 @@
             <thead class="fez123-border-bottom">
                 <tr>
                     <th class="px-4 py-5 font-normal text-left">#</th>
-                    <th class="px-4 py-5 font-normal text-left">Student ID No.</th>
-                    <th class="px-4 py-5 font-normal text-left">First Name</th>
-                    <th class="px-4 py-5 font-normal text-left">Last Name</th>
-                    <th class="px-4 py-5 font-normal text-left">Email</th>
+                    <th class="px-4 py-5 font-normal text-left">Name</th>
                     <th class="px-4 py-5 font-normal"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="fez123-border-bottom" 
-                    v-for="(user, index) in users"
+                    v-for="(department, index) in departments"
                     :key="index">
                     <td class="px-4 py-5">
-                        {{ user.id }}
+                        {{ department.id }}
                     </td>
                     <td class="px-4 py-5">
-                        {{ user.username }}
-                    </td>
-                    <td class="px-4 py-5">
-                        {{ user.first_name }}
-                    </td>
-                    <td class="px-4 py-5">
-                        {{ user.last_name }}
-                    </td>
-                    <td class="px-4 py-5">
-                        {{ user.email }}
+                        {{ department.name }}
                     </td>
                     <td>
                         <Dropdown :items="dropdownItems"
-                            @item-click="itemClicked($event, user)"/>
+                            @item-click="itemClicked($event, department)"/>
                     </td>
                 </tr>
             </tbody>
@@ -76,34 +64,22 @@ export default {
                     icon: 'fez-close'
                 }
             ],
-            users: [
+            departments: [
                 {
                     id: 1,
-                    username: '2014-F0089',
-                    first_name: 'Test',
-                    last_name: 'Last',
-                    email: 'test.last@gmail.com'
+                    name: '2014-F0089'
                 },
                 {
-                    id: 1,
-                    username: '2014-F0089',
-                    first_name: 'Test',
-                    last_name: 'Last',
-                    email: 'test.last@gmail.com'
+                    id: 2,
+                    name: '2014-F0089'
                 },
                 {
-                    id: 1,
-                    username: '2014-F0089',
-                    first_name: 'Test',
-                    last_name: 'Last',
-                    email: 'test.last@gmail.com'
+                    id: 3,
+                    name: '2014-F0089'
                 },
                 {
-                    id: 1,
-                    username: '2014-F0089',
-                    first_name: 'Test',
-                    last_name: 'Last',
-                    email: 'test.last@gmail.com'
+                    id: 4,
+                    name: '2014-F0089'
                 }
             ]
         }
@@ -112,8 +88,8 @@ export default {
         clearKeyword(){
             this.searchKeyword = null
         },
-        itemClicked(item, user){
-            console.log(item, user)
+        itemClicked(item, department){
+            console.log(item, department)
         }
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <ContentContainer title="Create User" class-names="relative pb-0">
+    <ContentContainer title="Create Department" class-names="relative pb-0">
         <form action="#">
             <div class="text-xl mb-5 mt-4">
                 Student Information

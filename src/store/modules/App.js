@@ -33,13 +33,13 @@ const state = {
                     name: 'departments',
                     title: 'All Departments',
                     icon: 'fez-warehouse',
-                    link: '/'
+                    link: '/departments'
                 },
                 {
                     name: 'departments',
                     title: 'Create New',
                     icon: 'fez-setting_wrench',
-                    link: '/'
+                    link: '/departments/create'
                 }
             ]
         }, {
