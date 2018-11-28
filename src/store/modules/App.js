@@ -11,37 +11,53 @@ const state = {
             name: 'users',
             title: 'Users',
             icon: 'fez-team',
-            subnav: [
-                {
-                    name: 'users',
-                    title: 'All Users',
-                    icon: 'fez-team',
-                    link: '/users'
-                },
-                {
-                    name: 'users',
-                    title: 'Create New',
-                    icon: 'fez-user',
-                    link: '/users/create'
-                }
-            ]
+            subnav: {
+                "Student": [
+                    {
+                        name: 'users',
+                        title: 'All Students',
+                        icon: 'fez-team',
+                        link: '/users/students/'
+                    }, {
+                        name: 'users',
+                        title: 'Create Student',
+                        icon: 'fez-user',
+                        link: '/users/students/create'
+                    }
+                ],
+                "Personnel": [
+                    {
+                        name: 'users',
+                        title: 'All Personnels',
+                        icon: 'fez-team',
+                        link: '/users/personnels/'
+                    }, {
+                        name: 'users',
+                        title: 'Create Personnel',
+                        icon: 'fez-user',
+                        link: '/users/personnels/create'
+                    }
+                ]
+            }
         }, {
             name: 'departments',
             title: 'Departments',
             icon: 'fez-warehouse',
-            subnav: [{
-                    name: 'departments',
-                    title: 'All Departments',
-                    icon: 'fez-warehouse',
-                    link: '/departments'
-                },
-                {
-                    name: 'departments',
-                    title: 'Create New',
-                    icon: 'fez-setting_wrench',
-                    link: '/departments/create'
-                }
-            ]
+            subnav: {
+                "Department": [
+                    {
+                        name: 'departments',
+                        title: 'All Departments',
+                        icon: 'fez-warehouse',
+                        link: '/departments'
+                    }, {
+                        name: 'departments',
+                        title: 'Create New',
+                        icon: 'fez-setting_wrench',
+                        link: '/departments/create'
+                    }
+                ]
+            }
         }, {
             name: 'config',
             title: 'Config',

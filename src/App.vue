@@ -61,16 +61,23 @@
 		<div class="flex-none h-full w-48 bg-white pt-6 fez123-border-right side-subnavbar" 
 		key="subnav"
 		v-if="subnavLinks && hasSideNavbar">
-			<router-link v-for="(link, index) in subnavLinks"
-				:to="link.link"
-				class="no-underline primary-text block relative"
-				:key="index">
-				<span :class="link.icon" 
-					class="text-4xl align-middle"></span>
-				<span class="align-middle">
-					{{ link.title }}
+			<div class="subnav-section mb-3 fez123-border-bottom pb-2"
+				v-for="(subnavSection, sectionIndex) in subnavLinks"
+				:key="sectionIndex">
+				<span class="inline-block px-3 text-sm text-grey py-1">
+					{{ sectionIndex }}
 				</span>
-			</router-link>
+				<router-link v-for="(link, index) in subnavSection"
+					:to="link.link"
+					class="no-underline primary-text block relative text-sm"
+					:key="index">
+					<span :class="link.icon" 
+						class="text-4xl align-middle"></span>
+					<span class="align-middle">
+						{{ link.title }}
+					</span>
+				</router-link>
+			</div>
 		</div>
 		<router-view/>
 	</div>

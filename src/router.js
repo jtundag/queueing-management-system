@@ -4,8 +4,10 @@ import Home from '@/views/Home.vue'
 
 import NestedRouteView from '@/views/NestedRouteView.vue'
 
-import Users from '@/views/Users/Users.vue'
-import CreateUser from '@/views/Users/CreateUser.vue'
+import Students from '@/views/Students/Students.vue'
+import CreateStudent from '@/views/Students/CreateStudent.vue'
+import Personnels from '@/views/Personnels/Personnels.vue'
+import CreatePersonnel from '@/views/Personnels/CreatePersonnel.vue'
 
 import Departments from '@/views/Departments/Departments.vue'
 import CreateDepartment from '@/views/Departments/CreateDepartment.vue'
@@ -23,14 +25,23 @@ export default new Router({
 		component: NestedRouteView,
 		name: 'users',
 		children: [{
-				path: '/',
+				path: '/users/students',
 				name: 'users',
-				component: Users
+				component: Students
 			},
 			{
-				path: '/users/create',
+				path: '/users/students/create',
 				name: 'users',
-				component: CreateUser
+				component: CreateStudent
+			},
+			{
+				path: '/users/personnels',
+				name: 'users',
+				component: Personnels
+			}, {
+				path: '/users/personnels/create',
+				name: 'users',
+				component: CreatePersonnel
 			}
 		]
 	}, {

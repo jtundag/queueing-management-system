@@ -1,7 +1,7 @@
 <template>
-    <ContentContainer title="Users">
+    <ContentContainer title="Personnels">
         <IconInput icon="fez-search" 
-        placeholder="Search people..." 
+        placeholder="Search personnels..." 
         name="search_field" 
         v-model="searchKeyword"
         @tailing-icon-clicked="clearKeyword"/>
