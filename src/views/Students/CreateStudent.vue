@@ -1,7 +1,7 @@
 <template>
     <ContentContainer title="Create Student" class-names="relative pb-0">
         <form action="#">
-            <div class="text-xl mb-5 mt-4">
+            <div class="text-lg mb-5 mt-4">
                 Student Information
             </div>
             <div class="flex mb-2">
@@ -33,7 +33,7 @@
                     <input type="text" name="department" id="department" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="What is your department?">
                 </div>
             </div>
-            <div class="text-xl mb-5 mt-4">
+            <div class="text-lg mb-5 mt-4">
                 Personal Information
             </div>
             <div class="flex mb-2">
@@ -79,7 +79,7 @@
                     </div>
                 </div>
             </div>
-            <div class="text-xl mb-5 mt-4">
+            <div class="text-lg mb-5 mt-4">
                 Contact Information
             </div>
             <div class="flex mb-2">
@@ -88,6 +88,12 @@
                         Mobile No.
                     </label>
                     <input type="text" name="mobile_no" id="mobile_no" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Mobile Number">
+                </div>
+                <div class="px-2">
+                    <label for="phone_no" class="block text-sm mb-2">
+                        Phone No.
+                    </label>
+                    <input type="text" name="phone_no" id="phone_no" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Phone Number">
                 </div>
             </div>
             <div class="w-full fez123-border-top px-10 py-4 text-right bg-white mt-8">

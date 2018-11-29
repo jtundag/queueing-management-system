@@ -64,7 +64,7 @@ const state = {
             icon: 'fez-setting_cog'
         }
     ],
-    subnavLinks: null
+    subnavLinks: localStorage.getItem('subnavLinks') ? JSON.parse(localStorage.getItem('subnavLinks')) : null
 }
 const getters = {
     isFullLoading(state){
@@ -83,6 +83,7 @@ const mutations = {
     },
     SUBNAV_LINKS(state, links){
         state.subnavLinks = links
+        localStorage.setItem('subnavLinks', JSON.stringify(links))
     }
 }
 const actions = {

@@ -1,7 +1,7 @@
 <template>
-    <ContentContainer title="Create User" class-names="relative pb-0">
+    <ContentContainer title="Create Peronnel" class-names="relative pb-0">
         <form action="#">
-            <div class="text-xl mb-5 mt-4">
+            <div class="text-lg mb-5 mt-4">
                 Student Information
             </div>
             <div class="flex mb-2">
@@ -33,7 +33,7 @@
                     <input type="text" name="department" id="department" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="What is your department?">
                 </div>
             </div>
-            <div class="text-xl mb-5 mt-4">
+            <div class="text-lg mb-5 mt-4">
                 Personal Information
             </div>
             <div class="flex mb-2">
@@ -79,7 +79,7 @@
                     </div>
                 </div>
             </div>
-            <div class="text-xl mb-5 mt-4">
+            <div class="text-lg mb-5 mt-4">
                 Contact Information
             </div>
             <div class="flex mb-2">

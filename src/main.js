@@ -10,6 +10,9 @@ import PerfectScrollbar from 'vue2-perfect-scrollbar'
 require('vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css')
 import { VueSpinners } from '@saeris/vue-spinners'
 
+import 'vodal/common.css';
+import 'vodal/slide-down.css';
+
 import ContentContainer from '@/components/Base/ContentContainer.vue'
 
 Vue.config.productionTip = false

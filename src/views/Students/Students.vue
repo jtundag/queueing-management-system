@@ -46,6 +46,14 @@
         <div class="mt-5 text-right">
             <Pagination/>
         </div>
+        <vodal :show="deleteConfirmationModalShown" animation="slideDown" @hide="deleteConfirmationModalShown = false">
+            <div>Are you sure you want to delete this record?</div>
+            <div class="text-center">
+                <button type="button">
+                    No
+                </button>
+            </div>
+        </vodal>
     </ContentContainer>
 </template>
 
@@ -53,11 +61,13 @@
 import IconInput from '@/components/Base/IconInput.vue'
 import Dropdown from '@/components/Base/Dropdown.vue'
 import Pagination from '@/components/Base/Pagination.vue'
+import Vodal from 'vodal'
 export default {
     components: {
         IconInput,
         Dropdown,
-        Pagination
+        Pagination,
+        Vodal
     },
     data(){
         return {
@@ -105,7 +115,8 @@ export default {
                     last_name: 'Last',
                     email: 'test.last@gmail.com'
                 }
-            ]
+            ],
+            deleteConfirmationModalShown: false
         }
     },
     methods: {
@@ -113,7 +124,12 @@ export default {
             this.searchKeyword = null
         },
         itemClicked(item, user){
-            console.log(item, user)
+            console.log(user)
+            switch(item.title){
+                case 'Delete':
+                    this.deleteConfirmationModalShown = true
+                    break;
+            }
         }
     }
 }
