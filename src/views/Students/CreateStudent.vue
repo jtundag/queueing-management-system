@@ -1,6 +1,6 @@
 <template>
     <ContentContainer title="Create Student" class-names="relative pb-0">
-        <form action="#">
+        <form action="#" @submit.prevent="create">
             <div class="text-lg mb-5 mt-4">
                 Student Information
             </div>
@@ -12,7 +12,7 @@
                             *
                         </span>
                     </label>
-                    <input type="text" name="student_id" id="student_id" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Student ID">
+                    <input type="text" name="student_id" id="student_id" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Enter Student ID">
                 </div>
                 <div class="flex-grow px-2">
                     <label for="course" class="block text-sm mb-2">
@@ -21,7 +21,7 @@
                             *
                         </span>
                     </label>
-                    <input type="text" name="course" id="course" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="What is your course?">
+                    <input type="text" name="course" id="course" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Enter Course">
                 </div>
                 <div class="flex-grow px-2">
                     <label for="department" class="block text-sm mb-2">
@@ -30,7 +30,7 @@
                             *
                         </span>
                     </label>
-                    <input type="text" name="department" id="department" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="What is your department?">
+                    <input type="text" name="department" id="department" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Enter Department">
                 </div>
             </div>
             <div class="text-lg mb-5 mt-4">
@@ -107,3 +107,17 @@
         </form>
     </ContentContainer>
 </template>
+
+<script>
+export default {
+    methods: {
+        create(){
+            this.$store.dispatch('toggleFullLoader', true)
+            setTimeout(() => {
+                this.$store.dispatch('toggleFullLoader', false)
+                this.$router.replace('/users/students')
+            }, 1000)
+        }
+    }
+}
+</script>

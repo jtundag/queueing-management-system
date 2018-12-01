@@ -1,5 +1,5 @@
 <template>
-    <div class="relative">
+    <div class="relative inline-block">
         <button type="button" 
             class="rounded-full w-8 fez123-border text-center h-8 no-outline"
             :class="{ 'fez123-button-primary z-20 relative': isDropdownShown }"

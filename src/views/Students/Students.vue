@@ -46,12 +46,20 @@
         <div class="mt-5 text-right">
             <Pagination/>
         </div>
-        <vodal :show="deleteConfirmationModalShown" animation="slideDown" @hide="deleteConfirmationModalShown = false">
-            <div>Are you sure you want to delete this record?</div>
-            <div class="text-center">
-                <button type="button">
-                    No
-                </button>
+        <vodal :show="deleteConfirmationModalShown" animation="slideDown" @hide="deleteConfirmationModalShown = false" :height="185">
+            <div class="flex flex-col justify-between text-sm">
+                <div class="modal-title fez123-border-bottom pb-3 pt-1 font-bold">
+                    Confirm
+                </div>
+                <div class="modal-body py-3">Are you sure you want to delete this record?</div>
+                <div class="modal-footer text-right fez123-border-top pt-4 mt-8">
+                    <button type="button" class="fez123-button-default py-2 px-5 no-outline rounded-sm text-sm mr-2" @click="deleteConfirmationModalShown = false">
+                        No
+                    </button>
+                    <button type="button" class="fez123-button-primary py-2 px-5 no-outline rounded-sm text-sm">
+                        Yes
+                    </button>
+                </div>
             </div>
         </vodal>
     </ContentContainer>

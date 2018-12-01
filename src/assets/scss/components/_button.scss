@@ -17,4 +17,14 @@
     &-primary:active{
         background-color: darken($primaryColor, 7%);
     }
+
+    &-default {
+        background-color: $outlineColor;
+        color: $textColor;
+    }
+
+    &-default:hover,
+    &-default:active {
+        background-color: darken($outlineColor, 7%);
+    }
 }

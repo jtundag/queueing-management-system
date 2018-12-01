@@ -1,0 +1,11 @@
+.vodal-close:before,
+.vodal-close:after{
+    width: 70% !important;
+    left: 15% !important;
+}
+
+.vodal-close{
+    background: $outlineColor !important;
+    padding: 10px !important;
+    border-radius: 100rem !important;
+}

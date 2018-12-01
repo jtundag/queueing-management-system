@@ -59,12 +59,33 @@ const state = {
                 ]
             }
         }, {
+            name: 'servers',
+            title: 'Servers',
+            icon: 'fez-desktop',
+                subnav: {
+                    "Servers": [{
+                        name: 'servers',
+                        title: 'All Servers',
+                        icon: 'fez-desktop',
+                        link: '/servers/'
+                    }, {
+                        name: 'servers',
+                        title: 'Create Server',
+                        icon: 'fez-add-to-collection',
+                        link: '/servers/create'
+                    }]
+                }
+        }, {
             name: 'config',
             title: 'Config',
             icon: 'fez-setting_cog'
+        }, {
+            name: 'logs',
+            title: 'Logs',
+            icon: 'fez-order-form'
         }
     ],
-    subnavLinks: localStorage.getItem('subnavLinks') ? JSON.parse(localStorage.getItem('subnavLinks')) : null
+    subnavLinks: null
 }
 const getters = {
     isFullLoading(state){
@@ -83,7 +104,6 @@ const mutations = {
     },
     SUBNAV_LINKS(state, links){
         state.subnavLinks = links
-        localStorage.setItem('subnavLinks', JSON.stringify(links))
     }
 }
 const actions = {

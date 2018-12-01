@@ -12,6 +12,9 @@ import CreatePersonnel from '@/views/Personnels/CreatePersonnel.vue'
 import Departments from '@/views/Departments/Departments.vue'
 import CreateDepartment from '@/views/Departments/CreateDepartment.vue'
 
+import Servers from '@/views/Servers/Servers.vue'
+import CreateServer from '@/views/Servers/CreateServer.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -57,6 +60,21 @@ export default new Router({
 				path: '/departments/create',
 				name: 'departments',
 				component: CreateDepartment
+			}
+		]
+	}, {
+		path: '/servers',
+		component: NestedRouteView,
+		name: 'servers',
+		children: [{
+				path: '/',
+				name: 'servers',
+				component: Servers
+			},
+			{
+				path: '/servers/create',
+				name: 'servers',
+				component: CreateServer
 			}
 		]
 	}]

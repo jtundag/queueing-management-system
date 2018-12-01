@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="text-sm">
 	<div class="flex bg-white fez123-border-bottom justify-between">
 		<div class="flex">
 			<div class="text-center">
@@ -11,7 +11,7 @@
 				</button>
 			</div>
 			<div class="p-4">
-				<router-link to="/" class="nav-logo no-underline primary-text">Queue Management System</router-link>
+				<router-link to="/" class="nav-logo no-underline primary-text">QMS</router-link>
 			</div>
 		</div>
 		<div class="flex-initial">
@@ -95,12 +95,13 @@ export default {
 		setTimeout(() => {
 			this.$store.dispatch('toggleFullLoader', false)
 		}, 1000)
+		this.$store.dispatch('showSubnavLinksOf', _.find(this.navLinks, { name: this.$route.name }))
 	},
 	components: {
 		FullLoader
 	},
-  data() {
-    return {
+	data() {
+		return {
 			hasSideNavbar: true,
 			subnavActiveLink: null
 		};
