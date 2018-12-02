@@ -15,6 +15,8 @@ import CreateDepartment from '@/views/Departments/CreateDepartment.vue'
 import Servers from '@/views/Servers/Servers.vue'
 import CreateServer from '@/views/Servers/CreateServer.vue'
 
+import Guest from '@/views/Guest/Guest.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -77,5 +79,9 @@ export default new Router({
 				component: CreateServer
 			}
 		]
+	}, {
+		path: '/guest',
+		name: 'dashboard',
+		component: Guest
 	}]
 })

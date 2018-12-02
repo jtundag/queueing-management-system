@@ -2,6 +2,29 @@
     <ContentContainer title="Create Student" class-names="relative pb-0">
         <form action="#" @submit.prevent="create">
             <div class="text-lg mb-5 mt-4">
+                Account Information
+            </div>
+            <div class="flex mb-2">
+                <div class="flex-grow px-2">
+                    <label for="username" class="block text-sm mb-2">
+                        Username
+                        <span class="text-red">
+                            *
+                        </span>
+                    </label>
+                    <input type="text" name="username" id="username" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="First Name">
+                </div>
+                <div class="flex-grow px-2">
+                    <label for="password" class="block text-sm mb-2">
+                        Password 
+                        <span class="text-red">
+                            *
+                        </span>
+                    </label>
+                    <input type="password" name="password" id="password" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Middle Name (Optional)">
+                </div>
+            </div>
+            <div class="text-lg mb-5 mt-4">
                 Student Information
             </div>
             <div class="flex mb-2">

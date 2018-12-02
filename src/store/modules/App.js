@@ -76,13 +76,20 @@ const state = {
                     }]
                 }
         }, {
+            name: 'guest',
+            title: 'Guest',
+            icon: 'fez-VIP',
+            link: '/guest'
+        }, {
             name: 'config',
             title: 'Config',
-            icon: 'fez-setting_cog'
+            icon: 'fez-setting_cog',
+            link: '/config'
         }, {
             name: 'logs',
             title: 'Logs',
-            icon: 'fez-order-form'
+            icon: 'fez-order-form',
+            link: '/logs'
         }
     ],
     subnavLinks: null

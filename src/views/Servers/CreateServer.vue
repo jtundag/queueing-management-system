@@ -3,7 +3,7 @@
         <form action="#">
             <div class="flex mb-2">
                 <div class="flex-grow px-2">
-                    <label for="student_id" class="block text-sm mb-2">
+                    <label for="student_id" class="pl-1 block text-sm mb-2">
                         Server Name
                         <span class="text-red">
                             *
@@ -12,7 +12,7 @@
                     <input type="text" name="student_id" id="student_id" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Enter Server Name">
                 </div>
                 <div class="flex-grow px-2">
-                    <label for="department" class="block text-sm mb-2">
+                    <label for="department" class="pl-1 block text-sm mb-2">
                         Department
                         <span class="text-red">
                             *
@@ -23,13 +23,35 @@
             </div>
             <div class="flex mb-2">
                 <div class="flex-grow px-2">
-                    <label for="student_id" class="block text-sm mb-2">
+                    <label for="arrival_rate" class="pl-1 block text-sm mb-2">
+                        Arrival Rate
+                        <span class="text-red">
+                            *
+                        </span>
+                    </label>
+                    <input type="text" name="arrival_rate" id="arrival_rate" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Enter Arrival Rate">
+                </div>
+                <div class="flex-grow px-2">
+                    <label for="service_rate" class="pl-1 block text-sm mb-2">
+                        Service Rate
+                        <span class="text-red">
+                            *
+                        </span>
+                    </label>
+                    <input type="text" name="service_rate" id="service_rate" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Enter Service Rate">
+                </div>
+            </div>
+            <div class="flex mb-2">
+                <div class="flex-grow px-2">
+                    <label class="pl-1 block text-sm mb-2">
                         Server Personnels
                         <span class="text-red">
                             *
                         </span>
                     </label>
-                    <SelectList :list="departmentPersonnels" max-height="450px">
+                    <SelectList :list="departmentPersonnels" 
+                        max-height="450px"
+                        filter-with="name">
                         <div slot-scope="props">
                             <div class="font-bold">
                                 {{ props.item.name }}

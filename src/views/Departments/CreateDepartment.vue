@@ -5,7 +5,7 @@
             </div>
             <div class="flex mb-2">
                 <div class="flex-grow px-2">
-                    <label for="student_id" class="block text-sm mb-2">
+                    <label for="student_id" class="pl-1 block text-sm mb-2">
                         Name
                         <span class="text-red">
                             *
@@ -16,7 +16,7 @@
             </div>
             <div class="flex mb-2">
                 <div class="flex-grow px-2">
-                    <label for="student_id" class="block text-sm mb-2">
+                    <label for="student_id" class="pl-1 block text-sm mb-2">
                         Location
                         <span class="text-red">
                             *

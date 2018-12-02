@@ -9,7 +9,8 @@
             :id="name" 
             class="block fez123-bg-grey-lightest no-outline py-3 pr-5 w-full tracking-wide leading-normal" 
             :placeholder="placeholder"
-            v-model="val">
+            v-model="val"
+            @input="$emit('input', val)">
         </div>
         <div class="flex-none fez123-bg-grey-lightest" 
             v-if="tailingIcon"
@@ -36,7 +37,7 @@ export default {
             required: true
         },
         value: {
-            required: true
+            required: false
         }
     },
     data(){
@@ -47,6 +48,9 @@ export default {
     methods: {
         tailingIconClicked(){
             this.$emit('tailing-icon-clicked')
+        },
+        clearInput(){
+            this.val = null
         }
     }
 }
