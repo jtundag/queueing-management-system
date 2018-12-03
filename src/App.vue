@@ -88,7 +88,6 @@
 <script>
 import FullLoader from '@/components/FullLoader.vue'
 import { mapGetters } from 'vuex'
-import _ from 'lodash'
 
 export default {
 	created(){

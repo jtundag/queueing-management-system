@@ -47,7 +47,7 @@
             GET PRIORITY NUMBER
         </div>
         <div class="flex mb-2">
-            <div class="px-2">
+            <div class="flex-grow px-2">
                 <label for="department" class="block text-sm mb-2">
                     Department
                 </label>

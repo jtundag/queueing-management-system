@@ -133,13 +133,22 @@
 
 <script>
 export default {
+    data(){
+        return {
+            formData: {
+                role: 'student'
+            }
+        }
+    },
     methods: {
         create(){
             this.$store.dispatch('toggleFullLoader', true)
-            setTimeout(() => {
-                this.$store.dispatch('toggleFullLoader', false)
-                this.$router.replace('/users/students')
-            }, 1000)
+            this.$store.dispatch('createUser', this.formData)
+                .then((response) => {
+                    console.log(response)
+                    this.$store.dispatch('toggleFullLoader', false)
+                    this.$router.replace('/users/students')
+                })
         }
     }
 }
