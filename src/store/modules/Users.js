@@ -5,8 +5,8 @@ const mutation = {}
 const getters = {}
 const actions = {
     createUser(context, data){
-        console.log(process.env.API_BASE_URL)
-        return axios.get('/sample')
+        console.log(data)
+        return window.axios.get('/sample')
     }
 }
 

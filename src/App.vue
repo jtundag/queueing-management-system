@@ -94,7 +94,7 @@ export default {
 		setTimeout(() => {
 			this.$store.dispatch('toggleFullLoader', false)
 		}, 1000)
-		this.$store.dispatch('showSubnavLinksOf', _.find(this.navLinks, { name: this.$route.name }))
+		this.$store.dispatch('showSubnavLinksOf', window._.find(this.navLinks, { name: this.$route.name }))
 	},
 	components: {
 		FullLoader
@@ -110,7 +110,7 @@ export default {
 			this.hasSideNavbar = !this.hasSideNavbar
 		},
 		showSubnavLinksOf(link){
-			if(_.isEqual(link.subnav, this.subnavLinks)) return this.hideSubnavLinks()
+			if(window._.isEqual(link.subnav, this.subnavLinks)) return this.hideSubnavLinks()
 			this.subnavActiveLink = link
 			this.$store.dispatch('showSubnavLinksOf', link)
 		},
