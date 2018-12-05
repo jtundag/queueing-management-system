@@ -5,8 +5,10 @@ const mutation = {}
 const getters = {}
 const actions = {
     createUser(context, data){
-        console.log(data)
-        return window.axios.get('/sample')
+        return window.axios.get('/users/create', data)
+    },
+    getUsers(context, data){
+        return window.axios.get('/users', data)
     }
 }
 

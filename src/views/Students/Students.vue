@@ -5,44 +5,15 @@
         name="search_field" 
         v-model="searchKeyword"
         @tailing-icon-clicked="clearKeyword"/>
-
-        <table class="table-auto mt-5 w-full text-sm">
-            <thead class="fez123-border-bottom">
-                <tr>
-                    <th class="px-4 py-5 font-normal text-left">#</th>
-                    <th class="px-4 py-5 font-normal text-left">Student ID No.</th>
-                    <th class="px-4 py-5 font-normal text-left">First Name</th>
-                    <th class="px-4 py-5 font-normal text-left">Last Name</th>
-                    <th class="px-4 py-5 font-normal text-left">Email</th>
-                    <th class="px-4 py-5 font-normal"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="fez123-border-bottom" 
-                    v-for="(user, index) in users"
-                    :key="index">
-                    <td class="px-4 py-5">
-                        {{ user.id }}
-                    </td>
-                    <td class="px-4 py-5">
-                        {{ user.username }}
-                    </td>
-                    <td class="px-4 py-5">
-                        {{ user.first_name }}
-                    </td>
-                    <td class="px-4 py-5">
-                        {{ user.last_name }}
-                    </td>
-                    <td class="px-4 py-5">
-                        {{ user.email }}
-                    </td>
-                    <td>
-                        <Dropdown :items="dropdownItems"
-                            @item-click="itemClicked($event, user)"/>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        
+        <Table :columns="tableColumns"
+            :data="[{ id: 1, uuid: 1, full_name: 'Test', course: 'Test', department: 'Test' }]">
+            <template slot="actions" slot-scope="props">
+                <Dropdown :items="dropdownItems"
+                        @item-click="itemClicked($event, props.rowData)"/>
+            </template>
+        </Table>
+        
         <div class="mt-5 text-right">
             <Pagination/>
         </div>
@@ -69,13 +40,22 @@
 import IconInput from '@/components/Base/IconInput.vue'
 import Dropdown from '@/components/Base/Dropdown.vue'
 import Pagination from '@/components/Base/Pagination.vue'
+import Table from '@/components/Base/Table.vue'
 import Vodal from 'vodal'
 export default {
     components: {
         IconInput,
         Dropdown,
         Pagination,
-        Vodal
+        Vodal,
+        Table
+    },
+    created(){
+        this.$store.dispatch('getUsers', {
+            role: 'students'
+        }).then((response) => {
+            this.users = response.data.result
+        })
     },
     data(){
         return {
@@ -94,36 +74,32 @@ export default {
                     icon: 'fez-close'
                 }
             ],
-            users: [
+            tableColumns: [
                 {
-                    id: 1,
-                    username: '2014-F0089',
-                    first_name: 'Test',
-                    last_name: 'Last',
-                    email: 'test.last@gmail.com'
+                    name: 'id',
+                    label: '#',
                 },
                 {
-                    id: 1,
-                    username: '2014-F0089',
-                    first_name: 'Test',
-                    last_name: 'Last',
-                    email: 'test.last@gmail.com'
+                    name: 'uuid',
+                    label: 'Student ID',
                 },
                 {
-                    id: 1,
-                    username: '2014-F0089',
-                    first_name: 'Test',
-                    last_name: 'Last',
-                    email: 'test.last@gmail.com'
+                    name: 'full_name',
+                    label: 'Full Name',
                 },
                 {
-                    id: 1,
-                    username: '2014-F0089',
-                    first_name: 'Test',
-                    last_name: 'Last',
-                    email: 'test.last@gmail.com'
+                    name: 'course',
+                    label: 'Course',
+                },
+                {
+                    name: 'department',
+                    label: 'Department',
+                },
+                {
+                    slot: 'actions'
                 }
             ],
+            users: [],
             deleteConfirmationModalShown: false
         }
     },

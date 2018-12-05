@@ -35,7 +35,12 @@
                             *
                         </span>
                     </label>
-                    <input type="text" name="student_id" id="student_id" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Enter Student ID">
+                    <input type="text" 
+                        name="student_id" 
+                        id="student_id" 
+                        class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" 
+                        placeholder="Enter Student ID"
+                        v-model="formData.uuid">
                 </div>
                 <div class="flex-grow px-2">
                     <label for="course" class="block text-sm mb-2">
@@ -44,7 +49,12 @@
                             *
                         </span>
                     </label>
-                    <input type="text" name="course" id="course" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Enter Course">
+                    <input type="text" 
+                        name="course" 
+                        id="course" 
+                        class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" 
+                        placeholder="Enter Course"
+                        v-model="formData.course">
                 </div>
                 <div class="flex-grow px-2">
                     <label for="department" class="block text-sm mb-2">
@@ -53,7 +63,12 @@
                             *
                         </span>
                     </label>
-                    <input type="text" name="department" id="department" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Enter Department">
+                    <input type="text" 
+                        name="department" 
+                        id="department" 
+                        class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" 
+                        placeholder="Enter Department"
+                        v-model="formData.department">
                 </div>
             </div>
             <div class="text-lg mb-5 mt-4">
@@ -67,19 +82,33 @@
                             *
                         </span>
                     </label>
-                    <input type="text" name="first_name" id="first_name" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="First Name">
+                    <input type="text" 
+                        name="first_name" 
+                        id="first_name" 
+                        class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" 
+                        placeholder="First Name"
+                        v-model="formData.first_name">
                 </div>
                 <div class="flex-grow px-2">
                     <label for="middle_name" class="block text-sm mb-2">
                         Middle Name (Optional)
                     </label>
-                    <input type="text" name="middle_name" id="middle_name" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Middle Name (Optional)">
+                    <input type="text" 
+                        name="middle_name" 
+                        id="middle_name" 
+                        class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Middle Name (Optional)"
+                        v-model="formData.middle_name">
                 </div>
                 <div class="flex-grow px-2">
                     <label for="last_name" class="block text-sm mb-2">
                         Last Name <span class="text-red">*</span>
                     </label>
-                    <input type="text" name="last_name" id="last_name" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Last Name">
+                    <input type="text" 
+                        name="last_name" 
+                        id="last_name" 
+                        class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" 
+                        placeholder="Last Name"
+                        v-model="formData.last_name">
                 </div>
             </div>
             <div class="flex mb-2">
