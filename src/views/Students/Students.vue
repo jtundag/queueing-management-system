@@ -7,7 +7,7 @@
         @tailing-icon-clicked="clearKeyword"/>
         
         <Table :columns="tableColumns"
-            :data="[{ id: 1, uuid: 1, full_name: 'Test', course: 'Test', department: 'Test' }]">
+            :data="[{ id: 1, uuid: 1, full_name: 'Test', course: 'Test', department: 'Test' }, { id: 2, uuid: 2, full_name: 'Test 2', course: 'Test 2', department: 'Test' }]">
             <template slot="actions" slot-scope="props">
                 <Dropdown :items="dropdownItems"
                         @item-click="itemClicked($event, props.rowData)"/>
