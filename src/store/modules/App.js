@@ -40,51 +40,49 @@ const state = {
                 ]
             }
         }, {
-            name: 'departments',
-            title: 'Departments',
-            icon: 'fez-warehouse',
-            subnav: {
-                "Department": [
-                    {
-                        name: 'departments',
-                        title: 'All Departments',
-                        icon: 'fez-warehouse',
-                        link: '/departments'
-                    }, {
-                        name: 'departments',
-                        title: 'Create New',
-                        icon: 'fez-setting_wrench',
-                        link: '/departments/create'
-                    }
-                ]
-            }
-        }, {
             name: 'servers',
             title: 'Servers',
             icon: 'fez-desktop',
-                subnav: {
-                    "Servers": [{
-                        name: 'servers',
-                        title: 'All Servers',
-                        icon: 'fez-desktop',
-                        link: '/servers/'
-                    }, {
-                        name: 'servers',
-                        title: 'Create Server',
-                        icon: 'fez-add-to-collection',
-                        link: '/servers/create'
-                    }]
-                }
+            subnav: {
+                "Servers": [{
+                    name: 'servers',
+                    title: 'All Servers',
+                    icon: 'fez-desktop',
+                    link: '/servers/'
+                }, {
+                    name: 'servers',
+                    title: 'Create Server',
+                    icon: 'fez-add-to-collection',
+                    link: '/servers/create'
+                }]
+            }
+        }, {
+            name: 'config',
+            title: 'Config',
+            icon: 'fez-setting_cog',
+            subnav: {
+                "Config": [{
+                    name: 'config',
+                    title: 'General',
+                    icon: 'fez-desktop',
+                    link: '/config/'
+                }, {
+                    name: 'config',
+                    title: 'Services',
+                    icon: 'fez-add-to-collection',
+                    link: '/config/services'
+                }, {
+                    name: 'config',
+                    title: 'Departments',
+                    icon: 'fez-warehouse',
+                    link: '/config/departments'
+                }]
+            }
         }, {
             name: 'guest',
             title: 'Guest',
             icon: 'fez-VIP',
             link: '/guest'
-        }, {
-            name: 'config',
-            title: 'Config',
-            icon: 'fez-setting_cog',
-            link: '/config'
         }, {
             name: 'logs',
             title: 'Logs',

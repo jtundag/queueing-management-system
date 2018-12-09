@@ -9,11 +9,12 @@ import CreateStudent from '@/views/Students/CreateStudent.vue'
 import Personnels from '@/views/Personnels/Personnels.vue'
 import CreatePersonnel from '@/views/Personnels/CreatePersonnel.vue'
 
-import Departments from '@/views/Departments/Departments.vue'
-import CreateDepartment from '@/views/Departments/CreateDepartment.vue'
-
 import Servers from '@/views/Servers/Servers.vue'
 import CreateServer from '@/views/Servers/CreateServer.vue'
+
+import ConfigGeneral from '@/views/Config/General.vue'
+import ConfigServices from '@/views/Config/Services.vue'
+import ConfigDepartments from '@/views/Config/Departments.vue'
 
 import Guest from '@/views/Guest/Guest.vue'
 
@@ -24,7 +25,10 @@ export default new Router({
 	routes: [{
 		path: '/',
 		name: 'dashboard',
-		component: Home
+		component: Home,
+		meta: {
+			title: 'Dashboard'
+		}
 	}, {
 		path: '/users',
 		component: NestedRouteView,
@@ -32,36 +36,33 @@ export default new Router({
 		children: [{
 				path: '/users/students',
 				name: 'users',
-				component: Students
+				component: Students,
+				meta: {
+					title: 'Students'
+				}
 			},
 			{
 				path: '/users/students/create',
 				name: 'users',
-				component: CreateStudent
+				component: CreateStudent,
+				meta: {
+					title: 'Create Student'
+				}
 			},
 			{
 				path: '/users/personnels',
 				name: 'users',
-				component: Personnels
+				component: Personnels,
+				meta: {
+					title: 'Personnels'
+				}
 			}, {
 				path: '/users/personnels/create',
 				name: 'users',
-				component: CreatePersonnel
-			}
-		]
-	}, {
-		path: '/departments',
-		component: NestedRouteView,
-		name: 'departments',
-		children: [{
-				path: '/',
-				name: 'departments',
-				component: Departments
-			},
-			{
-				path: '/departments/create',
-				name: 'departments',
-				component: CreateDepartment
+				component: CreatePersonnel,
+				meta: {
+					title: 'Create Personnel'
+				}
 			}
 		]
 	}, {
@@ -71,17 +72,52 @@ export default new Router({
 		children: [{
 				path: '/',
 				name: 'servers',
-				component: Servers
+				component: Servers,
+				meta: {
+					title: 'Servers'
+				}
 			},
 			{
 				path: '/servers/create',
 				name: 'servers',
-				component: CreateServer
+				component: CreateServer,
+				meta: {
+					title: 'Create Server'
+				}
+			}
+		]
+	}, {
+		path: '/config',
+		component: NestedRouteView,
+		name: 'config',
+		children: [{
+				path: '/',
+				name: 'config',
+				component: ConfigGeneral,
+				meta: { title: 'General' }
+			},
+			{
+				path: '/config/services',
+				name: 'config',
+				component: ConfigServices,
+				meta: {
+					title: 'Services'
+				}
+			}, {
+				path: '/config/departments',
+				name: 'config',
+				component: ConfigDepartments,
+				meta: {
+					title: 'Departments'
+				}
 			}
 		]
 	}, {
 		path: '/guest',
 		name: 'dashboard',
-		component: Guest
+		component: Guest,
+		meta: {
+			title: 'Guest'
+		}
 	}]
 })

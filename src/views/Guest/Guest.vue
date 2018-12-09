@@ -44,7 +44,9 @@
             </div>
         </div>
         <div class="text-lg mb-5 mt-4 font-bold fez123-border-top pt-4">
-            GET PRIORITY NUMBER
+            <span class="ribbon-title">
+                <span class="text">GET PRIORITY NUMBER</span>
+            </span>
         </div>
         <div class="flex mb-2">
             <div class="flex-grow px-2">

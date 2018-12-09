@@ -10,8 +10,11 @@
 						:class="{ 'fez-list': !hasSideNavbar, 'fez-close': hasSideNavbar }"></span>
 				</button>
 			</div>
-			<div class="p-4">
+			<div class="p-4 w-48 fez123-border-right">
 				<router-link to="/" class="nav-logo no-underline primary-text">QMS</router-link>
+			</div>
+			<div class="p-4 pl-6">
+				{{ $route.meta.title }}
 			</div>
 		</div>
 		<div class="flex-initial">

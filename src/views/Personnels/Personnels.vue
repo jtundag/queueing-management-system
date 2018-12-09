@@ -6,58 +6,26 @@
         v-model="searchKeyword"
         @tailing-icon-clicked="clearKeyword"/>
 
-        <table class="table-auto mt-5 w-full">
-            <thead class="fez123-border-bottom">
-                <tr>
-                    <th class="px-4 py-5 font-normal text-left">#</th>
-                    <th class="px-4 py-5 font-normal text-left">Student ID No.</th>
-                    <th class="px-4 py-5 font-normal text-left">First Name</th>
-                    <th class="px-4 py-5 font-normal text-left">Last Name</th>
-                    <th class="px-4 py-5 font-normal text-left">Email</th>
-                    <th class="px-4 py-5 font-normal"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="fez123-border-bottom" 
-                    v-for="(user, index) in users"
-                    :key="index">
-                    <td class="px-4 py-5">
-                        {{ user.id }}
-                    </td>
-                    <td class="px-4 py-5">
-                        {{ user.username }}
-                    </td>
-                    <td class="px-4 py-5">
-                        {{ user.first_name }}
-                    </td>
-                    <td class="px-4 py-5">
-                        {{ user.last_name }}
-                    </td>
-                    <td class="px-4 py-5">
-                        {{ user.email }}
-                    </td>
-                    <td>
-                        <Dropdown :items="dropdownItems"
-                            @item-click="itemClicked($event, user)"/>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="mt-5 text-right">
-            <Pagination/>
-        </div>
+        <Table :columns="tableColumns"
+            :data="users">
+            <template slot="actions" slot-scope="props">
+                <Dropdown :items="dropdownItems"
+                        @item-click="itemClicked($event, props.rowData)"/>
+            </template>
+        </Table>
+
     </ContentContainer>
 </template>
 
 <script>
 import IconInput from '@/components/Base/IconInput.vue'
 import Dropdown from '@/components/Base/Dropdown.vue'
-import Pagination from '@/components/Base/Pagination.vue'
+import Table from '@/components/Base/Table.vue'
 export default {
     components: {
         IconInput,
         Dropdown,
-        Pagination
+        Table
     },
     data(){
         return {
@@ -76,36 +44,28 @@ export default {
                     icon: 'fez-close'
                 }
             ],
-            users: [
+            tableColumns: [
                 {
-                    id: 1,
-                    username: '2014-F0089',
-                    first_name: 'Test',
-                    last_name: 'Last',
-                    email: 'test.last@gmail.com'
+                    name: 'id',
+                    label: '#'
                 },
                 {
-                    id: 1,
-                    username: '2014-F0089',
-                    first_name: 'Test',
-                    last_name: 'Last',
-                    email: 'test.last@gmail.com'
+                    name: 'uuid',
+                    label: 'Personnel ID',
                 },
                 {
-                    id: 1,
-                    username: '2014-F0089',
-                    first_name: 'Test',
-                    last_name: 'Last',
-                    email: 'test.last@gmail.com'
+                    name: 'full_name',
+                    label: 'Full Name',
                 },
                 {
-                    id: 1,
-                    username: '2014-F0089',
-                    first_name: 'Test',
-                    last_name: 'Last',
-                    email: 'test.last@gmail.com'
+                    name: 'department',
+                    label: 'Department',
+                },
+                {
+                    slot: 'actions'
                 }
-            ]
+            ],
+            users: []
         }
     },
     methods: {

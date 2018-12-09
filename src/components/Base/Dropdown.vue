@@ -9,13 +9,13 @@
         </button>
         <ul class="absolute w-48 bg-white list-reset z-10 shadow-lg rounded-lg dropdown-menu pin-r" v-if="isDropdownShown" v-click-outside="hideDropdown">
             <li class="px-4 py-2 fez123-border-bottom cursor-pointer"
-                v-for="(item, index) in items"
+                v-for="(action, index) in actions"
                 :key="index"
-                @click="$emit('item-click', item)">
+                @click="$emit('action-click', action)">
                 <span class="text-4xl align-middle"
-                    :class="item.icon"></span>
+                    :class="action.icon"></span>
                 <span class="align-middle">
-                    {{ item.title }}
+                    {{ action.title }}
                 </span>
             </li>
         </ul>
@@ -26,7 +26,7 @@
 <script>
 export default {
     props: {
-        items: {
+        actions: {
             type: Array,
             default: () => []
         }

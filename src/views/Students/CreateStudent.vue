@@ -1,27 +1,24 @@
 <template>
     <ContentContainer title="Create Student" class-names="relative pb-0">
-        <form action="#" @submit.prevent="create">
+        <Form @submit="create">
             <div class="text-lg mb-5 mt-4">
                 Account Information
             </div>
             <div class="flex mb-2">
                 <div class="flex-grow px-2">
-                    <label for="username" class="block text-sm mb-2">
-                        Username
-                        <span class="text-red">
-                            *
-                        </span>
-                    </label>
-                    <input type="text" name="username" id="username" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="First Name">
+                    <Input label="Username" 
+                        name="username" 
+                        placeholder="Username"
+                        :required="true"
+                        v-model="formData.username"/>
                 </div>
                 <div class="flex-grow px-2">
-                    <label for="password" class="block text-sm mb-2">
-                        Password 
-                        <span class="text-red">
-                            *
-                        </span>
-                    </label>
-                    <input type="password" name="password" id="password" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Middle Name (Optional)">
+                    <Input label="Password" 
+                        name="password" 
+                        placeholder="Password"
+                        type="password"
+                        :required="true"
+                        v-model="formData.password"/>
                 </div>
             </div>
             <div class="text-lg mb-5 mt-4">
@@ -29,46 +26,25 @@
             </div>
             <div class="flex mb-2">
                 <div class="flex-grow px-2">
-                    <label for="student_id" class="block text-sm mb-2">
-                        Student ID
-                        <span class="text-red">
-                            *
-                        </span>
-                    </label>
-                    <input type="text" 
+                    <Input label="Student ID" 
                         name="student_id" 
-                        id="student_id" 
-                        class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" 
                         placeholder="Enter Student ID"
-                        v-model="formData.uuid">
+                        :required="true"
+                        v-model="formData.uuid"/>
                 </div>
                 <div class="flex-grow px-2">
-                    <label for="course" class="block text-sm mb-2">
-                        Course
-                        <span class="text-red">
-                            *
-                        </span>
-                    </label>
-                    <input type="text" 
+                    <Input label="Course" 
                         name="course" 
-                        id="course" 
-                        class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" 
                         placeholder="Enter Course"
-                        v-model="formData.course">
+                        :required="true"
+                        v-model="formData.course"/>
                 </div>
                 <div class="flex-grow px-2">
-                    <label for="department" class="block text-sm mb-2">
-                        Department
-                        <span class="text-red">
-                            *
-                        </span>
-                    </label>
-                    <input type="text" 
+                    <Input label="Department" 
                         name="department" 
-                        id="department" 
-                        class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" 
                         placeholder="Enter Department"
-                        v-model="formData.department">
+                        :required="true"
+                        v-model="formData.department"/>
                 </div>
             </div>
             <div class="text-lg mb-5 mt-4">
@@ -76,59 +52,35 @@
             </div>
             <div class="flex mb-2">
                 <div class="flex-grow px-2">
-                    <label for="first_name" class="block text-sm mb-2">
-                        First Name
-                        <span class="text-red">
-                            *
-                        </span>
-                    </label>
-                    <input type="text" 
+                    <Input label="First Name" 
                         name="first_name" 
-                        id="first_name" 
-                        class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" 
-                        placeholder="First Name"
-                        v-model="formData.first_name">
+                        placeholder="Enter First Name"
+                        :required="true"
+                        v-model="formData.first_name"/>
                 </div>
                 <div class="flex-grow px-2">
-                    <label for="middle_name" class="block text-sm mb-2">
-                        Middle Name (Optional)
-                    </label>
-                    <input type="text" 
+                    <Input label="Middle Name (Optional)" 
                         name="middle_name" 
-                        id="middle_name" 
-                        class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Middle Name (Optional)"
-                        v-model="formData.middle_name">
+                        placeholder="Enter Middle Name (Optional)"
+                        :required="true"
+                        v-model="formData.middle_name"/>
                 </div>
                 <div class="flex-grow px-2">
-                    <label for="last_name" class="block text-sm mb-2">
-                        Last Name <span class="text-red">*</span>
-                    </label>
-                    <input type="text" 
+                    <Input label="Last Name" 
                         name="last_name" 
-                        id="last_name" 
-                        class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" 
-                        placeholder="Last Name"
-                        v-model="formData.last_name">
+                        placeholder="Enter Last Name"
+                        :required="true"
+                        v-model="formData.last_name"/>
                 </div>
             </div>
             <div class="flex mb-2">
                 <div class="px-2">
-                    <label for="gender" class="block text-sm mb-2">
-                        Gender
-                        <span class="text-red">
-                            *
-                        </span>
-                    </label>
-                    <div>
-                        <label for="gender_male" class="text-sm">
-                            <input type="radio" name="gender_male" id="gender_male"> <span class="ml-1">Male</span>
-                        </label>
-                    </div>
-                    <div>
-                        <label for="gender_fmale" class="text-sm">
-                            <input type="radio" name="gender_fmale" id="gender_fmale"> <span class="ml-1">Female</span>
-                        </label>
-                    </div>
+                    <Radio :options="[{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }]"
+                        :required="true"
+                        label="Gender"
+                        name="gender"
+                        v-model="formData.gender"
+                        @change="formData.gender = $event"/>
                 </div>
             </div>
             <div class="text-lg mb-5 mt-4">
@@ -136,16 +88,18 @@
             </div>
             <div class="flex mb-2">
                 <div class="px-2">
-                    <label for="mobile_no" class="block text-sm mb-2">
-                        Mobile No.
-                    </label>
-                    <input type="text" name="mobile_no" id="mobile_no" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Mobile Number">
+                    <Input label="Mobile No." 
+                        name="mobile_no" 
+                        placeholder="Enter Mobile No."
+                        :required="true"
+                        v-model="formData.mobile_no"/>
                 </div>
                 <div class="px-2">
-                    <label for="phone_no" class="block text-sm mb-2">
-                        Phone No.
-                    </label>
-                    <input type="text" name="phone_no" id="phone_no" class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" placeholder="Phone Number">
+                    <Input label="Phone No." 
+                        name="phone_no" 
+                        placeholder="Enter Phone Number"
+                        :required="true"
+                        v-model="formData.phone_no"/>
                 </div>
             </div>
             <div class="w-full fez123-border-top px-10 py-4 text-right bg-white mt-8">
@@ -156,15 +110,33 @@
                     Create
                 </button>
             </div>
-        </form>
+        </Form>
     </ContentContainer>
 </template>
 
 <script>
+import { Form, Input, Radio } from '@/components/Base/Form'
+
 export default {
+    components: {
+        Form,
+        Input,
+        Radio
+    },
     data(){
         return {
             formData: {
+                username: null,
+                password: null,
+                uuid: null,
+                course: null,
+                department: null,
+                first_name: null,
+                middle_name: null,
+                last_name: null,
+                gender: 'male',
+                mobile_no: null,
+                phone_no: null,
                 role: 'student'
             }
         }

@@ -5,6 +5,9 @@ import App from './App.vue'
 import VueTippy from 'vue-tippy'
 import router from './router'
 import store from './store/index'
+
+Vue.prototype.$http = Vue.http = window.axios
+
 import './registerServiceWorker'
 import vClickOutside from 'v-click-outside'
 require('vue2-animate/dist/vue2-animate.min.css')

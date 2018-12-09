@@ -6,50 +6,26 @@
         v-model="searchKeyword"
         @tailing-icon-clicked="clearKeyword"/>
 
-        <table class="table-auto mt-5 w-full">
-            <thead class="fez123-border-bottom">
-                <tr>
-                    <th class="px-4 py-5 font-normal text-left">#</th>
-                    <th class="px-4 py-5 font-normal text-left">Server ID</th>
-                    <th class="px-4 py-5 font-normal text-left">Derpartment</th>
-                    <th class="px-4 py-5 font-normal"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="fez123-border-bottom" 
-                    v-for="(server, index) in servers"
-                    :key="index">
-                    <td class="px-4 py-5">
-                        {{ server.id }}
-                    </td>
-                    <td class="px-4 py-5">
-                        {{ server.server_id }}
-                    </td>
-                    <td class="px-4 py-5">
-                        {{ server.department.name }}
-                    </td>
-                    <td>
-                        <Dropdown :items="dropdownItems"
-                            @item-click="itemClicked($event, server)"/>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="mt-5 text-right">
-            <Pagination/>
-        </div>
+        <Table :columns="tableColumns"
+            :data="servers">
+            <template slot="actions" slot-scope="props">
+                <Dropdown :items="dropdownItems"
+                        @item-click="itemClicked($event, props.rowData)"/>
+            </template>
+        </Table>
+
     </ContentContainer>
 </template>
 
 <script>
 import IconInput from '@/components/Base/IconInput.vue'
 import Dropdown from '@/components/Base/Dropdown.vue'
-import Pagination from '@/components/Base/Pagination.vue'
+import Table from '@/components/Base/Table.vue'
 export default {
     components: {
         IconInput,
         Dropdown,
-        Pagination
+        Table
     },
     data(){
         return {
@@ -72,24 +48,24 @@ export default {
                     icon: 'fez-close'
                 }
             ],
-            servers: [
+            tableColumns: [
                 {
-                    id: 1,
-                    server_id: '2014-F0089',
-                    department: {
-                        id: 1,
-                        name: 'IT'
-                    }
+                    name: 'id',
+                    label: '#'
                 },
                 {
-                    id: 2,
-                    server_id: '2014-F0089',
-                    department: {
-                        id: 1,
-                        name: 'IT'
-                    }
+                    name: 'name',
+                    label: 'Name',
+                },
+                {
+                    name: 'department',
+                    label: 'Department',
+                },
+                {
+                    slot: 'actions'
                 }
-            ]
+            ],
+            servers: []
         }
     },
     methods: {
