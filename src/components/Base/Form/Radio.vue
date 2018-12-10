@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import FieldMixin from './FieldMixin.vue'
+import FieldMixin from './Mixins/FieldMixin.vue'
 
 export default {
     mixins: [FieldMixin],

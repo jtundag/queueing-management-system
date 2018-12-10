@@ -38,7 +38,7 @@ import IconInput from '@/components/Base/IconInput.vue'
 import Dropdown from '@/components/Base/Dropdown.vue'
 import Table from '@/components/Base/Table.vue'
 import VodalExt from '@/components/Base/Vodal/VodalExt.vue'
-import { Button } from '@/components/Base/Form'
+import Fields from '@/components/Base/Form'
 
 export default {
     components: {
@@ -46,12 +46,13 @@ export default {
         Dropdown,
         VodalExt,
         Table,
-        Button
+        ...Fields
     },
     created(){
         this.$store.dispatch('getUsers', {
             role: 'students'
         }).then((response) => {
+            console.log(response)
             // this.users = response.data.result
         })
     },

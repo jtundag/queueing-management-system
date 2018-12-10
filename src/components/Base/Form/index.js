@@ -1,11 +1,9 @@
-import Form from './Form.vue'
-import Input from './Input.vue'
-import Radio from './Radio.vue'
-import Button from './Button.vue'
+const files = require.context('.', false, /\.vue$/)
+const fields = {}
 
-export {
-    Form,
-    Input,
-    Radio,
-    Button
-}
+files.keys().forEach(key => {
+    if (key === './index.js') return
+    fields[key.replace(/(\.\/|\.vue)/g, '')] = files(key)
+})
+
+export default fields

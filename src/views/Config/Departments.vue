@@ -68,7 +68,7 @@ import IconInput from '@/components/Base/IconInput.vue'
 import Dropdown from '@/components/Base/Dropdown.vue'
 import Table from '@/components/Base/Table.vue'
 import VodalExt from '@/components/Base/Vodal/VodalExt.vue'
-import { Input, Button } from '@/components/Base/Form'
+import Fields from '@/components/Base/Form'
 
 export default {
     components: {
@@ -76,8 +76,7 @@ export default {
         Dropdown,
         Table,
         VodalExt,
-        Input,
-        Button
+        ...Fields
     },
     data(){
         return {

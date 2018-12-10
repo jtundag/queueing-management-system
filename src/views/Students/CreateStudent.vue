@@ -40,7 +40,7 @@
                         v-model="formData.course"/>
                 </div>
                 <div class="flex-grow px-2">
-                    <Input label="Department" 
+                    <InputSuggestions label="Department" 
                         name="department" 
                         placeholder="Enter Department"
                         :validation-rules="`required`"
@@ -113,13 +113,11 @@
 </template>
 
 <script>
-import { Form, Input, Radio } from '@/components/Base/Form'
+import Fields from '@/components/Base/Form'
 
 export default {
     components: {
-        Form,
-        Input,
-        Radio
+        ...Fields
     },
     data(){
         return {

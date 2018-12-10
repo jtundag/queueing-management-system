@@ -5,15 +5,18 @@
                 :placeholder="placeholder"
                 :validation-rules="validationRules"
                 v-model="model"/>
+        <div class="absolute pin-b bg-white shadow-lg">
+            sdas
+        </div>
     </div>
 </template>
 
 <script>
-import { Input } from '.'
+import Fields from '.'
 
 export default {
     components: {
-        Input
+        ...Fields
     }
 }
 </script>
