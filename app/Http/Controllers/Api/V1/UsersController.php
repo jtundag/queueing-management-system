@@ -21,6 +21,10 @@ class UsersController extends Controller
     }
 
     public function create(Request $request){
-        dd($request->all());    
+        $created = $this->studentRepository
+                        ->create($request->all());
+        return response()->json([
+            'status' => $created ? $true : false
+        ]);
     }
 }
