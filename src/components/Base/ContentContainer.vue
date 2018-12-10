@@ -1,5 +1,5 @@
 <template>
-    <perfect-scrollbar class="flex-grow p-3 bg-white overflow-auto" :class="classNames">
+    <perfect-scrollbar class="flex-grow py-3 px-5 bg-white overflow-auto" :class="classNames">
         <slot/>
     </perfect-scrollbar>
 </template>

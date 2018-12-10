@@ -10,13 +10,16 @@
             :key="index">
             <label :for="`${name}_${option.value}`" class="text-sm">
                 <input type="radio" 
-                    :name="`${name}_${option.value}`" 
+                    :name="name" 
                     :id="`${name}_${option.value}`"
                     v-model="model"
                     :value="option.value"
-                    @change="$emit('change', model)"> <span class="ml-1">{{ option.label }}</span>
+                    @change="$emit('change', model)"
+                    :data-vv-as="label"
+                    v-validate="validationRules"><span class="ml-1">{{ option.label }}</span>
             </label>
         </div>
+        <ValidationMessage :name="name"/>
     </div>
 </template>
 

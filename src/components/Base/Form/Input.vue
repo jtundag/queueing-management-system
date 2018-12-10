@@ -1,6 +1,6 @@
 <template>
     <div>
-        <label :for="name" class="block text-sm mb-2">
+        <label :for="name" class="block mb-2">
             {{ label }}
             <span class="text-red" v-if="required">
                 *
@@ -9,11 +9,14 @@
         <input :type="type" 
             :name="name" 
             :id="name" 
-            class="block fez123-border rounded-sm leading-normal p-3 text-sm no-outline focus:border-grey w-full" 
+            class="block border rounded-sm leading-normal p-3 text-sm no-outline w-full" 
             :placeholder="placeholder"
-            :required="required"
             :value="value"
-            @input="$emit('input', $event.target.value)">
+            @input="$emit('input', $event.target.value)"
+            :data-vv-as="label"
+            v-validate="validationRules"
+            :class="{ 'border-red': errors.has(name), 'focus:border-grey fez123-border': !errors.has(name) }">
+        <ValidationMessage :name="name"/>
     </div>
 </template>
 

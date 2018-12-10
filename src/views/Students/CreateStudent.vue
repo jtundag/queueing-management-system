@@ -1,7 +1,7 @@
 <template>
     <ContentContainer title="Create Student" class-names="relative pb-0">
-        <Form @submit="create">
-            <div class="text-lg mb-5 mt-4">
+        <Form @submit="create" ref="createForm">
+            <div class="text-lg mb-5 mt-4 fez123-border-bottom pb-3 px-2">
                 Account Information
             </div>
             <div class="flex mb-2">
@@ -9,7 +9,7 @@
                     <Input label="Username" 
                         name="username" 
                         placeholder="Username"
-                        :required="true"
+                        :validation-rules="`required`"
                         v-model="formData.username"/>
                 </div>
                 <div class="flex-grow px-2">
@@ -17,11 +17,11 @@
                         name="password" 
                         placeholder="Password"
                         type="password"
-                        :required="true"
+                        :validation-rules="`required`"
                         v-model="formData.password"/>
                 </div>
             </div>
-            <div class="text-lg mb-5 mt-4">
+            <div class="text-lg mb-5 mt-4 fez123-border-bottom pb-3 px-2">
                 Student Information
             </div>
             <div class="flex mb-2">
@@ -29,25 +29,25 @@
                     <Input label="Student ID" 
                         name="student_id" 
                         placeholder="Enter Student ID"
-                        :required="true"
+                        :validation-rules="`required`"
                         v-model="formData.uuid"/>
                 </div>
                 <div class="flex-grow px-2">
                     <Input label="Course" 
                         name="course" 
                         placeholder="Enter Course"
-                        :required="true"
+                        :validation-rules="`required`"
                         v-model="formData.course"/>
                 </div>
                 <div class="flex-grow px-2">
                     <Input label="Department" 
                         name="department" 
                         placeholder="Enter Department"
-                        :required="true"
+                        :validation-rules="`required`"
                         v-model="formData.department"/>
                 </div>
             </div>
-            <div class="text-lg mb-5 mt-4">
+            <div class="text-lg mb-5 mt-4 fez123-border-bottom pb-3 px-2">
                 Personal Information
             </div>
             <div class="flex mb-2">
@@ -55,35 +55,34 @@
                     <Input label="First Name" 
                         name="first_name" 
                         placeholder="Enter First Name"
-                        :required="true"
+                        :validation-rules="`required`"
                         v-model="formData.first_name"/>
                 </div>
                 <div class="flex-grow px-2">
                     <Input label="Middle Name (Optional)" 
                         name="middle_name" 
                         placeholder="Enter Middle Name (Optional)"
-                        :required="true"
                         v-model="formData.middle_name"/>
                 </div>
                 <div class="flex-grow px-2">
                     <Input label="Last Name" 
                         name="last_name" 
                         placeholder="Enter Last Name"
-                        :required="true"
+                        :validation-rules="`required`"
                         v-model="formData.last_name"/>
                 </div>
             </div>
             <div class="flex mb-2">
                 <div class="px-2">
                     <Radio :options="[{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }]"
-                        :required="true"
+                        :validation-rules="`required`"
                         label="Gender"
                         name="gender"
                         v-model="formData.gender"
                         @change="formData.gender = $event"/>
                 </div>
             </div>
-            <div class="text-lg mb-5 mt-4">
+            <div class="text-lg mb-5 mt-4 fez123-border-bottom pb-3 px-2">
                 Contact Information
             </div>
             <div class="flex mb-2">
@@ -91,14 +90,13 @@
                     <Input label="Mobile No." 
                         name="mobile_no" 
                         placeholder="Enter Mobile No."
-                        :required="true"
+                        :validation-rules="`required`"
                         v-model="formData.mobile_no"/>
                 </div>
                 <div class="px-2">
                     <Input label="Phone No." 
                         name="phone_no" 
                         placeholder="Enter Phone Number"
-                        :required="true"
                         v-model="formData.phone_no"/>
                 </div>
             </div>
@@ -134,7 +132,7 @@ export default {
                 first_name: null,
                 middle_name: null,
                 last_name: null,
-                gender: 'male',
+                gender: null,
                 mobile_no: null,
                 phone_no: null,
                 role: 'student'
@@ -144,11 +142,15 @@ export default {
     methods: {
         create(){
             this.$store.dispatch('toggleFullLoader', true)
-            this.$store.dispatch('createUser', this.formData)
-                .then((response) => {
-                    console.log(response)
+            this.$refs.createForm.validate()
+                .then((result) => {
                     this.$store.dispatch('toggleFullLoader', false)
-                    this.$router.replace('/users/students')
+                    if(!result) return false
+                    this.$store.dispatch('createUser', this.formData)
+                        .then((response) => {
+                            console.log(response)
+                            // this.$router.replace('/users/students')
+                        })
                 })
         }
     }

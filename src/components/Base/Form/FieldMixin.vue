@@ -1,5 +1,11 @@
 <script>
+import ValidationMessage from './ValidationMessage.vue'
+
 export default {
+    inject: ['$validator'],
+    components: {
+        ValidationMessage
+    },
     props: {
         label: {
             type: String,
@@ -14,6 +20,9 @@ export default {
             default: false
         },
         value: {
+            required: false
+        },
+        validationRules: {
             required: false
         }
     },

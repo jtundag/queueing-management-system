@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="text-sm">
+  <div id="app">
 	<div class="flex bg-white fez123-border-bottom justify-between">
 		<div class="flex">
 			<div class="text-center">
@@ -13,7 +13,7 @@
 			<div class="p-4 w-48 fez123-border-right">
 				<router-link to="/" class="nav-logo no-underline primary-text">QMS</router-link>
 			</div>
-			<div class="p-4 pl-6">
+			<div class="p-4 pl-4">
 				{{ $route.meta.title }}
 			</div>
 		</div>
