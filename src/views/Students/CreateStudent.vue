@@ -44,7 +44,13 @@
                         name="department" 
                         placeholder="Enter Department"
                         :validation-rules="`required`"
-                        v-model="formData.department"/>
+                        v-model="formData.department"
+                        :suggestions="departments">
+                        <div slot-scope="props"
+                            @click="selectDepartment(props.suggestion)">
+                            {{ props.suggestion.name }}
+                        </div>
+                    </InputSuggestions>
                 </div>
             </div>
             <div class="text-lg mb-5 mt-4 fez123-border-bottom pb-3 px-2">
@@ -113,11 +119,14 @@
 </template>
 
 <script>
-import Fields from '@/components/Base/Form'
-
 export default {
-    components: {
-        ...Fields
+    created(){
+          this.$store.dispatch('toggleFullLoader', true)
+          this.$store.dispatch('getDepartments')
+            .then((response) => {
+                this.departments = response.data.result
+                this.$store.dispatch('toggleFullLoader', false)
+            })
     },
     data(){
         return {
@@ -134,7 +143,8 @@ export default {
                 mobile_no: null,
                 phone_no: null,
                 role: 'student'
-            }
+            },
+            departments: []
         }
     },
     methods: {
@@ -150,6 +160,9 @@ export default {
                             // this.$router.replace('/users/students')
                         })
                 })
+        },
+        selectDepartment(department){
+            console.log(department)
         }
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <ContentContainer title="Create Peronnel" class-names="relative pb-0">
-        <form action="#">
+        <Form action="#">
             <div class="text-lg mb-5 mt-4">
                 Account Information
             </div>
@@ -55,6 +55,12 @@
                     Create
                 </button>
             </div>
-        </form>
+        </Form>
     </ContentContainer>
 </template>
+
+<script>
+export default {
+}
+</script>
+

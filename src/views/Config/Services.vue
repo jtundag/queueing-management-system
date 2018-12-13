@@ -68,15 +68,13 @@ import IconInput from '@/components/Base/IconInput.vue'
 import Dropdown from '@/components/Base/Dropdown.vue'
 import Table from '@/components/Base/Table.vue'
 import VodalExt from '@/components/Base/Vodal/VodalExt.vue'
-import Fields from '@/components/Base/Form'
 
 export default {
     components: {
         IconInput,
         Dropdown,
         Table,
-        VodalExt,
-        ...Fields
+        VodalExt
     },
     data(){
         return {

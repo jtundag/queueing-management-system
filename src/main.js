@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueTippy from 'vue-tippy'
 import VeeValidate from 'vee-validate'
+import Form from '@/components/Base/Form'
 import router from './router'
 import store from './store/index'
 
@@ -24,6 +25,7 @@ import ContentContainer from '@/components/Base/ContentContainer.vue'
 Vue.config.productionTip = false
 
 Vue.use(VueTippy)
+Vue.use(Form)
 Vue.use(VeeValidate)
 Vue.use(vClickOutside)
 Vue.use(PerfectScrollbar)

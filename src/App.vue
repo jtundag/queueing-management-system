@@ -94,9 +94,6 @@ import { mapGetters } from 'vuex'
 
 export default {
 	created(){
-		setTimeout(() => {
-			this.$store.dispatch('toggleFullLoader', false)
-		}, 1000)
 		this.$store.dispatch('showSubnavLinksOf', window._.find(this.navLinks, { name: this.$route.name }))
 	},
 	components: {

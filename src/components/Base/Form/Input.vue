@@ -15,7 +15,8 @@
             @input="$emit('input', $event.target.value)"
             :data-vv-as="label"
             v-validate="validationRules"
-            :class="{ 'border-red': errors.has(name), 'focus:border-grey fez123-border': !errors.has(name) }">
+            :class="{ 'border-red': errors.has(name), 'focus:border-grey fez123-border': !errors.has(name) }"
+            :autocomplete="autocomplete ? 'on' : 'off'">
         <ValidationMessage :name="name"/>
     </div>
 </template>
@@ -33,6 +34,10 @@ export default {
         placeholder: {
             type: String,
             default: null
+        },
+        autocomplete: {
+            type: Boolean,
+            default: true
         }
     }
 }
