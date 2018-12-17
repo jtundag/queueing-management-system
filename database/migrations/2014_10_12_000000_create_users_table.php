@@ -17,7 +17,11 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->integer('department_id')
                 ->unsigned();
+            $table->integer('course_id')
+                ->unsigned();
             $table->string('uuid')
+                ->unique();
+            $table->string('username')
                 ->unique();
             $table->string('first_name');
             $table->string('middle_name')
@@ -31,6 +35,17 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('department_id')
+                ->references('id')
+                ->on('departments')
+                ->onDelete('cascade');
+
+            $table->foreign('course_id')
+                ->references('id')
+                ->on('courses')
+                ->onDelete('cascade');
+            
         });
     }
 

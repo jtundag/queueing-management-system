@@ -15,16 +15,14 @@ class UsersController extends Controller
     }
     
     public function get(Request $request){
-        return response()->json([
-            'result' => $this->studentRepository->all(),
-        ]);
+        return response()->json($this->studentRepository->forTable($request));
     }
 
     public function create(Request $request){
         $created = $this->studentRepository
                         ->create($request->all());
         return response()->json([
-            'status' => $created ? $true : false
+            'status' => $created ? true : false
         ]);
     }
 }

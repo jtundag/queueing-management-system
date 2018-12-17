@@ -38,6 +38,13 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1'], function(){
             Route::patch('/{id}/update', 'DepartmentsController@update')->name('update');
             Route::delete('/delete', 'DepartmentsController@delete')->name('delete');
         });
+
+        Route::group(['prefix' => '/courses', 'as' => 'courses.'], function(){
+            Route::get('/', 'CoursesController@get')->name('get');
+            Route::post('/create', 'CoursesController@create')->name('create');
+            Route::patch('/{id}/update', 'CoursesController@update')->name('update');
+            Route::delete('/delete', 'CoursesController@delete')->name('delete');
+        });
         
     });
 });
