@@ -15,6 +15,7 @@ import CreateServer from '@/views/Servers/CreateServer.vue'
 import ConfigGeneral from '@/views/Config/General.vue'
 import ConfigServices from '@/views/Config/Services.vue'
 import ConfigDepartments from '@/views/Config/Departments.vue'
+import ConfigCourses from '@/views/Config/Courses.vue'
 
 import Guest from '@/views/Guest/Guest.vue'
 
@@ -109,6 +110,13 @@ export default new Router({
 				component: ConfigDepartments,
 				meta: {
 					title: 'Departments'
+				}
+			}, {
+				path: '/config/courses',
+				name: 'config',
+				component: ConfigCourses,
+				meta: {
+					title: 'Courses'
 				}
 			}
 		]

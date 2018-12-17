@@ -43,11 +43,11 @@
                     <InputSuggestions label="Department" 
                         name="department" 
                         placeholder="Enter Department"
-                        :validation-rules="`required`"
                         v-model="formData.department"
-                        :suggestions="departments">
-                        <div slot-scope="props"
-                            @click="selectDepartment(props.suggestion)">
+                        :validation-rules="`required`"
+                        api-url="/config/departments"
+                        @selected="selectDepartment">
+                        <div slot-scope="props">
                             {{ props.suggestion.name }}
                         </div>
                     </InputSuggestions>
@@ -92,18 +92,24 @@
                 Contact Information
             </div>
             <div class="flex mb-2">
-                <div class="px-2">
+                <div class="flex-grow px-2">
                     <Input label="Mobile No." 
                         name="mobile_no" 
                         placeholder="Enter Mobile No."
                         :validation-rules="`required`"
                         v-model="formData.mobile_no"/>
                 </div>
-                <div class="px-2">
+                <div class="flex-grow px-2">
                     <Input label="Phone No." 
                         name="phone_no" 
                         placeholder="Enter Phone Number"
                         v-model="formData.phone_no"/>
+                </div>
+                <div class="flex-grow px-2">
+                    <Input label="Email Address" 
+                        name="email" 
+                        placeholder="Enter Email Address"
+                        v-model="formData.email"/>
                 </div>
             </div>
             <div class="w-full fez123-border-top px-10 py-4 text-right bg-white mt-8">
@@ -120,14 +126,6 @@
 
 <script>
 export default {
-    created(){
-          this.$store.dispatch('toggleFullLoader', true)
-          this.$store.dispatch('getDepartments')
-            .then((response) => {
-                this.departments = response.data.result
-                this.$store.dispatch('toggleFullLoader', false)
-            })
-    },
     data(){
         return {
             formData: {
@@ -136,12 +134,14 @@ export default {
                 uuid: null,
                 course: null,
                 department: null,
+                department_id: null,
                 first_name: null,
                 middle_name: null,
                 last_name: null,
                 gender: null,
                 mobile_no: null,
                 phone_no: null,
+                email: null,
                 role: 'student'
             },
             departments: []
@@ -157,12 +157,12 @@ export default {
                     this.$store.dispatch('createUser', this.formData)
                         .then((response) => {
                             console.log(response)
-                            // this.$router.replace('/users/students')
+                            this.$router.replace('/users/students')
                         })
                 })
         },
         selectDepartment(department){
-            console.log(department)
+            this.formData.department_id = department.id
         }
     }
 }

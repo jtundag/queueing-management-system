@@ -1,5 +1,5 @@
 const state = {
-    isFullLoading: true,
+    isFullLoading: false,
     navLinks: [
         {
             name: 'dashboard',
@@ -76,6 +76,11 @@ const state = {
                     title: 'Departments',
                     icon: 'fez-warehouse',
                     link: '/config/departments'
+                }, {
+                    name: 'config',
+                    title: 'Courses',
+                    icon: 'fez-flag',
+                    link: '/config/courses'
                 }]
             }
         }, {

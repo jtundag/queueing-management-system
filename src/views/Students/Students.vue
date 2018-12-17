@@ -6,8 +6,19 @@
         v-model="searchKeyword"
         @tailing-icon-clicked="clearKeyword"/>
         
-        <Table :columns="tableColumns"
-            :data="users">
+        <Table ref="studentsTable"
+            :columns="tableColumns"
+            api="/users"
+            @before-load="$store.dispatch('toggleFullLoader', true)"
+            @after-load="$store.dispatch('toggleFullLoader', false)">
+            <template slot="full_name" slot-scope="props">
+                {{ props.rowData.first_name }} {{ props.rowData.last_name }}
+            </template>
+
+            <template slot="department" slot-scope="props">
+                {{ props.rowData.department.name }}
+            </template>
+            
             <template slot="actions" slot-scope="props">
                 <Dropdown :actions="actionAction"
                         @action-click="actionClicked($event, props.rowData)"/>
@@ -81,7 +92,7 @@ export default {
                     label: 'Student ID',
                 },
                 {
-                    name: 'full_name',
+                    slot: 'full_name',
                     label: 'Full Name',
                 },
                 {
@@ -89,7 +100,7 @@ export default {
                     label: 'Course',
                 },
                 {
-                    name: 'department',
+                    slot: 'department',
                     label: 'Department',
                 },
                 {
