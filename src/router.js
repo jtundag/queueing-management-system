@@ -5,17 +5,17 @@ import Home from '@/views/Home.vue'
 import NestedRouteView from '@/views/NestedRouteView.vue'
 
 import Students from '@/views/Students/Students.vue'
-import CreateStudent from '@/views/Students/CreateStudent.vue'
+import StudentForm from '@/views/Students/StudentForm.vue'
 import Personnels from '@/views/Personnels/Personnels.vue'
-import CreatePersonnel from '@/views/Personnels/CreatePersonnel.vue'
+import PersonnelForm from '@/views/Personnels/PersonnelForm.vue'
 
 import Servers from '@/views/Servers/Servers.vue'
-import CreateServer from '@/views/Servers/CreateServer.vue'
+import ServerForm from '@/views/Servers/ServerForm.vue'
 
 import ConfigGeneral from '@/views/Config/General.vue'
 import ConfigServices from '@/views/Config/Services.vue'
+import ConfigGroups from '@/views/Config/Groups.vue'
 import ConfigDepartments from '@/views/Config/Departments.vue'
-import ConfigCourses from '@/views/Config/Courses.vue'
 
 import Guest from '@/views/Guest/Guest.vue'
 
@@ -45,9 +45,16 @@ export default new Router({
 			{
 				path: '/users/students/create',
 				name: 'users',
-				component: CreateStudent,
+				component: StudentForm,
 				meta: {
 					title: 'Create Student'
+				}
+			}, {
+				path: '/users/students/:id/edit',
+				name: 'users',
+				component: StudentForm,
+				meta: {
+					title: 'Edit Student'
 				}
 			},
 			{
@@ -60,9 +67,16 @@ export default new Router({
 			}, {
 				path: '/users/personnels/create',
 				name: 'users',
-				component: CreatePersonnel,
+				component: PersonnelForm,
 				meta: {
 					title: 'Create Personnel'
+				}
+			}, {
+				path: '/users/personnels/:id/edit',
+				name: 'users',
+				component: PersonnelForm,
+				meta: {
+					title: 'Edit Personnel'
 				}
 			}
 		]
@@ -81,9 +95,16 @@ export default new Router({
 			{
 				path: '/servers/create',
 				name: 'servers',
-				component: CreateServer,
+				component: ServerForm,
 				meta: {
 					title: 'Create Server'
+				}
+			}, {
+				path: '/servers/:id/edit',
+				name: 'servers',
+				component: ServerForm,
+				meta: {
+					title: 'Edit Server'
 				}
 			}
 		]
@@ -105,18 +126,18 @@ export default new Router({
 					title: 'Services'
 				}
 			}, {
+				path: '/config/groups',
+				name: 'config',
+				component: ConfigGroups,
+				meta: {
+					title: 'Groups'
+				}
+			}, {
 				path: '/config/departments',
 				name: 'config',
 				component: ConfigDepartments,
 				meta: {
 					title: 'Departments'
-				}
-			}, {
-				path: '/config/courses',
-				name: 'config',
-				component: ConfigCourses,
-				meta: {
-					title: 'Courses'
 				}
 			}
 		]

@@ -10,7 +10,8 @@
             :columns="tableColumns"
             api="/users"
             @before-load="$store.dispatch('toggleFullLoader', true)"
-            @after-load="$store.dispatch('toggleFullLoader', false)">
+            @after-load="$store.dispatch('toggleFullLoader', false)"
+            :custom-params="{ 'role': 'student' }">
             <template slot="full_name" slot-scope="props">
                 {{ props.rowData.first_name }} {{ props.rowData.last_name }}
             </template>
@@ -20,7 +21,7 @@
             </template>
             
             <template slot="actions" slot-scope="props">
-                <Dropdown :actions="actionAction"
+                <Dropdown :actions="dropdownActions"
                         @action-click="actionClicked($event, props.rowData)"/>
             </template>
         </Table>
@@ -57,18 +58,10 @@ export default {
         VodalExt,
         Table
     },
-    created(){
-        this.$store.dispatch('getUsers', {
-            role: 'students'
-        }).then((response) => {
-            console.log(response)
-            // this.users = response.data.result
-        })
-    },
     data(){
         return {
             searchKeyword: null,
-            actionAction: [
+            dropdownActions: [
                 {
                     title: 'More',
                     icon: 'fez-zoom-in'
@@ -96,10 +89,6 @@ export default {
                     label: 'Full Name',
                 },
                 {
-                    name: 'course',
-                    label: 'Course',
-                },
-                {
                     slot: 'department',
                     label: 'Department',
                 },
@@ -108,7 +97,7 @@ export default {
                 }
             ],
             users: [],
-            readyForActionUser: null
+            readyForActionItem: null
         }
     },
     methods: {
@@ -116,19 +105,28 @@ export default {
             this.searchKeyword = null
         },
         actionClicked(action, user){
-            this.readyForActionUser = user
+            this.readyForActionItem = user
             switch(action.title){
                 case 'Delete':
                     this.$refs.delModal.show()
                     break;
+                case 'Edit':
+                    this.$router.push(`/users/students/${user.id}/edit`)
+                    break;
             }
         },
         clearReadyForActionUser(){
-            this.readyForActionUser = null
+            this.readyForActionItem = null
             this.$refs.delModal.hide()
         },
         deleteUser(){
-            console.log('delete', this.readyForActionUser)
+            this.$store.dispatch('toggleFullLoader', true)
+            this.$store.dispatch('deleteUser', this.readyForActionItem.id)
+                .then((response) => {
+                    this.$store.dispatch('toggleFullLoader', false)
+                    if(response.data.status) this.$refs.delModal.hide()
+                    this.$refs.studentsTable.loadData()
+                })
         }
     }
 }

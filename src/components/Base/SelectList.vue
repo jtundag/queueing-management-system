@@ -1,8 +1,8 @@
 <template>
     <div class="fez123-select-list-container">
         <IconInput icon="fez-search" 
-        placeholder="Search personnel..." 
-        name="search_field" 
+        :placeholder="placeholder" 
+        name="search_input" 
         @tailing-icon-clicked="clearKeyword"
         @input="searchKeyword = $event"
         ref="inputSearch"
@@ -19,6 +19,9 @@
                 <div class="absolute item-checked-indicator">
                     <span class="fez-choose text-5xl block text-grey-light" :class="{ 'primary-text': isSelected(item) }"></span>
                 </div>
+            </div>
+            <div v-if="!list.length" class="text-center pt-2 text-sm">
+                Empty List.
             </div>
         </perfect-scrollbar>
     </div>
@@ -43,18 +46,26 @@ export default {
         },
         fullWidth: {
             default: true
+        },
+        value: {
+            default: null
+        },
+        placeholder: {
+            type: String,
+            default: ''
         }
     },
     data(){
         return {
-            selectedItems: [],
-            searchKeyword: null
+            selectedItems: this.value || [],
+            searchKeyword: null,
         }
     },
     methods: {
         select(item){
             if(this.selectedItems.includes(item)) return this.selectedItems.splice(this.selectedItems.indexOf(item), 1)
             this.selectedItems.push(item)
+            this.$emit('change', this.selectedItems)
         },
         isSelected(index){
             return this.selectedItems.includes(index)

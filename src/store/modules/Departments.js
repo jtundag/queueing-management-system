@@ -1,6 +1,4 @@
-const state = {
-    users: []
-}
+const state = {}
 const mutation = {}
 const getters = {}
 const actions = {

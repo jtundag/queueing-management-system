@@ -6,7 +6,9 @@
                 :placeholder="placeholder" 
                 v-model="model"
                 :autocomplete="false"
-                @input="getSuggestions"/>
+                @focus="getSuggestions"
+                @input="getSuggestions"
+                :validation-rules="validationRules"/>
         <div class="absolute bg-white shadow-lg w-full suggestions-dropdown"
             v-if="list.length">
             <div class="item p-4 cursor-pointer hover:bg-grey-lighter"

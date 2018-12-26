@@ -1,7 +1,7 @@
 <template>
     <vodal :show="isShown" 
         animation="slideDown" 
-        @hide="isShown = false" 
+        @hide="hide" 
         :height="height"
         :width="width">
         <div class="flex flex-col justify-between text-sm">
@@ -48,6 +48,7 @@ export default {
         },
         hide(){
             this.isShown = false
+            this.$emit('hide')
         }
     }
 }

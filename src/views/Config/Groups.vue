@@ -1,62 +1,46 @@
 <template>
-    <ContentContainer title="Courses">
+    <ContentContainer title="Groups">
         <div class="mb-4">
             <Button type="primary" 
-                text="Add Course"
-                @click="showAddCourseModal"/>
+                text="Add Group"
+                @click="showAddGroupModal"/>
         </div>
         
         <IconInput icon="fez-search" 
-        placeholder="Search course..." 
+        placeholder="Search department..." 
         name="search_field" 
         v-model="searchKeyword"
         @tailing-icon-clicked="clearKeyword"/>
 
-        <Table ref="coursesTable"
+        <Table ref="departmentsTable"
             :columns="tableColumns"
-            api="/config/courses"
+            api="/config/groups"
             @before-load="$store.dispatch('toggleFullLoader', true)"
             @after-load="$store.dispatch('toggleFullLoader', false)">
-            <template slot="department" slot-scope="props">
-                {{ props.rowData.department.name }}
-            </template>
-            
             <template slot="actions" slot-scope="props">
                 <Dropdown :actions="dropdownActions"
                         @action-click="actionClicked($event, props.rowData)"/>
             </template>
         </Table>
 
-        <VodalExt ref="addCourseModal" 
-            :title="isEditing ? 'Update Course' : 'Add a Course'"
+        <VodalExt ref="addGroupModal" 
+            :title="isEditing ? 'Update Group' : 'Add a Group'"
             :width="500"
-            :height="300">
+            :height="210">
             <template slot="body">
-                <Input label="Course Name" 
-                        name="courseName" 
-                        placeholder="Enter Course Name"
+                <Input label="Group Name" 
+                        name="departmentName" 
+                        placeholder="Enter Group Name"
                         :required="true"
-                        v-model="formData.name"/>
-                
-                <InputSuggestions label="Department" 
-                        name="department" 
-                        placeholder="Enter Department"
-                        v-model="formData.department"
-                        :validation-rules="`required`"
-                        api-url="/config/departments"
-                        @selected="selectDepartment">
-                        <div slot-scope="props">
-                            {{ props.suggestion.name }}
-                        </div>
-                    </InputSuggestions>
+                        v-model="departmentName"/>
             </template>
             <template slot="footer">
                 <Button type="default" 
                     text="Cancel"
-                    @click="hideAddCourseModal"/>
+                    @click="hideAddGroupModal"/>
                 <Button type="primary" 
                     text="Save"
-                    @click="saveCourse"/>
+                    @click="saveGroup"/>
             </template>
         </VodalExt>
 
@@ -115,52 +99,40 @@ export default {
                     label: 'Name',
                 },
                 {
-                    slot: 'department',
-                    label: 'Department',
-                },
-                {
                     slot: 'actions'
                 }
             ],
+            departmentName: null,
             readyForActionItem: null,
-            isEditing: false,
-            formData: {
-                name: null,
-                department: null,
-                department_id: null
-            }
+            isEditing: false
         }
     },
     methods: {
         clearKeyword(){
             this.searchKeyword = null
         },
-        hideAddCourseModal(){
-            this.formData = {
-                name: null,
-                department: null,
-                department_id: null
-            }
-            this.$refs.addCourseModal.hide()
+        hideAddGroupModal(){
+            this.departmentName = null
+            this.$refs.addGroupModal.hide()
         },
-        showAddCourseModal(){
-            this.$refs.addCourseModal.show()
+        showAddGroupModal(){
+            this.$refs.addGroupModal.show()
         },
-        saveCourse(){
+        saveGroup(){
             this.$store.dispatch('toggleFullLoader', true)
-            if(this.isEditing) return this.updateCourse()
-            this.$store.dispatch('createCourse', this.formData)
+            if(this.isEditing) return this.updateGroup()
+            this.$store.dispatch('createGroup', { name: this.departmentName })
                 .then((response) => {
-                    if(response.data.status) this.hideAddCourseModal()
-                    this.$refs.coursesTable.loadData()
+                    if(response.data.status) this.hideAddGroupModal()
+                    this.$refs.departmentsTable.loadData()
                 })
         },
-        updateCourse(){
-            let data = Object.assign(this.readyForActionItem, this.formData)
-            this.$store.dispatch('updateCourse', data)
+        updateGroup(){
+            let data = Object.assign(this.readyForActionItem, { new_name: this.departmentName })
+            this.$store.dispatch('updateGroup', data)
                 .then((response) => {
-                    if(response.data.status) this.hideAddCourseModal()
-                    this.$refs.coursesTable.loadData()
+                    if(response.data.status) this.hideAddGroupModal()
+                    this.$refs.departmentsTable.loadData()
                 })
         },
         actionClicked(action, data){
@@ -172,12 +144,8 @@ export default {
                     break;
                 case 'Edit':
                     this.isEditing = true
-                    this.formData = {
-                        name: data.name,
-                        department_id: data.department_id,
-                        department: data.department
-                    }
-                    this.$refs.addCourseModal.show()
+                    this.departmentName = data.name
+                    this.$refs.addGroupModal.show()
                     break;
             }
         },
@@ -186,15 +154,11 @@ export default {
             this.$refs.delModal.hide()
         },
         deleteItem(){
-            this.$store.dispatch('deleteCourse', this.readyForActionItem.id)
+            this.$store.dispatch('deleteGroup', this.readyForActionItem.id)
                 .then((response) => {
                     if(response.data.status) this.$refs.delModal.hide()
-                    this.$refs.coursesTable.loadData()
+                    this.$refs.departmentsTable.loadData()
                 })
-        },
-        selectDepartment(department){
-            console.log(department)
-            this.formData.department_id = department.id
         }
     }
 }

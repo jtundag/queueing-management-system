@@ -73,14 +73,14 @@ const state = {
                     link: '/config/services'
                 }, {
                     name: 'config',
-                    title: 'Departments',
+                    title: 'Groups',
                     icon: 'fez-warehouse',
-                    link: '/config/departments'
+                    link: '/config/groups'
                 }, {
                     name: 'config',
-                    title: 'Courses',
+                    title: 'Departments',
                     icon: 'fez-flag',
-                    link: '/config/courses'
+                    link: '/config/departments'
                 }]
             }
         }, {

@@ -65,6 +65,10 @@ export default {
             default: () => ({
                 per_page: 10
             })
+        },
+        customParams: {
+            type: Object,
+            default: () => ({})
         }
     },
     created(){
@@ -83,7 +87,8 @@ export default {
             this.$http.get(this.api, {
                 params: {
                     per_page: this.config.per_page,
-                    current_page: this.currentPage
+                    current_page: this.currentPage,
+                    ...this.customParams
                 }
             })
                 .then((response) => {

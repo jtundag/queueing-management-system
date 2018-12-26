@@ -154,8 +154,10 @@ export default {
             this.$refs.delModal.hide()
         },
         deleteItem(){
+            this.$store.dispatch('toggleFullLoader', true)
             this.$store.dispatch('deleteService', this.readyForActionItem.id)
                 .then((response) => {
+                    this.$store.dispatch('toggleFullLoader', false)
                     if(response.data.status) this.$refs.delModal.hide()
                     this.$refs.servicesTable.loadData()
                 })

@@ -12,11 +12,15 @@
         v-model="searchKeyword"
         @tailing-icon-clicked="clearKeyword"/>
 
-        <Table ref="departmentsTable"
+        <Table ref="groupsTable"
             :columns="tableColumns"
             api="/config/departments"
             @before-load="$store.dispatch('toggleFullLoader', true)"
             @after-load="$store.dispatch('toggleFullLoader', false)">
+            <template slot="group" slot-scope="props">
+                {{ props.rowData.group.name }}
+            </template>
+            
             <template slot="actions" slot-scope="props">
                 <Dropdown :actions="dropdownActions"
                         @action-click="actionClicked($event, props.rowData)"/>
@@ -26,13 +30,27 @@
         <VodalExt ref="addDepartmentModal" 
             :title="isEditing ? 'Update Department' : 'Add a Department'"
             :width="500"
-            :height="210">
+            :height="300"
+            @hide="clearFields">
             <template slot="body">
                 <Input label="Department Name" 
                         name="departmentName" 
                         placeholder="Enter Department Name"
                         :required="true"
-                        v-model="departmentName"/>
+                        :validation-rules="`required`"
+                        v-model="formData.name"/>
+                
+                <InputSuggestions label="Group" 
+                        name="group" 
+                        placeholder="Enter Group"
+                        v-model="formData.group"
+                        :validation-rules="`required`"
+                        api-url="/config/groups"
+                        @selected="selectGroup">
+                        <div slot-scope="props">
+                            {{ props.suggestion.name }}
+                        </div>
+                    </InputSuggestions>
             </template>
             <template slot="footer">
                 <Button type="default" 
@@ -99,20 +117,35 @@ export default {
                     label: 'Name',
                 },
                 {
+                    slot: 'group',
+                    label: 'Department',
+                },
+                {
                     slot: 'actions'
                 }
             ],
-            departmentName: null,
             readyForActionItem: null,
-            isEditing: false
+            isEditing: false,
+            formData: {
+                name: null,
+                group: null,
+                group_id: null
+            }
         }
     },
     methods: {
         clearKeyword(){
             this.searchKeyword = null
         },
+        clearFields(){
+            this.formData = {
+                name: null,
+                group: null,
+                group_id: null
+            }
+        },
         hideAddDepartmentModal(){
-            this.departmentName = null
+            this.clearFields()
             this.$refs.addDepartmentModal.hide()
         },
         showAddDepartmentModal(){
@@ -121,18 +154,18 @@ export default {
         saveDepartment(){
             this.$store.dispatch('toggleFullLoader', true)
             if(this.isEditing) return this.updateDepartment()
-            this.$store.dispatch('createDepartment', { name: this.departmentName })
+            this.$store.dispatch('createDepartment', this.formData)
                 .then((response) => {
                     if(response.data.status) this.hideAddDepartmentModal()
-                    this.$refs.departmentsTable.loadData()
+                    this.$refs.groupsTable.loadData()
                 })
         },
         updateDepartment(){
-            let data = Object.assign(this.readyForActionItem, { new_name: this.departmentName })
+            let data = Object.assign(this.readyForActionItem, this.formData)
             this.$store.dispatch('updateDepartment', data)
                 .then((response) => {
                     if(response.data.status) this.hideAddDepartmentModal()
-                    this.$refs.departmentsTable.loadData()
+                    this.$refs.groupsTable.loadData()
                 })
         },
         actionClicked(action, data){
@@ -144,7 +177,11 @@ export default {
                     break;
                 case 'Edit':
                     this.isEditing = true
-                    this.departmentName = data.name
+                    this.formData = {
+                        name: data.name,
+                        group_id: data.group_id,
+                        group: data.group.name
+                    }
                     this.$refs.addDepartmentModal.show()
                     break;
             }
@@ -157,8 +194,12 @@ export default {
             this.$store.dispatch('deleteDepartment', this.readyForActionItem.id)
                 .then((response) => {
                     if(response.data.status) this.$refs.delModal.hide()
-                    this.$refs.departmentsTable.loadData()
+                    this.$refs.groupsTable.loadData()
                 })
+        },
+        selectGroup(group){
+            console.log(group)
+            this.formData.group_id = group.id
         }
     }
 }
