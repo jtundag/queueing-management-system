@@ -19,10 +19,46 @@ class UsersController extends Controller
     }
 
     public function create(Request $request){
-        $created = $this->studentRepository
+        $user = $this->studentRepository
                         ->create($request->all());
+                        
+        \Bouncer::assign($request->role)->to($user);
+        
         return response()->json([
-            'status' => $created ? true : false
+            'status' => $user ? true : false
         ]);
     }
+    
+    public function delete(Request $request){
+        $deleted = $this->studentRepository
+            ->deleteById($request->id);
+
+        return response()->json([
+            'status' => $deleted ? true : false,
+        ]);
+    }
+
+    public function find(Request $request){
+        $user = $this->studentRepository
+                    ->findById($request->id);
+
+        $user['department'] = $user->department;
+                    
+        return response()->json([
+            'status' => $user ? true : false,
+            'user' => $user,
+        ]);
+    }
+
+    public function update(Request $request){
+        if($request->has('password')) $request->password = \Hash::make($request->password);
+        
+        $updated = $this->studentRepository
+                        ->updateById($request->except('id'), $request->id);
+        
+        return response()->json([
+            'status' => $updated ? true : false,
+        ]);
+    }
+    
 }

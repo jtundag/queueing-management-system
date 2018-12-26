@@ -15,12 +15,8 @@ class DepartmentsController extends Controller
     }
     
     public function get(Request $request){
-        $departments = $this->departmentRepo->all();
-        
         return response()
-            ->json([
-                'result' => $departments->toArray(),
-            ]);
+            ->json($this->departmentRepo->forTable($request));
     }
     
     public function create(Request $request){
@@ -43,7 +39,7 @@ class DepartmentsController extends Controller
 
     public function update($id, Request $request){
         $updated = $this->departmentRepo
-                        ->updateById(['name' => $request->new_name], $id);
+                        ->updateById(['name' => $request->name, 'group_id' => $request->group_id], $id);
 
         return response()->json([
             'status' => $updated ? true : false,

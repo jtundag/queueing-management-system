@@ -1,0 +1,34 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Server extends Model
+{
+    protected $table = 'servers';
+    protected $fillable = [
+        'department_id',
+        'name',
+        'arrival_rate',
+        'service_rate',
+    ];
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
+    ];
+
+    public function services(){
+        return $this->belongsToMany('App\Service', 'server_service', 'server_id', 'service_id');
+    }
+
+    public function personnels(){
+        return $this->belongsToMany('App\User', 'personnel_server', 'server_id', 'personnel_id');
+    }
+    
+    public function department(){
+        return $this->belongsTo('App\Department');
+    }
+    
+}

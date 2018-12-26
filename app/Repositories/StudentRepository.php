@@ -11,11 +11,10 @@ class StudentRepository extends Repository implements TableContract{
 	public function model(){
 		return '\App\User';
 	}
-
+	
 	public function forTable(\Illuminate\Http\Request $request){
-		
 		return [
-			'result' => $this->all()->map(function($user){
+			'result' => $this->model->whereIs($request->role)->get()->map(function($user){
 				$user['department'] = $user->department;
 				return $user;
 			}),

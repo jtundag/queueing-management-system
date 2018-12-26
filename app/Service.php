@@ -16,4 +16,9 @@ class Service extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function servers(){
+        return $this->belongsToMany('App\Server', 'server_service', 'service_id', 'server_id');
+    }
+    
 }
