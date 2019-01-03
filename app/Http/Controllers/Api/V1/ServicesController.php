@@ -16,10 +16,9 @@ class ServicesController extends Controller
     
     public function get(Request $request){
         $services = $this->serviceRepo->all();
-        
         return response()
             ->json([
-                'result' => $services->toArray(),
+                'result' => $services,
             ]);
     }
     

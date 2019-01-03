@@ -29,7 +29,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1'], function(){
         Route::get('/', 'ServersController@get')->name('get');
         Route::get('/find', 'ServersController@find')->name('find');
         Route::post('/create', 'ServersController@create')->name('create');
-        Route::patch('/update', 'ServersController@update')->name('update');
+        Route::patch('/{id}/update', 'ServersController@update')->name('update');
         Route::delete('/delete', 'ServersController@delete')->name('delete');
     });
 

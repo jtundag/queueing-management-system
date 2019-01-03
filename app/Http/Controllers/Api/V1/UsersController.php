@@ -4,22 +4,22 @@ namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Repositories\StudentRepository;
+use App\Repositories\UserRepository;
 
 class UsersController extends Controller
 {
-    private $studentRepository;
+    private $userRepository;
 
-    public function __construct(StudentRepository $studentRepository){
-        $this->studentRepository = $studentRepository;
+    public function __construct(UserRepository $userRepository){
+        $this->userRepository = $userRepository;
     }
     
     public function get(Request $request){
-        return response()->json($this->studentRepository->forTable($request));
+        return response()->json($this->userRepository->forTable($request));
     }
 
     public function create(Request $request){
-        $user = $this->studentRepository
+        $user = $this->userRepository
                         ->create($request->all());
                         
         \Bouncer::assign($request->role)->to($user);
@@ -30,7 +30,7 @@ class UsersController extends Controller
     }
     
     public function delete(Request $request){
-        $deleted = $this->studentRepository
+        $deleted = $this->userRepository
             ->deleteById($request->id);
 
         return response()->json([
@@ -39,7 +39,7 @@ class UsersController extends Controller
     }
 
     public function find(Request $request){
-        $user = $this->studentRepository
+        $user = $this->userRepository
                     ->findById($request->id);
 
         $user['department'] = $user->department;
@@ -53,7 +53,7 @@ class UsersController extends Controller
     public function update(Request $request){
         if($request->has('password')) $request->password = \Hash::make($request->password);
         
-        $updated = $this->studentRepository
+        $updated = $this->userRepository
                         ->updateById($request->except('id'), $request->id);
         
         return response()->json([

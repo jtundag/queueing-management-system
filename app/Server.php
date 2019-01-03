@@ -10,8 +10,7 @@ class Server extends Model
     protected $fillable = [
         'department_id',
         'name',
-        'arrival_rate',
-        'service_rate',
+        'prefix',
     ];
 
     protected $dates = [
@@ -20,7 +19,7 @@ class Server extends Model
     ];
 
     public function services(){
-        return $this->belongsToMany('App\Service', 'server_service', 'server_id', 'service_id');
+        return $this->belongsToMany('App\Service', 'server_service', 'server_id', 'service_id')->withPivot(['duration']);
     }
 
     public function personnels(){

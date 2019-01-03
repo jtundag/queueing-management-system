@@ -15,12 +15,8 @@ class GroupsController extends Controller
     }
     
     public function get(Request $request){
-        $groups = $this->groupRepo->all();
-        
         return response()
-            ->json([
-                'result' => $groups->toArray(),
-            ]);
+            ->json($this->groupRepo->forTable($request));
     }
     
     public function create(Request $request){

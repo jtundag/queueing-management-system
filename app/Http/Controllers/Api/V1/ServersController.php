@@ -22,8 +22,7 @@ class ServersController extends Controller {
         $tableData = [
             'name' => $request->name,
             'department_id' => $request->department_id,
-            'arrival_rate' => $request->arrival_rate,
-            'service_rate' => $request->service_rate,
+            'prefix' => $request->prefix,
         ];
         
         $server = $this->serverRepo
