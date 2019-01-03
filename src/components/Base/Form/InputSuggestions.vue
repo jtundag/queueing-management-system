@@ -9,7 +9,7 @@
                 @focus="getSuggestions"
                 @input="getSuggestions"
                 :validation-rules="validationRules"/>
-        <div class="absolute bg-white shadow-lg w-full suggestions-dropdown"
+        <div class="absolute bg-white shadow-lg w-full suggestions-dropdown z-10"
             v-if="list.length">
             <div class="item p-4 cursor-pointer hover:bg-grey-lighter"
                 v-for="(suggestion, index) in list"

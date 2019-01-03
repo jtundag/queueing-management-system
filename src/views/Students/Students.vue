@@ -63,10 +63,6 @@ export default {
             searchKeyword: null,
             dropdownActions: [
                 {
-                    title: 'More',
-                    icon: 'fez-zoom-in'
-                },
-                {
                     title: 'Edit',
                     icon: 'fez-setting_edit'
                 },

@@ -1,6 +1,6 @@
 <template>
     <ContentContainer title="Create Personnel" class-names="relative pb-0">
-        <Form @submit="create" ref="createForm">
+        <Form @submit="save" ref="createForm">
             <div class="text-lg mb-5 mt-4 fez123-border-bottom pb-3 px-2">
                 Account Information
             </div>
@@ -17,7 +17,7 @@
                         name="password" 
                         placeholder="Password"
                         type="password"
-                        :validation-rules="`required`"
+                        :validation-rules="!this.$route.params.id ? `required` : ''"
                         v-model="formData.password"/>
                 </div>
             </div>
@@ -139,13 +139,54 @@ export default {
             departments: []
         }
     },
+    created(){
+        if(this.$route.params.id){
+            this.$store.dispatch('toggleFullLoader', true)
+            this.$store.dispatch('findUser', this.$route.params.id)
+                .then(({ data }) => {
+                    this.$store.dispatch('toggleFullLoader', false)
+
+                    if(!data.status){
+                        return false
+                    }
+
+                    let user = data.user
+
+                    this.formData = {
+                        id: this.$route.params.id,
+                        username: user.username,
+                        password: null,
+                        uuid: user.uuid,
+                        department: user.department.name,
+                        department_id: user.department_id,
+                        first_name: user.first_name,
+                        middle_name: user.middle_name,
+                        last_name: user.last_name,
+                        gender: user.gender,
+                        mobile_no: user.mobile_no,
+                        phone_no: user.phone_no,
+                        email: user.email,
+                        role: 'personnel'
+                    }
+                })
+        }
+    },
     methods: {
-        create(){
+        save(){
             this.$store.dispatch('toggleFullLoader', true)
             this.$refs.createForm.validate()
                 .then((result) => {
                     this.$store.dispatch('toggleFullLoader', false)
                     if(!result) return false
+                    if(this.$route.params.id){
+                        if(!this.formData.password) delete this.formData.password
+                        this.$store.dispatch('updateUser', this.formData)
+                        .then((response) => {
+                            this.$router.replace('/users/personnels')
+                        })
+                        return true
+                    }
+                    
                     this.$store.dispatch('createUser', this.formData)
                         .then((response) => {
                             this.$router.replace('/users/personnels')

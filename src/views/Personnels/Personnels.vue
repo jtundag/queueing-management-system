@@ -63,10 +63,6 @@ export default {
             searchKeyword: null,
             actionAction: [
                 {
-                    title: 'More',
-                    icon: 'fez-zoom-in'
-                },
-                {
                     title: 'Edit',
                     icon: 'fez-setting_edit'
                 },
@@ -109,6 +105,9 @@ export default {
             switch(action.title){
                 case 'Delete':
                     this.$refs.delModal.show()
+                    break;
+                case 'Edit':
+                    this.$router.push(`/users/personnels/${user.id}/edit`)
                     break;
             }
         },

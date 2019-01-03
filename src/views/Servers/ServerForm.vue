@@ -22,21 +22,12 @@
                         </div>
                     </InputSuggestions>
                 </div>
-            </div>
-            <div class="flex mb-2">
                 <div class="flex-grow px-2">
-                    <Input label="Arrival Rate" 
-                        name="arrival_rate" 
-                        placeholder="Enter Arrival Rate"
+                    <Input label="Numbering Prefix" 
+                        name="number_prefix" 
+                        placeholder="Enter Numbering Prefix (IT, EMT, etc...)"
                         :validation-rules="`required`"
-                        v-model="formData.arrival_rate"/>
-                </div>
-                <div class="flex-grow px-2">
-                    <Input label="Service Rate" 
-                        name="service_rate" 
-                        placeholder="Enter Service Rate"
-                        :validation-rules="`required`"
-                        v-model="formData.service_rate"/>
+                        v-model="formData.prefix"/>
                 </div>
             </div>
             <div class="flex mb-2">
@@ -84,6 +75,14 @@
                             <div class="font-bold">
                                 {{ props.item.name }}
                             </div>
+                            <div class="duration">
+                                <span class="text-xs">
+                                    Duration in minute(s)
+                                </span>
+                                <input type="number" 
+                                    class="fez123-border no-outline text-xs w-10 p-2 text-center"
+                                    v-model="formData.services[props.item.index].pivot.duration">
+                            </div>
                         </div>
                     </SelectList>
                 </div>
@@ -111,6 +110,7 @@ export default {
         this.$store.dispatch('getServices')
             .then((response) => {
                 this.$store.dispatch('toggleFullLoader', false)
+                _.map(response.data.result, (service) => service.duration = 0)
                 this.availableServices = response.data.result
                 if(this.$route.params.id){
                     this.$store.dispatch('toggleFullLoader', true)
@@ -126,8 +126,7 @@ export default {
 
                             this.formData = {
                                 name: server.name,
-                                arrival_rate: server.arrival_rate,
-                                service_rate: server.service_rate,
+                                prefix: server.prefix,
                                 department: server.department.name,
                                 department_id: server.department.id,
                                 personnels: server.personnels,
@@ -144,8 +143,7 @@ export default {
             availableServices: [],
             formData: {
                 name: null,
-                arrival_rate: null,
-                service_rate: null,
+                prefix: null,
                 department: null,
                 department_id: null,
                 personnels: [],
@@ -157,7 +155,7 @@ export default {
         selectDepartment(department){
             this.$store.dispatch('toggleFullLoader', true)
             this.formData.department_id = department.id
-            this.$store.dispatch('getUsers', { params: { role: 'personnel' } })
+            this.$store.dispatch('getUsers', { params: { role: 'personnel', department_id: department.id } })
                 .then((response) => {
                     this.$store.dispatch('toggleFullLoader', false)
                     this.availablePersonnels = response.data.result
@@ -171,7 +169,10 @@ export default {
                     if(!result) return false
                     if(this.$route.params.id){
                         if(!this.formData.password) delete this.formData.password
-                        this.$store.dispatch('updateServer', this.formData)
+                        this.$store.dispatch('updateServer', {
+                            ...this.formData,
+                            id: this.$route.params.id
+                        })
                         .then((response) => {
                             this.$router.replace('/servers')
                         })

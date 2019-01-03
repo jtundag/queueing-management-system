@@ -15,7 +15,7 @@
                 class="item pr-4 pl-12 py-5 relative mt-2 cursor-pointer hover:border-grey-light"
                 :class="{ 'border border-grey': isSelected(item), 'fez123-border': !isSelected(item), 'w-full': fullWidth, 'flex-grow': !fullWidth, 'border-r-0': (!fullWidth && (index < (filteredList.length - 1))) }"
             @click="select(item)">
-                <slot :item="item"/>
+                <slot :item="_combineItem(item, index)"/>
                 <div class="absolute item-checked-indicator">
                     <span class="fez-choose text-5xl block text-grey-light" :class="{ 'primary-text': isSelected(item) }"></span>
                 </div>
@@ -73,6 +73,12 @@ export default {
         clearKeyword(){
             this.searchKeyword = null
             this.$refs.inputSearch.clearInput()
+        },
+        _combineItem(item, index){
+            return {
+                ...item,
+                index
+            }
         }
     },
     computed: {

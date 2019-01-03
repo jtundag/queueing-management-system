@@ -45,10 +45,22 @@
         </VodalExt>
 
         <VodalExt ref="delModal" 
-            title="Confirm" 
-            :height="155">
-            <template slot="body">
-                Are you sure you want to delete this record?
+            title="Confirm">
+            <template slot="body" v-if="readyForActionItem">
+                <div>
+                    Are you sure you want to delete this record?
+                </div>
+                <div class="mt-4">
+                    <strong class="text-red">
+                        The following departments will also get deleted:
+                    </strong>
+                    <ul>
+                        <li v-for="(department, index) in readyForActionItem.departments"
+                        :key="index">
+                            {{ department.name }}
+                        </li>
+                    </ul>
+                </div>
             </template>
             <template slot="footer">
                 <Button type="default" 
