@@ -16,6 +16,8 @@ require('vue2-animate/dist/vue2-animate.min.css')
 import PerfectScrollbar from 'vue2-perfect-scrollbar'
 require('vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css')
 import { VueSpinners } from '@saeris/vue-spinners'
+import VueOnToast from 'vue-on-toast'
+require('vue-on-toast/dist/vue-on-toast.css')
 
 import 'vodal/common.css';
 import 'vodal/slide-down.css';
@@ -30,6 +32,7 @@ Vue.use(VeeValidate)
 Vue.use(vClickOutside)
 Vue.use(PerfectScrollbar)
 Vue.use(VueSpinners)
+Vue.use(VueOnToast)
 
 Vue.component('ContentContainer', ContentContainer)
 

@@ -75,13 +75,14 @@
                             <div class="font-bold">
                                 {{ props.item.name }}
                             </div>
-                            <div class="duration">
+                            <div class="duration" v-if="formData.services[_indexOf(props.item)]">
                                 <span class="text-xs">
                                     Duration in minute(s)
                                 </span>
                                 <input type="number" 
-                                    class="fez123-border no-outline text-xs w-10 p-2 text-center"
-                                    v-model="formData.services[props.item.index].pivot.duration">
+                                    class="fez123-border no-outline text-xs w-16 p-2 text-center"
+                                    v-model="formData.services[_indexOf(props.item)].pivot.duration"
+                                    @click.stop>
                             </div>
                         </div>
                     </SelectList>
@@ -110,7 +111,7 @@ export default {
         this.$store.dispatch('getServices')
             .then((response) => {
                 this.$store.dispatch('toggleFullLoader', false)
-                _.map(response.data.result, (service) => service.duration = 0)
+                _.map(response.data.result, (service) => service.pivot = { duration: 0 })
                 this.availableServices = response.data.result
                 if(this.$route.params.id){
                     this.$store.dispatch('toggleFullLoader', true)
@@ -152,6 +153,9 @@ export default {
         }
     },
     methods: {
+        _indexOf(item){
+            return _.findIndex(this.formData.services, { id: item.id })
+        },
         selectDepartment(department){
             this.$store.dispatch('toggleFullLoader', true)
             this.formData.department_id = department.id

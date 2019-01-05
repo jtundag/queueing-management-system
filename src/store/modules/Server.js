@@ -1,7 +1,7 @@
 const state = {
     users: []
 }
-const mutation = {}
+const mutations = {}
 const getters = {}
 const actions = {
     createServer(context, data) {
@@ -27,7 +27,7 @@ const actions = {
 
 export default {
     state,
-    mutation,
+    mutations,
     getters,
     actions
 }

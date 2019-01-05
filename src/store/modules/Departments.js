@@ -1,5 +1,5 @@
 const state = {}
-const mutation = {}
+const mutations = {}
 const getters = {}
 const actions = {
     createDepartment(context, data) {
@@ -22,7 +22,7 @@ const actions = {
 
 export default {
     state,
-    mutation,
+    mutations,
     getters,
     actions
 }

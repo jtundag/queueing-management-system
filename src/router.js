@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/views/Home.vue'
+import Login from '@/views/Login.vue'
+import store from '@/store'
+import Middlewares from './middlewares'
 
 import NestedRouteView from '@/views/NestedRouteView.vue'
 
@@ -21,12 +24,21 @@ import Guest from '@/views/Guest/Guest.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
 	mode: 'history',
 	routes: [{
+		path: '/login',
+		name: 'login',
+		component: Login,
+		beforeEnter: Middlewares.userNotAuth,
+		meta: {
+			title: 'Login'
+		}
+	}, {
 		path: '/',
 		name: 'dashboard',
 		component: Home,
+		beforeEnter: Middlewares.userAuth,
 		meta: {
 			title: 'Dashboard'
 		}
@@ -34,6 +46,7 @@ export default new Router({
 		path: '/users',
 		component: NestedRouteView,
 		name: 'users',
+		beforeEnter: Middlewares.userAuth,
 		children: [{
 				path: '/users/students',
 				name: 'users',
@@ -84,6 +97,7 @@ export default new Router({
 		path: '/servers',
 		component: NestedRouteView,
 		name: 'servers',
+		beforeEnter: Middlewares.userAuth,
 		children: [{
 				path: '/',
 				name: 'servers',
@@ -112,11 +126,14 @@ export default new Router({
 		path: '/config',
 		component: NestedRouteView,
 		name: 'config',
+		beforeEnter: Middlewares.userAuth,
 		children: [{
 				path: '/',
 				name: 'config',
 				component: ConfigGeneral,
-				meta: { title: 'General' }
+				meta: {
+					title: 'General'
+				}
 			},
 			{
 				path: '/config/services',
@@ -145,8 +162,20 @@ export default new Router({
 		path: '/guest',
 		name: 'dashboard',
 		component: Guest,
+		beforeEnter: Middlewares.userAuth,
 		meta: {
 			title: 'Guest'
 		}
 	}]
 })
+
+router.beforeEach((to, from, next) => {
+	if(localStorage.getItem('jwt-auth-token')){
+		// store.dispatch('checkUser')
+		// 	.then((response) => {
+		// 	})
+	}
+	next()
+})
+
+export default router
