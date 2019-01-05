@@ -28,7 +28,15 @@ class ServersController extends Controller {
         $server = $this->serverRepo
             ->create($tableData);
 
-        $server->services()->sync(collect($request->services)->pluck('id'));
+        $services = [];
+
+        foreach($request->services as $service){
+            $services[$service['id']] = [
+                'duration' => $service['pivot']['duration'],
+            ];
+        }
+        
+        $server->services()->sync($services);
         $server->personnels()->sync(collect($request->personnels)->pluck('id'));
 
         return response()->json([

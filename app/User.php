@@ -6,8 +6,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable, HasRolesAndAbilities;
 
@@ -38,6 +39,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function getJWTIdentifier(){
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims(){
+        return [];
+    }
 
     public function department(){
         return $this->belongsTo('App\Department');

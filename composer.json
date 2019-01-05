@@ -13,10 +13,12 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
-        "silber/bouncer": "v1.0.0-rc.4"
+        "silber/bouncer": "v1.0.0-rc.4",
+        "tymon/jwt-auth": "1.0.*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
+        "doctrine/dbal": "^2.9",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
@@ -32,10 +34,13 @@
         "laravel": {
             "providers": [
                 "Barryvdh\\Cors\\ServiceProvider",
-                "Silber\\Bouncer\\BouncerServiceProvider"
+                "Silber\\Bouncer\\BouncerServiceProvider",
+                "Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider"
             ],
             "aliases": {
-                "Bouncer": "Silber\\Bouncer\\BouncerFacade"
+                "Bouncer": "Silber\\Bouncer\\BouncerFacade",
+                "JWTAuth": "Tymon\\JWTAuth\\Facades\\JWTAuth",
+                "JWTFactory": "Tymon\\JWTAuth\\Facades\\JWTFactory"
             },
             "dont-discover": []
         }
