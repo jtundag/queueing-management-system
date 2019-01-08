@@ -60,5 +60,25 @@ class UsersController extends Controller
             'status' => $updated ? true : false,
         ]);
     }
+
+    public function verify(Request $request){
+        $user = $this->userRepository
+                    ->where('uuid', '=', $request->uuid)
+                    ->where('email', '=', $request->email)
+                    ->first();
+        if(!$user) return response()->json(['status' => false, 'message' => 'Cannot find student with ID Number of ' . $request->uuid . ' and E-mail Address of ' . $request->email]);
+
+        $newPassword = str_random();
+
+        $updated = $this->userRepository
+                        ->updateById([
+                            'password' => \Hash::make($newPassword),
+                        ], $user->id);
+
+        return response()->json([
+            'status' => $updated ? true : false,
+            'password' => $newPassword,
+        ]);
+    }
     
 }
