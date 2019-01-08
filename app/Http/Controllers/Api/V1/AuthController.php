@@ -44,7 +44,8 @@ class AuthController extends Controller
     */
     public function login(){
         $credentials = request(['username', 'password']);
-        if (!$token = auth('api')->attempt($credentials)) return response()->json(['error' => 'Invalid username or password.']);
+        $token = auth('api')->attempt($credentials);
+        if (!$token || ($token && !$this->guard()->user()['verified_at'])) return response()->json(['error' => 'Invalid username or password.']);
         return $this->respondWithToken($token);
     }
 

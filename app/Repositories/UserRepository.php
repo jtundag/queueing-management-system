@@ -26,4 +26,12 @@ class UserRepository extends Repository implements TableContract{
 		];
 	}
 
+	public function unverifiedUser($request){
+		return $this->model
+                    ->whereNull('verified_at')
+					->where('uuid', '=', $request->uuid)
+                    ->where('email', '=', $request->email)
+                    ->first();
+	}
+	
 }

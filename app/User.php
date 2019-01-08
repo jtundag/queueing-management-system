@@ -29,6 +29,7 @@ class User extends Authenticatable implements JWTSubject
         'gender',
         'mobile_no',
         'phone_no',
+        'verified_at',
     ];
 
     /**
@@ -38,6 +39,12 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $hidden = [
         'password', 'remember_token',
+    ];
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'verified_at',
     ];
 
     public function getJWTIdentifier(){
