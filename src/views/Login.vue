@@ -53,13 +53,13 @@ export default {
                     if(!result) return false
                     this.$store.dispatch('login', this.formData)
                         .then((response) => {
-                            if(response.data.error){
+                            if(response.data && response.data.error){
                                 this.$vueOnToast.pop('error', 'Login Failed', response.data.error)
                                 return false
                             }
                             this.$store.commit('LOGIN_SUCCESS', response)
                             this.$vueOnToast.pop('success', 'Login Success', "Redirecting...")
-                            this.$router.push('/')
+                            this.$router.replace('/dashboard')
                         })
                         .catch((response) => {
                             this.$store.dispatch('toggleFullLoader', false)

@@ -111,7 +111,7 @@ export default {
         this.$store.dispatch('getServices')
             .then((response) => {
                 this.$store.dispatch('toggleFullLoader', false)
-                _.map(response.data.result, (service) => service.pivot = { duration: 0 })
+                window._.map(response.data.result, (service) => service.pivot = { duration: 0 })
                 this.availableServices = response.data.result
                 if(this.$route.params.id){
                     this.$store.dispatch('toggleFullLoader', true)
@@ -154,7 +154,7 @@ export default {
     },
     methods: {
         _indexOf(item){
-            return _.findIndex(this.formData.services, { id: item.id })
+            return window._.findIndex(this.formData.services, { id: item.id })
         },
         selectDepartment(department){
             this.$store.dispatch('toggleFullLoader', true)
@@ -177,14 +177,14 @@ export default {
                             ...this.formData,
                             id: this.$route.params.id
                         })
-                        .then((response) => {
+                        .then(() => {
                             this.$router.replace('/servers')
                         })
                         return true
                     }
                     
                     this.$store.dispatch('createServer', this.formData)
-                        .then((response) => {
+                        .then(() => {
                             this.$router.replace('/servers')
                         })
                 })

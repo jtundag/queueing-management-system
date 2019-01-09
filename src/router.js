@@ -36,6 +36,7 @@ const router = new Router({
 		}
 	}, {
 		path: '/',
+		alias: '/dashboard',
 		name: 'dashboard',
 		component: Home,
 		beforeEnter: Middlewares.userAuth,
@@ -175,7 +176,7 @@ router.beforeEach((to, from, next) => {
 		// 	.then((response) => {
 		// 	})
 	}
-	next()
+	return next()
 })
 
 export default router
