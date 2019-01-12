@@ -81,6 +81,11 @@ const state = {
                     title: 'Departments',
                     icon: 'fez-flag',
                     link: '/config/departments'
+                }, {
+                    name: 'config',
+                    title: 'Predefined Flows',
+                    icon: 'fez-flag',
+                    link: '/config/predefined-flows'
                 }]
             }
         }, {

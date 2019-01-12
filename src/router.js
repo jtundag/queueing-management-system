@@ -19,6 +19,8 @@ import ConfigGeneral from '@/views/Config/General.vue'
 import ConfigServices from '@/views/Config/Services.vue'
 import ConfigGroups from '@/views/Config/Groups.vue'
 import ConfigDepartments from '@/views/Config/Departments.vue'
+import ConfigPredefinedFlows from '@/views/Config/PredefinedFlows.vue'
+import ConfigPredefinedFlowForm from '@/views/Config/PredefinedFlowForm.vue'
 
 import Guest from '@/views/Guest/Guest.vue'
 
@@ -28,7 +30,6 @@ const router = new Router({
 	mode: 'history',
 	routes: [{
 		path: '/login',
-		name: 'login',
 		component: Login,
 		beforeEnter: Middlewares.userNotAuth,
 		meta: {
@@ -37,7 +38,6 @@ const router = new Router({
 	}, {
 		path: '/',
 		alias: '/dashboard',
-		name: 'dashboard',
 		component: Home,
 		beforeEnter: Middlewares.userAuth,
 		meta: {
@@ -46,11 +46,9 @@ const router = new Router({
 	}, {
 		path: '/users',
 		component: NestedRouteView,
-		name: 'users',
 		beforeEnter: Middlewares.userAuth,
 		children: [{
 				path: '/users/students',
-				name: 'users',
 				component: Students,
 				meta: {
 					title: 'Students'
@@ -58,14 +56,12 @@ const router = new Router({
 			},
 			{
 				path: '/users/students/create',
-				name: 'users',
 				component: StudentForm,
 				meta: {
 					title: 'Create Student'
 				}
 			}, {
 				path: '/users/students/:id/edit',
-				name: 'users',
 				component: StudentForm,
 				meta: {
 					title: 'Edit Student'
@@ -73,21 +69,18 @@ const router = new Router({
 			},
 			{
 				path: '/users/personnels',
-				name: 'users',
 				component: Personnels,
 				meta: {
 					title: 'Personnels'
 				}
 			}, {
 				path: '/users/personnels/create',
-				name: 'users',
 				component: PersonnelForm,
 				meta: {
 					title: 'Create Personnel'
 				}
 			}, {
 				path: '/users/personnels/:id/edit',
-				name: 'users',
 				component: PersonnelForm,
 				meta: {
 					title: 'Edit Personnel'
@@ -97,11 +90,9 @@ const router = new Router({
 	}, {
 		path: '/servers',
 		component: NestedRouteView,
-		name: 'servers',
 		beforeEnter: Middlewares.userAuth,
 		children: [{
 				path: '/',
-				name: 'servers',
 				component: Servers,
 				meta: {
 					title: 'Servers'
@@ -109,14 +100,12 @@ const router = new Router({
 			},
 			{
 				path: '/servers/create',
-				name: 'servers',
 				component: ServerForm,
 				meta: {
 					title: 'Create Server'
 				}
 			}, {
 				path: '/servers/:id/edit',
-				name: 'servers',
 				component: ServerForm,
 				meta: {
 					title: 'Edit Server'
@@ -126,11 +115,9 @@ const router = new Router({
 	}, {
 		path: '/config',
 		component: NestedRouteView,
-		name: 'config',
 		beforeEnter: Middlewares.userAuth,
 		children: [{
 				path: '/',
-				name: 'config',
 				component: ConfigGeneral,
 				meta: {
 					title: 'General'
@@ -138,30 +125,38 @@ const router = new Router({
 			},
 			{
 				path: '/config/services',
-				name: 'config',
 				component: ConfigServices,
 				meta: {
 					title: 'Services'
 				}
 			}, {
 				path: '/config/groups',
-				name: 'config',
 				component: ConfigGroups,
 				meta: {
 					title: 'Groups'
 				}
 			}, {
 				path: '/config/departments',
-				name: 'config',
 				component: ConfigDepartments,
 				meta: {
 					title: 'Departments'
+				}
+			}, {
+				path: '/config/predefined-flows',
+				component: ConfigPredefinedFlows,
+				meta: {
+					title: 'Predefined Flows'
+				}
+			}, {
+				path: '/config/predefined-flows/create',
+				component: ConfigPredefinedFlowForm,
+				meta: {
+					title: 'Create New Flow'
 				}
 			}
 		]
 	}, {
 		path: '/guest',
-		name: 'dashboard',
 		component: Guest,
 		beforeEnter: Middlewares.userAuth,
 		meta: {

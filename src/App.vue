@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-	<div v-if="isLoggedIn">
+	<div v-if="isLoggedIn" key="loggedIn">
 		<div class="flex bg-white fez123-border-bottom justify-between">
 			<div class="flex">
 				<div class="text-center">
@@ -20,15 +20,17 @@
 			</div>
 			<div class="flex-initial">
 				<div class="flex flex-row">
-					<div>
+					<div class="relative">
 						<button type="button" class="no-outline" title="Notifications" v-tippy="{ placement: 'left', arrow: true }">
 							<span class="fez-bell text-5xl"></span>
 						</button>
 					</div>
 					<div class="mr-3">
-						<button type="button" class="no-outline" title="My Account" v-tippy="{ placement: 'left', arrow: true }">
-							<span class="fez-user text-5xl"></span>
-						</button>
+						<Dropdown :actions="accountActions"
+						@action-click="accountActionClicked($event)" 
+						icon-size="5" 
+						icon="fez-user"
+						custom-class=""/>
 					</div>
 				</div>
 			</div>
@@ -86,7 +88,7 @@
 			<router-view/>
 		</div>
 	</div>
-	<div v-else class="auth">
+	<div v-else class="auth" key="auth">
 		<router-view/>
 	</div>
 	<FullLoader v-if="isFullLoading"/>
@@ -95,6 +97,7 @@
 
 <script>
 import FullLoader from '@/components/FullLoader.vue'
+import Dropdown from '@/components/Base/Dropdown.vue'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -105,12 +108,23 @@ export default {
 		}
 	},
 	components: {
-		FullLoader
+		FullLoader,
+		Dropdown
 	},
 	data() {
 		return {
 			hasSideNavbar: true,
-			subnavActiveLink: null
+			subnavActiveLink: null,
+			accountActions: [
+                {
+                    title: 'Account Settings',
+                    icon: 'fez-file'
+                },
+                {
+                    title: 'Logout',
+                    icon: 'fez-close'
+                }
+            ]
 		};
 	},
 	methods: {
@@ -125,6 +139,18 @@ export default {
 		hideSubnavLinks(){
 			this.subnavActiveLink = null
 			this.$store.commit('SUBNAV_LINKS', null)
+		},
+		accountActionClicked(action){
+            switch(action.title){
+                case 'Account Settings':
+                    break;
+				case 'Logout':
+					this.$store.dispatch('logout')
+						.then(() => {
+							this.$router.go('/login')
+						})
+                    break;
+            }
 		}
 	},
 	computed: {

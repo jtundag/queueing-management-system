@@ -1,13 +1,12 @@
 <template>
     <div class="relative inline-block">
         <button type="button" 
-            class="rounded-full w-8 fez123-border text-center h-8 no-outline"
-            :class="{ 'fez123-button-primary z-20 relative': isDropdownShown }"
+            class="w-auto text-center h-auto no-outline"
+            :class="[{ 'fez123-button-primary z-20 relative': isDropdownShown }, customClass]"
             @click="toggleDropdown">
-            <span class="text-3xl"
-                :class="{ 'fez-arrow_down': !isDropdownShown, 'fez-close': isDropdownShown }"></span>
+            <span :class="[`text-${iconSize}xl`, (!isDropdownShown ? icon : 'fez-close')]"></span>
         </button>
-        <ul class="absolute w-48 bg-white list-reset z-10 shadow-lg rounded-lg dropdown-menu pin-r" v-if="isDropdownShown" v-click-outside="hideDropdown">
+        <ul class="absolute w-64 bg-white list-reset z-10 shadow-lg rounded-lg dropdown-menu pin-r" v-if="isDropdownShown" v-click-outside="hideDropdown">
             <li class="px-4 py-2 fez123-border-bottom cursor-pointer"
                 v-for="(action, index) in actions"
                 :key="index"
@@ -29,6 +28,18 @@ export default {
         actions: {
             type: Array,
             default: () => []
+        },
+        iconSize: {
+            type: String,
+            default: '3'
+        },
+        icon: {
+            type: String,
+            default: 'fez-arrow_down'
+        },
+        customClass: {
+            type: String,
+            default: 'rounded-full fez123-border'
         }
     },
     data(){

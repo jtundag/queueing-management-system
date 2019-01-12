@@ -34,9 +34,9 @@
             </tbody>
         </table>
 
-        <div class="mt-5 text-right">
+        <!-- <div class="mt-5 text-right">
             <Pagination/>
-        </div>
+        </div> -->
     </div>
 </template>
 

@@ -59,9 +59,10 @@ export default {
                             }
                             this.$store.commit('LOGIN_SUCCESS', response)
                             this.$vueOnToast.pop('success', 'Login Success', "Redirecting...")
-                            this.$router.replace('/dashboard')
+                            this.$router.go('/dashboard')
                         })
                         .catch((response) => {
+                            console.log('asds')
                             this.$store.dispatch('toggleFullLoader', false)
                             this.$vueOnToast.pop('error', 'Login Failed', response.data.error)
                         })

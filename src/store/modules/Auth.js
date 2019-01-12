@@ -24,6 +24,9 @@ const actions = {
     login(context, data){
         return window.axios.post('/auth/login', data)
     },
+    logout(context){
+        return localStorage.removeItem('jwt-auth-token')
+    },
     checkUser(){
         return window.axios.post('/auth/me')
     }
