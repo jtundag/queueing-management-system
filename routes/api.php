@@ -62,6 +62,13 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1'], function(){
             Route::patch('/{id}/update', 'DepartmentsController@update')->name('update');
             Route::delete('/delete', 'DepartmentsController@delete')->name('delete');
         });
+
+        Route::group(['prefix' => '/predefined-flows', 'as' => 'predefined-flows.'], function(){
+            Route::get('/', 'PredefinedFlowsController@get')->name('get');
+            Route::post('/create', 'PredefinedFlowsController@create')->name('create');
+            Route::patch('/{id}/update', 'PredefinedFlowsController@update')->name('update');
+            Route::delete('/delete', 'PredefinedFlowsController@delete')->name('delete');
+        });
     });
 
     Route::post('/verify', 'UsersController@verify')->name('verify');

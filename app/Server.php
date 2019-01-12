@@ -29,5 +29,9 @@ class Server extends Model
     public function department(){
         return $this->belongsTo('App\Department');
     }
+
+    public function steps(){
+        return $this->belongsToMany('App\Step', 'server_step', 'server_id', 'step_id');
+    }
     
 }
