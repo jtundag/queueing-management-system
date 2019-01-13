@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
-import store from '@/store'
 import Middlewares from './middlewares'
 
 import NestedRouteView from '@/views/NestedRouteView.vue'
@@ -152,6 +151,12 @@ const router = new Router({
 				component: ConfigPredefinedFlowForm,
 				meta: {
 					title: 'Create New Flow'
+				}
+			}, {
+				path: '/config/predefined-flows/:id/edit',
+				component: ConfigPredefinedFlowForm,
+				meta: {
+					title: 'Edit Flow'
 				}
 			}
 		]

@@ -31,7 +31,7 @@
                         </div>
                     </transition-group>
                 </draggable>
-                <div class="cursor-pointer bg-grey-lighter inline-block hover:bg-grey-light w-32 h-32 align-top relative" title="Add a Step" v-tippy="{arrow: true}" @click="showStepInfo({ name: null, servers: [] })">
+                <div class="cursor-pointer bg-grey-lighter inline-block hover:bg-grey-light w-32 h-32 align-top relative" title="Add a Step" v-tippy="{arrow: true}" @click="showStepInfo({ name: null, department: [] })">
                     <span class="fez-plus text-5xl absolute pin flex items-center justify-center text-center"></span>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                     Reset
                 </button>
                 <Button type="primary" 
-                    text="Create"
+                    :text="$route.params.id ? 'Save' : 'Create'"
                     submit/>
             </div>
         </Form>
@@ -56,25 +56,28 @@
                         :required="true"
                         v-model="activeStep.name"/>
                 
-                <SelectList :list="availableServers" 
+                <SelectList :list="availableDepartments" 
                     max-height="300px"
                     filter-with="name"
-                    placeholder="Search servers..."
-                    v-model="activeStep.servers">
+                    placeholder="Search department..."
+                    v-model="activeStep.department"
+                    primary-key="id"
+                    single>
                     <div slot-scope="props">
                         <div class="font-bold">
                             {{ props.item.name }}
                         </div>
                         <div class="text-xs block">
-                            {{ props.item.department.name }}
+                            Prefix: {{ props.item.prefix }}
                         </div>
                     </div>
                 </SelectList>
             </template>
             <template slot="footer">
                 <Button type="default" 
-                    text="Cancel"
-                    @click="hideStepInfoModal"/>
+                    text="Delete"
+                    v-if="activeStepIndex !== -1"
+                    @click="deleteStep"/>
                 <Button type="primary" 
                     text="Save"
                     @click="saveStepInfo"/>
@@ -96,10 +99,10 @@ export default {
     },
     created(){
         this.$store.dispatch('toggleFullLoader', true)
-        this.$store.dispatch('getServers')
+        this.$store.dispatch('getDepartments')
             .then((response) => {
                 this.$store.dispatch('toggleFullLoader', false)
-                this.availableServers = response.data.result
+                this.availableDepartments = response.data.result
                 if(this.$route.params.id){
                     this.$store.dispatch('toggleFullLoader', true)
                     this.$store.dispatch('findPredefinedFlow', this.$route.params.id)
@@ -123,7 +126,7 @@ export default {
     },
     data(){
         return {
-            availableServers: [],
+            availableDepartments: [],
             formData: {
                 name: null,
                 steps: []
@@ -134,6 +137,10 @@ export default {
         }
     },
     methods: {
+        deleteStep(){
+            this.formData.steps.splice(this.activeStepIndex, 1)
+            this.hideStepInfoModal()
+        },
         showStepInfo(step, index = -1){
             this.$refs.stepInfo.show()
             this.activeStepIndex = index
@@ -158,7 +165,6 @@ export default {
             this.$store.dispatch('toggleFullLoader', true)
             this.$refs.createForm.validate()
                 .then((result) => {
-                    this.$store.dispatch('toggleFullLoader', false)
                     if(!result) return false
                     if(this.$route.params.id){
                         if(!this.formData.password) delete this.formData.password
@@ -167,6 +173,7 @@ export default {
                             id: this.$route.params.id
                         })
                         .then(() => {
+                            this.$store.dispatch('toggleFullLoader', false)
                             this.$router.replace('/config/predefined-flows')
                         })
                         return true
@@ -174,6 +181,7 @@ export default {
                     
                     this.$store.dispatch('createPredefinedFlow', this.formData)
                         .then(() => {
+                            this.$store.dispatch('toggleFullLoader', false)
                             this.$router.replace('/config/predefined-flows')
                         })
                 })

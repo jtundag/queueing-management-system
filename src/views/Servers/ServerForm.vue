@@ -22,13 +22,6 @@
                         </div>
                     </InputSuggestions>
                 </div>
-                <div class="flex-grow px-2">
-                    <Input label="Numbering Prefix" 
-                        name="number_prefix" 
-                        placeholder="Enter Numbering Prefix (IT, EMT, etc...)"
-                        :validation-rules="`required`"
-                        v-model="formData.prefix"/>
-                </div>
             </div>
             <div class="flex mb-2">
                 <div class="flex-grow px-2">
@@ -42,7 +35,8 @@
                         max-height="450px"
                         filter-with="name"
                         placeholder="Search personnels..."
-                        v-model="formData.personnels">
+                        v-model="formData.personnels"
+                        primary-key="id">
                         <div slot-scope="props">
                             <div class="font-bold">
                                 {{ props.item.first_name }}
@@ -70,7 +64,8 @@
                         max-height="450px"
                         filter-with="name"
                         placeholder="Search services..."
-                        v-model="formData.services">
+                        v-model="formData.services"
+                        primary-key="id">
                         <div slot-scope="props">
                             <div class="font-bold">
                                 {{ props.item.name }}
@@ -124,10 +119,8 @@ export default {
                             }
 
                             let server = data.server
-
                             this.formData = {
                                 name: server.name,
-                                prefix: server.prefix,
                                 department: server.department.name,
                                 department_id: server.department.id,
                                 personnels: server.personnels,
@@ -144,7 +137,6 @@ export default {
             availableServices: [],
             formData: {
                 name: null,
-                prefix: null,
                 department: null,
                 department_id: null,
                 personnels: [],
@@ -169,7 +161,6 @@ export default {
             this.$store.dispatch('toggleFullLoader', true)
             this.$refs.createForm.validate()
                 .then((result) => {
-                    this.$store.dispatch('toggleFullLoader', false)
                     if(!result) return false
                     if(this.$route.params.id){
                         if(!this.formData.password) delete this.formData.password
@@ -178,6 +169,7 @@ export default {
                             id: this.$route.params.id
                         })
                         .then(() => {
+                            this.$store.dispatch('toggleFullLoader', false)
                             this.$router.replace('/servers')
                         })
                         return true
@@ -185,6 +177,7 @@ export default {
                     
                     this.$store.dispatch('createServer', this.formData)
                         .then(() => {
+                            this.$store.dispatch('toggleFullLoader', false)
                             this.$router.replace('/servers')
                         })
                 })

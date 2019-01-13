@@ -53,22 +53,40 @@ export default {
         placeholder: {
             type: String,
             default: ''
+        },
+        single: {
+            type: Boolean,
+            default: false
+        },
+        primaryKey: {
+            type: String,
+            default: null
         }
+    },
+    created(){
+        this._setValue(this.value)
     },
     data(){
         return {
             selectedItems: this.value || [],
             searchKeyword: null,
+            singleSelectedItem: null
         }
     },
     methods: {
         select(item){
+            if(this.single){
+                this.singleSelectedItem = this.singleSelectedItem == item ? null : item
+                return this.$emit('input', item)
+            }
+            this.singleSelectedItem = null
             if(this.selectedItems.includes(item)) return this.selectedItems.splice(this.selectedItems.indexOf(item), 1)
             this.selectedItems.push(item)
-            this.$emit('change', this.selectedItems)
+            return this.$emit('input', this.selectedItems)
         },
-        isSelected(index){
-            return this.selectedItems.includes(index)
+        isSelected(item){
+            if(this.single) return this.primaryKey ? (item[this.primaryKey] == this.singleSelectedItem[this.primaryKey]) : (window.isEqual(item, this.singleSelectedItem))
+            return this.primaryKey ? window._.map(this.selectedItems, this.primaryKey).includes(item[this.primaryKey]) : (this.selectedItems.includes(item))
         },
         clearKeyword(){
             this.searchKeyword = null
@@ -79,12 +97,21 @@ export default {
                 ...item,
                 index
             }
+        },
+        _setValue(val){
+            if(this.single) return this.singleSelectedItem = val
+            this.selectedItems = val
         }
     },
     computed: {
         filteredList(){
             if(!this.searchKeyword) return this.list
             return this.list.filter((item) => item[this.filterWith].match(this.searchKeyword))
+        }
+    },
+    watch: {
+        value(to){
+            this._setValue(to)
         }
     }
 }

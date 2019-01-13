@@ -39,7 +39,11 @@
                         :required="true"
                         :validation-rules="`required`"
                         v-model="formData.name"/>
-                
+                <Input label="Numbering Prefix" 
+                    name="number_prefix" 
+                    placeholder="Enter Numbering Prefix (IT, EMT, etc...)"
+                    :validation-rules="`required`"
+                    v-model="formData.prefix"/>
                 <InputSuggestions label="Group" 
                         name="group" 
                         placeholder="Enter Group"
@@ -128,6 +132,7 @@ export default {
             isEditing: false,
             formData: {
                 name: null,
+                prefix: null,
                 group: null,
                 group_id: null
             }
@@ -179,6 +184,7 @@ export default {
                     this.isEditing = true
                     this.formData = {
                         name: data.name,
+                        prefix: data.prefix,
                         group_id: data.group_id,
                         group: data.group.name
                     }

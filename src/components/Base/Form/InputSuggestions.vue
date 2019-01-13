@@ -45,7 +45,8 @@ export default {
     },
     data(){
         return {
-            list: this.suggestions
+            list: this.suggestions,
+            model: this.value
         }
     },
     methods: {
