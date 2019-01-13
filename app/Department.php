@@ -11,6 +11,7 @@ class Department extends Model
     protected $fillable = [
         'group_id',
         'name',
+        'prefix',
     ];
 
     public function group(){
@@ -23,6 +24,10 @@ class Department extends Model
 
     public function servers(){
         return $this->hasMany('App\Server', 'department_id', 'id');
+    }
+
+    public function steps(){
+        return $this->hasMany('App\Step', 'department_id', 'id');
     }
     
 }

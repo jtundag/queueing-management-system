@@ -22,7 +22,6 @@ class ServersController extends Controller {
         $tableData = [
             'name' => $request->name,
             'department_id' => $request->department_id,
-            'prefix' => $request->prefix,
         ];
         
         $server = $this->serverRepo
@@ -55,7 +54,7 @@ class ServersController extends Controller {
 
     public function update($id, Request $request){
         $updated = $this->serverRepo
-                        ->updateById(['name' => $request->new_name], $id);
+                        ->updateById(['name' => $request->name], $id);
 
         return response()->json([
             'status' => $updated ? true : false,

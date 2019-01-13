@@ -18,6 +18,22 @@ class PredefinedFlowsController extends Controller
         return response()
             ->json($this->predefinedFlowsRepo->forTable($request));
     }
+
+    public function find(Request $request){
+        $flow = $this->predefinedFlowsRepo
+                    ->findById($request->id);
+                    
+        $flow->steps->map(function($step) use ($flow) {
+            $step->department['group'] = $step->department->group;
+            $step['department'] = $step->department;
+        });
+        $flow['steps'] = $flow->steps;
+                    
+        return response()->json([
+            'status' => $flow ? true : false,
+            'flow' => $flow,
+        ]);
+    }
     
     public function create(Request $request){
         $created = $this->predefinedFlowsRepo
@@ -39,7 +55,7 @@ class PredefinedFlowsController extends Controller
 
     public function update($id, Request $request){
         $updated = $this->predefinedFlowsRepo
-                        ->updateById(['name' => $request->name, 'group_id' => $request->group_id], $id);
+                        ->update($request, $id);
 
         return response()->json([
             'status' => $updated ? true : false,

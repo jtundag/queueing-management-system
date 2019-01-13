@@ -19,11 +19,27 @@ class PredefinedFlowsRepository extends Repository implements TableContract{
 		collect($data->get('steps'))->map(function($step) use ($flow) {
 			$step = collect($step);
 			$stepInstance = $flow->steps()->create([
+				'department_id' => $step['department']['id'],
 				'name' => $step->get('name'),
 			]);
 
-			$stepInstance->servers()->sync(collect($step->get('servers'))->pluck('id'));
 		});
+		return $flow;
+	}
+
+	public function update($request, $id){
+		$flow = $this->findById($id);
+		$flow->name = $request->name;
+		$flow->steps()->delete();
+		collect($request->steps)->map(function($step) use ($flow) {
+			$step = collect($step);
+			$stepInstance = $flow->steps()->create([
+				'department_id' => $step['department']['id'],
+				'name' => $step->get('name'),
+			]);
+
+		});
+		$flow->save();
 		return $flow;
 	}
 

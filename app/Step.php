@@ -9,6 +9,7 @@ class Step extends Model
     protected $table = 'steps';
     
     protected $fillable = [
+        'department_id',
         'name',
     ];
 
@@ -21,7 +22,8 @@ class Step extends Model
         return $this->belongsTo('App\PredefinedFlow');
     }
 
-    public function servers(){
-        return $this->belongsToMany('App\Server', 'server_step', 'step_id', 'server_id');
+    public function department(){
+        return $this->belongsTo('App\Department');
     }
+    
 }

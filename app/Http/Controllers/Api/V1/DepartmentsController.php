@@ -39,7 +39,7 @@ class DepartmentsController extends Controller
 
     public function update($id, Request $request){
         $updated = $this->departmentRepo
-                        ->updateById(['name' => $request->name, 'group_id' => $request->group_id], $id);
+                        ->updateById(['name' => $request->name, 'group_id' => $request->group_id, 'prefix' => $request->prefix], $id);
 
         return response()->json([
             'status' => $updated ? true : false,
