@@ -29,5 +29,9 @@ class Department extends Model
     public function steps(){
         return $this->hasMany('App\Step', 'department_id', 'id');
     }
+
+    public function transactions(){
+        return $this->belongsToMany('App\Transaction', 'department_transaction', 'department_id', 'transaction_id')->withPivot(['priority_number', 'status']);
+    }
     
 }
