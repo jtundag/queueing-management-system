@@ -26,4 +26,8 @@ class Step extends Model
         return $this->belongsTo('App\Department');
     }
     
+    public function services(){
+        return $this->belongsToMany('App\Service', 'service_step', 'step_id', 'service_id');
+    }
+    
 }

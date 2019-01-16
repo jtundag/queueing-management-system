@@ -21,4 +21,8 @@ class Service extends Model
         return $this->belongsToMany('App\Server', 'server_service', 'service_id', 'server_id')->withPivot(['duration']);
     }
     
+    public function steps(){
+        return $this->belongsToMany('App\Step', 'service_step', 'service_id', 'step_id');
+    }
+    
 }

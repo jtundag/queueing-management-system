@@ -44,6 +44,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1'], function(){
 
         Route::group(['prefix' => '/services', 'as' => 'services.'], function(){
             Route::get('/', 'ServicesController@get')->name('get');
+            Route::get('/for-department', 'ServicesController@forDepartment')->name('for_department');
             Route::post('/create', 'ServicesController@create')->name('create');
             Route::patch('/{id}/update', 'ServicesController@update')->name('update');
             Route::delete('/delete', 'ServicesController@delete')->name('delete');

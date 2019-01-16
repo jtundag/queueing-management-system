@@ -15,11 +15,8 @@ class ServicesController extends Controller
     }
     
     public function get(Request $request){
-        $services = $this->serviceRepo->all();
         return response()
-            ->json([
-                'result' => $services,
-            ]);
+            ->json($this->serviceRepo->forTable($request));
     }
     
     public function create(Request $request){
@@ -48,4 +45,11 @@ class ServicesController extends Controller
             'status' => $updated ? true : false,
         ]);
     }
+
+    public function forDepartment(Request $request){
+        return response()->json([
+            'result' => \App\Department::find($request->department_id)->servers()->whereHas('services')->with('services')->get()->pluck('services')->flatten()->unique('id'),
+        ]);
+    }
+    
 }

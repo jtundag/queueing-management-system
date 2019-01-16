@@ -53,11 +53,22 @@ class ServersController extends Controller {
     }
 
     public function update($id, Request $request){
-        $updated = $this->serverRepo
+        $server = $this->serverRepo
                         ->updateById(['name' => $request->name], $id);
 
+        $services = [];
+
+        foreach($request->services as $service){
+            $services[$service['id']] = [
+                'duration' => $service['pivot']['duration'],
+            ];
+        }
+        
+        $server->services()->sync($services);
+        $server->personnels()->sync(collect($request->personnels)->pluck('id'));
+
         return response()->json([
-            'status' => $updated ? true : false,
+            'status' => $server ? true : false,
         ]);
     }
 

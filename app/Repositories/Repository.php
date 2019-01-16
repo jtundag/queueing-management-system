@@ -97,15 +97,15 @@ abstract class Repository implements RepositoryContract{
      * @return mixed       
      */
     public function updateById($data = array(), $id){
-        $updated = $this->model
-                        ->findOrFail($id)
-                        ->update($data);
+        $entry = $this->model
+                        ->findOrFail($id);
+        $updated = $entry->update($data);
 
-        if(!$updated){
+        if(!$entry){
             return 'Update failed.';
         }
 
-        return $updated;
+        return $entry;
     }
 
     /**
