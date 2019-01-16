@@ -20,7 +20,7 @@
                     <span class="fez-choose text-5xl block text-grey-light" :class="{ 'primary-text': isSelected(item) }"></span>
                 </div>
             </div>
-            <div v-if="!list.length" class="text-center pt-2 text-sm">
+            <div v-if="!items.length" class="text-center pt-2 text-sm">
                 Empty List.
             </div>
         </perfect-scrollbar>
@@ -36,7 +36,7 @@ export default {
     props: {
         list: {
             type: Array,
-            required: true
+            default: () => []
         },
         maxHeight: {
             default: 'none'
@@ -60,27 +60,45 @@ export default {
         },
         primaryKey: {
             type: String,
+            required: true
+        },
+        apiUrl: {
             default: null
         }
     },
     created(){
-        this._setValue(this.value)
+        this.refresh()
     },
     data(){
         return {
+            items: this.list,
             selectedItems: this.value || [],
             searchKeyword: null,
             singleSelectedItem: null
         }
     },
     methods: {
+        _refreshItems(){
+            this.$http.get(this.apiUrl)
+                .then((response) => {
+                    this.items = response.data.result
+                    this._setValue(this.value)
+                })
+        },
+        refresh(){
+            if(this.apiUrl){
+                this._refreshItems()
+                return
+            }
+            this._setValue(this.value)
+        },
         select(item){
             if(this.single){
                 this.singleSelectedItem = this.singleSelectedItem == item ? null : item
                 return this.$emit('input', item)
             }
             this.singleSelectedItem = null
-            if(this.selectedItems.includes(item)) return this.selectedItems.splice(this.selectedItems.indexOf(item), 1)
+            if(window._.find(this.selectedItems, { [this.primaryKey]: item[this.primaryKey] })) return this.selectedItems.splice(this.selectedItems.indexOf(item), 1)
             this.selectedItems.push(item)
             return this.$emit('input', this.selectedItems)
         },
@@ -100,18 +118,24 @@ export default {
         },
         _setValue(val){
             if(this.single) return this.singleSelectedItem = val
-            this.selectedItems = val
+            this.selectedItems = val || []
         }
     },
     computed: {
         filteredList(){
-            if(!this.searchKeyword) return this.list
-            return this.list.filter((item) => item[this.filterWith].match(this.searchKeyword))
+            if(!this.searchKeyword) return this.items
+            return this.items.filter((item) => item[this.filterWith].match(this.searchKeyword))
         }
     },
     watch: {
         value(to){
             this._setValue(to)
+        },
+        list(to){
+            this.items = to
+        },
+        apiUrl(to){
+            this.refresh()
         }
     }
 }

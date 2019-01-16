@@ -204,7 +204,6 @@ export default {
                 })
         },
         selectGroup(group){
-            console.log(group)
             this.formData.group_id = group.id
         }
     }

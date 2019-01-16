@@ -13,6 +13,7 @@
                     <InputSuggestions label="Department" 
                         name="department" 
                         placeholder="Enter Department"
+                        :text="formData.department.name"
                         v-model="formData.department"
                         :validation-rules="`required`"
                         api-url="/config/departments"
@@ -88,7 +89,7 @@
                     Reset
                 </button>
                 <button class="fez123-button-primary px-4 py-2 text-center leading-normal rounded-sm no-outline">
-                    Create
+                    {{ $route.params.id ? 'Save' : 'Create' }}
                 </button>
             </div>
         </Form>
@@ -121,7 +122,7 @@ export default {
                             let server = data.server
                             this.formData = {
                                 name: server.name,
-                                department: server.department.name,
+                                department: server.department,
                                 department_id: server.department.id,
                                 personnels: server.personnels,
                                 services: server.services
@@ -137,7 +138,7 @@ export default {
             availableServices: [],
             formData: {
                 name: null,
-                department: null,
+                department: {name: null},
                 department_id: null,
                 personnels: [],
                 services: []

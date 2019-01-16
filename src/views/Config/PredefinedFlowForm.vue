@@ -31,7 +31,7 @@
                         </div>
                     </transition-group>
                 </draggable>
-                <div class="cursor-pointer bg-grey-lighter inline-block hover:bg-grey-light w-32 h-32 align-top relative" title="Add a Step" v-tippy="{arrow: true}" @click="showStepInfo({ name: null, department: [] })">
+                <div class="cursor-pointer bg-grey-lighter inline-block hover:bg-grey-light w-32 h-32 align-top relative" title="Add a Step" v-tippy="{arrow: true}" @click="showStepInfo({ name: null, department: null, services: null })">
                     <span class="fez-plus text-5xl absolute pin flex items-center justify-center text-center"></span>
                 </div>
             </div>
@@ -55,23 +55,32 @@
                         placeholder="Enter Step Name"
                         :required="true"
                         v-model="activeStep.name"/>
-                
-                <SelectList :list="availableDepartments" 
-                    max-height="300px"
-                    filter-with="name"
-                    placeholder="Search department..."
+
+                <InputSuggestions label="Department" 
+                    name="department" 
+                    placeholder="Enter Department"
                     v-model="activeStep.department"
-                    primary-key="id"
+                    :validation-rules="`required`"
+                    api-url="/config/departments"
                     single>
                     <div slot-scope="props">
-                        <div class="font-bold">
-                            {{ props.item.name }}
-                        </div>
-                        <div class="text-xs block">
-                            Prefix: {{ props.item.prefix }}
-                        </div>
+                        {{ props.suggestion.name }}
                     </div>
-                </SelectList>
+                </InputSuggestions>
+                <SelectList v-if="activeStep.department" 
+                        max-height="450px"
+                        filter-with="name"
+                        placeholder="Search services..."
+                        :api-url="`/config/services/for-department/?department_id=${activeStep.department.id}`"
+                        primary-key="id"
+                        v-model="activeStep.services"
+                        ref="servicesSelectList">
+                        <div slot-scope="props">
+                            <div class="font-bold">
+                                {{ props.item.name }}
+                            </div>
+                        </div>
+                    </SelectList>
             </template>
             <template slot="footer">
                 <Button type="default" 
