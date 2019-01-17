@@ -167,6 +167,18 @@ const router = new Router({
 		meta: {
 			title: 'Guest'
 		}
+	}, {
+		path: '/guest-number',
+		component: Guest,
+		meta: {
+			title: 'Guest Priority Number'
+		}
+	}, {
+		path: '/kiosk',
+		component: Guest,
+		meta: {
+			title: 'Kiosk'
+		}
 	}]
 })
 

@@ -88,16 +88,6 @@ const state = {
                     link: '/config/predefined-flows'
                 }]
             }
-        }, {
-            name: 'guest',
-            title: 'Guest',
-            icon: 'fez-VIP',
-            link: '/guest'
-        }, {
-            name: 'logs',
-            title: 'Logs',
-            icon: 'fez-order-form',
-            link: '/logs'
         }
     ],
     subnavLinks: null

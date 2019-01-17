@@ -159,7 +159,6 @@ export default {
             this.activeStep = null
             this.activeStepIndex = -1
             this.$refs.stepInfo.hide()
-            
         },
         saveStepInfo(){
             if(this.activeStepIndex === -1){
