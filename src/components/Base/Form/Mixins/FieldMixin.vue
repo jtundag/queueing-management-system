@@ -30,6 +30,11 @@ export default {
         return {
             model: this.value
         }
+    },
+    watch: {
+        value(to){
+            this.model = to
+        }
     }
 }
 </script>

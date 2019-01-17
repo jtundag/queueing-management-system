@@ -134,7 +134,7 @@ export default {
         list(to){
             this.items = to
         },
-        apiUrl(to){
+        apiUrl(){
             this.refresh()
         }
     }

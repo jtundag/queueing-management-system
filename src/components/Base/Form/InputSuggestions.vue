@@ -4,7 +4,7 @@
         <Input :label="label" 
                 :name="name" 
                 :placeholder="placeholder" 
-                :value="text"
+                v-model="textModel"
                 :autocomplete="false"
                 @focus="getSuggestions"
                 @input="getSuggestions"
@@ -55,7 +55,8 @@ export default {
     data(){
         return {
             list: this.suggestions,
-            model: this.value
+            model: this.value,
+            textModel: this.text
         }
     },
     methods: {
@@ -65,7 +66,7 @@ export default {
             this.$emit('input', suggestion)
             this.$emit('selected', suggestion)
         },
-        getSuggestions(val){
+        getSuggestions(){
             this.$http.get(this.apiUrl)
                 .then((response) => {
                     this.list = response.data.result
@@ -73,6 +74,11 @@ export default {
         },
         hideSuggestions(){
             this.list = []
+        }
+    },
+    watch: {
+        text(to){
+            this.textModel = to
         }
     }
 }

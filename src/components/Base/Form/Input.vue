@@ -11,7 +11,7 @@
             :id="name" 
             class="block border rounded-sm leading-normal p-3 text-sm no-outline w-full" 
             :placeholder="placeholder"
-            :value="value"
+            v-model="model"
             @input="$emit('input', $event.target.value)"
             :data-vv-as="label"
             v-validate="validationRules"

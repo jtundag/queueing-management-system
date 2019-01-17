@@ -10,7 +10,7 @@ const mutations = {
     }
 }
 const getters = {
-    isLoggedIn(state){
+    isLoggedIn(){
         return localStorage.getItem('jwt-auth-token')
     },
     user(state){
@@ -24,7 +24,7 @@ const actions = {
     login(context, data){
         return window.axios.post('/auth/login', data)
     },
-    logout(context){
+    logout(){
         return localStorage.removeItem('jwt-auth-token')
     },
     checkUser(){

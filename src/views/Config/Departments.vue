@@ -45,16 +45,17 @@
                     :validation-rules="`required`"
                     v-model="formData.prefix"/>
                 <InputSuggestions label="Group" 
-                        name="group" 
-                        placeholder="Enter Group"
-                        v-model="formData.group"
-                        :validation-rules="`required`"
-                        api-url="/config/groups"
-                        @selected="selectGroup">
-                        <div slot-scope="props">
-                            {{ props.suggestion.name }}
-                        </div>
-                    </InputSuggestions>
+                    name="group" 
+                    placeholder="Enter Group"
+                    :text="formData.group.name"
+                    v-model="formData.group"
+                    :validation-rules="`required`"
+                    api-url="/config/groups"
+                    @selected="selectGroup">
+                    <div slot-scope="props">
+                        {{ props.suggestion.name }}
+                    </div>
+                </InputSuggestions>
             </template>
             <template slot="footer">
                 <Button type="default" 
@@ -133,7 +134,7 @@ export default {
             formData: {
                 name: null,
                 prefix: null,
-                group: null,
+                group: {name: null},
                 group_id: null
             }
         }
@@ -145,7 +146,7 @@ export default {
         clearFields(){
             this.formData = {
                 name: null,
-                group: null,
+                group: {name: null},
                 group_id: null
             }
         },

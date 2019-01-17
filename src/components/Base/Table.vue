@@ -41,12 +41,7 @@
 </template>
 
 <script>
-import Pagination from '@/components/Base/Pagination.vue'
-
 export default {
-    components: {
-        Pagination
-    },
     props: {
         columns: {
             type: Array,
