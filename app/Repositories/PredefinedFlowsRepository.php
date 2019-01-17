@@ -23,8 +23,14 @@ class PredefinedFlowsRepository extends Repository implements TableContract{
 				'name' => $step->get('name'),
 			]);
 
+			$stepInstance->services()->sync(collect($step['services'])->pluck('id'));
+
 		});
 		return $flow;
+	}
+
+	public function findWithRelatedModels($id){
+		return $this->model->find($id)->with(['steps','steps.department', 'steps.services'])->first();
 	}
 
 	public function update($request, $id){
@@ -38,6 +44,7 @@ class PredefinedFlowsRepository extends Repository implements TableContract{
 				'name' => $step->get('name'),
 			]);
 
+			$stepInstance->services()->sync(collect($step['services'])->pluck('id'));
 		});
 		$flow->save();
 		return $flow;

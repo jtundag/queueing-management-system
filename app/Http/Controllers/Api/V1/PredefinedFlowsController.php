@@ -21,13 +21,7 @@ class PredefinedFlowsController extends Controller
 
     public function find(Request $request){
         $flow = $this->predefinedFlowsRepo
-                    ->findById($request->id);
-                    
-        $flow->steps->map(function($step) use ($flow) {
-            $step->department['group'] = $step->department->group;
-            $step['department'] = $step->department;
-        });
-        $flow['steps'] = $flow->steps;
+                    ->findWithRelatedModels($request->id);
                     
         return response()->json([
             'status' => $flow ? true : false,

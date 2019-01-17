@@ -85,4 +85,5 @@ class ServersController extends Controller {
             'server' => $server,
         ]);
     }
+
 }

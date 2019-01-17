@@ -30,12 +30,19 @@ class TransactionRepository extends Repository{
 			'user_id' => $user->id,
 			'status' => 'ongoing',
 		]);
+		// If the transaction is custom
 		if(!$request->has('flow_id')){
 			$department = $this->departmentRepo
 								->findById($request->department_id);
 			if(!$transaction) return response()->json(['status' => false, 'message' => 'Cannot create transaction.']);
 			$priorityNumber = $this->generateNumberFor($department);
 			$attached = $this->saveEntriesFor($transaction, $department, $priorityNumber. 'ongoing');
+
+			$queueableServers = \App\Server::whereHas('services', function($q) use ($request) { 
+				$q->where('services.id', $request->service_id); 
+			})->where('department_id', $request->department_id)->get();
+
+			dd($queueableServers);
 			
 			return response()->json(['status' => $attached ? true : false, 'priority_number' => $priorityNumber,]);
 		}
