@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import store from '@/store'
 import Router from 'vue-router'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
@@ -182,11 +183,16 @@ const router = new Router({
 	}]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
 	if(localStorage.getItem('jwt-auth-token')){
 		// store.dispatch('checkUser')
 		// 	.then((response) => {
+		// 		if(!response.data) return next()
+		// 		return router.replace('/login')
+		// 	}).catch((response) => {
+		// 		return router.replace('/login')
 		// 	})
+		return next()
 	}
 	return next()
 })

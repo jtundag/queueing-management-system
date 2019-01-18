@@ -66,11 +66,9 @@ export default {
             this.$emit('input', suggestion)
             this.$emit('selected', suggestion)
         },
-        getSuggestions(){
-            this.$http.get(this.apiUrl)
-                .then((response) => {
-                    this.list = response.data.result
-                })
+        async getSuggestions(){
+            let response = await this.$http.get(this.apiUrl)
+            this.list = response.data.result
         },
         hideSuggestions(){
             this.list = []
