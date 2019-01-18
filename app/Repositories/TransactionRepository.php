@@ -59,6 +59,9 @@ class TransactionRepository extends Repository{
 		$flow->steps->map(function($step, $index) use ($transaction, &$firstStepNumber) {
 			$priorityNumber = $index === 0 ? $this->generateNumberFor($step->department, $service) : null;
 			if($index === 0) $firstStepNumber = $priorityNumber;
+			$step->services->map(function($step) use ($transaction, $priorityNumber, $index) {
+
+			});
 			$this->saveQueues($transaction, $step->department, $priorityNumber, $index === 0 ? 'processing' : 'queueing');
 		});
 
