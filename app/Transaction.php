@@ -25,7 +25,7 @@ class Transaction extends Model
         return $this->belongsTo('App\Flow');
     }
 
-    public function queueEntries(){
-        return $this->belongsToMany('App\Department', 'department_transaction', 'transaction_id', 'department_id')->withPivot(['priority_number', 'status']);
+    public function queues(){
+        return $this->belongsToMany('App\Service', 'service_transaction', 'transaction_id', 'service_id')->withPivot(['priority_number', 'status']);
     }
 }

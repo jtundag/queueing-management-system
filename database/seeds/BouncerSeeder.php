@@ -26,6 +26,11 @@ class BouncerSeeder extends Seeder
             'title' => 'Personnel',
         ]);
         
+        Bouncer::role()->firstOrCreate([
+            'name' => 'guest',
+            'title' => 'Guest',
+        ]);
+        
         Bouncer::allow('admin')
             ->to('ban-users');
         
@@ -38,8 +43,6 @@ class BouncerSeeder extends Seeder
             ->to('create-students');
         Bouncer::allow('admin')
             ->to('create-personnels');
-        Bouncer::allow('admin')
-            ->to('create-students');
         
         Bouncer::allow('student')
             ->to('queue');

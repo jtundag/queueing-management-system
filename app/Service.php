@@ -24,5 +24,8 @@ class Service extends Model
     public function steps(){
         return $this->belongsToMany('App\Step', 'service_step', 'service_id', 'step_id');
     }
-    
+
+    public function queues(){
+        return $this->belongsToMany('App\Transaction', 'service_transaction', 'service_id', 'transaction_id')->withPivot(['priority_number', 'status']);
+    }
 }

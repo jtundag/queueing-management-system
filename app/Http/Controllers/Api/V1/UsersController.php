@@ -19,6 +19,7 @@ class UsersController extends Controller
     }
 
     public function create(Request $request){
+        $request->password = \Hash::make($request->password);
         $user = $this->userRepository
                         ->create($request->all());
                         
@@ -51,7 +52,7 @@ class UsersController extends Controller
     }
 
     public function update(Request $request){
-        if($request->has('password')) $request->password = \Hash::make($request->password);
+        if($request->has('password')) $request->merge(['password' => \Hash::make($request->password)]);
         
         $updated = $this->userRepository
                         ->updateById($request->except('id'), $request->id);
