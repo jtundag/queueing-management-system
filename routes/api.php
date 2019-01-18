@@ -74,6 +74,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1'], function(){
     });
 
     Route::post('/push', 'QueueController@push')->name('push_queue');
+    Route::get('/{id}/waiting-time', 'QueueController@retrieveWaitingTime')->name('retrieve_waiting_time');
 
     Route::post('/verify', 'UsersController@verify')->name('verify');
 });

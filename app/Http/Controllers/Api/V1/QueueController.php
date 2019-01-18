@@ -20,4 +20,10 @@ class QueueController extends Controller
         return $this->transactionRepo->push($request, $user);
     }
     
+    public function retrieveWaitingTime($id){
+        return response()->json([
+            'waiting_time' => $this->transactionRepo->generateWaitingTimeFor($this->transactionRepo->findById($id)),
+        ]);
+    }
+    
 }

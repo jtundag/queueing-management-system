@@ -26,6 +26,6 @@ class Service extends Model
     }
 
     public function queues(){
-        return $this->belongsToMany('App\Transaction', 'service_transaction', 'service_id', 'transaction_id')->withPivot(['priority_number', 'status']);
+        return $this->belongsToMany('App\Transaction', 'service_transaction', 'service_id', 'transaction_id')->withPivot(['priority_number', 'status', 'created_at', 'updated_at']);
     }
 }

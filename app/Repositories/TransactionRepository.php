@@ -30,19 +30,13 @@ class TransactionRepository extends Repository{
 
 	public function push($request, $user){
 		$transaction = $this->create([
+			'department_id' => $request->department_id,
 			'flow_id' => $request->flow_id,
 			'user_id' => $user->id,
 			'status' => 'processing',
 		]);
 		// If the transaction is custom
 		if(!$request->has('flow_id')){
-			$avgDuration = \App\Service::select('services.id', 'services.name')
-			->join('server_service', 'services.id', '=', 'server_service.service_id')
-			->join('servers', 'server_service.server_id', '=', 'servers.id')
-			->where('servers.department_id', $request->department_id)
-			->whereIn('services.id', [$request->service_id])
-			->avg('server_service.duration');
-
 			$service = $this->serviceRepo
 							->findById($request->service_id);
 			
@@ -51,8 +45,9 @@ class TransactionRepository extends Repository{
 			if(!$transaction) return response()->json(['status' => false, 'message' => 'Cannot create transaction.']);
 			$priorityNumber = $this->generateNumberFor($department, $service);
 			$attached = $this->saveQueues($transaction, $service, $priorityNumber);
+			$waitingTime = $this->generateWaitingTimeFor($transaction);
 			
-			return response()->json(['status' => $attached ? true : false, 'priority_number' => $priorityNumber, 'waiting_time' => $service->queues()->where('service_transaction.status', 'queueing')->count() * $avgDuration,]);
+			return response()->json(['status' => $attached ? true : false, 'priority_number' => $priorityNumber, 'waiting_time' => $waitingTime]);
 		}
 		$flow = $this->flowRepo->findById($request->flow_id);
 		$firstStepNumber = null;
@@ -66,6 +61,27 @@ class TransactionRepository extends Repository{
 		});
 
 		return response()->json(['status' => true, 'priority_number' => $firstStepNumber]);
+	}
+
+	public function generateWaitingTimeFor($transaction){
+		$service = $transaction->queues()
+								->whereDate('service_transaction.created_at', \Carbon\Carbon::today())
+								->first();
+		if(!$service) return 0;
+		
+		$avgDuration = \App\Service::join('server_service', 'services.id', '=', 'server_service.service_id')
+			->join('servers', 'server_service.server_id', '=', 'servers.id')
+			->where('servers.department_id', $transaction->department->id)
+			->where('services.id', $service->id)
+			->avg('server_service.duration');
+
+		$waitingTime = $service->queues()
+							->where('service_transaction.status', 'queueing')
+							->whereDate('service_transaction.created_at', '<=', $service->pivot->created_at->toDateString())
+							->whereTime('service_transaction.created_at', '<=', $service->pivot->created_at->toTimeString())
+							->count();
+
+		return $waitingTime * $avgDuration;
 	}
 
 	private function generateNumberFor($department, $service){

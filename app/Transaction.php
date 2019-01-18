@@ -8,6 +8,7 @@ class Transaction extends Model
 {
     protected $table = 'transactions';
     protected $fillable = [
+        'department_id',
         'flow_id',
         'user_id',
         'status',
@@ -26,6 +27,10 @@ class Transaction extends Model
     }
 
     public function queues(){
-        return $this->belongsToMany('App\Service', 'service_transaction', 'transaction_id', 'service_id')->withPivot(['priority_number', 'status']);
+        return $this->belongsToMany('App\Service', 'service_transaction', 'transaction_id', 'service_id')->withPivot(['priority_number', 'status', 'created_at', 'updated_at',]);
+    }
+
+    public function department(){
+        return $this->belongsTo('App\Department');
     }
 }

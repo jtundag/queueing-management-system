@@ -30,4 +30,8 @@ class Department extends Model
         return $this->hasMany('App\Step', 'department_id', 'id');
     }
     
+    public function transactions(){
+        return $this->hasMany('App\Transaction', 'department_id', 'id');
+    }
+    
 }
