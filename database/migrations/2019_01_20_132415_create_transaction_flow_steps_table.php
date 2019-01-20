@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTransactionsTable extends Migration
+class CreateTransactionFlowStepsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,19 @@ class CreateTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('transaction_flow_steps', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('flow_id');
-            $table->unsignedInteger('user_id');
-            $table->string('status')
-                ->default('pending');
-            $table->timestamps();
-
-            $table->foreign('flow_id')
+            $table->unsignedInteger('transaction_flow_id');
+            $table->unsignedInteger('step_id');
+            
+            $table->foreign('transaction_flow_id')
                 ->references('id')
-                ->on('predefined_flows')
+                ->on('transaction_flows')
                 ->onDelete('cascade');
-
-            $table->foreign('user_id')
+            
+            $table->foreign('step_id')
                 ->references('id')
-                ->on('users')
+                ->on('steps')
                 ->onDelete('cascade');
         });
     }
@@ -40,6 +37,6 @@ class CreateTransactionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('transaction_flow_steps');
     }
 }

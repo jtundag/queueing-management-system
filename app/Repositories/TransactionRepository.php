@@ -32,7 +32,7 @@ class TransactionRepository extends Repository{
 		$transaction = $this->create([
 			'department_id' => $request->department_id,
 			'flow_id' => $request->flow_id,
-			'user_id' => $user->id,
+			'user_id' => $user->id, 
 			'status' => 'processing',
 		]);
 		// If the transaction is custom
@@ -52,15 +52,15 @@ class TransactionRepository extends Repository{
 		$flow = $this->flowRepo->findById($request->flow_id);
 		$firstStepNumber = null;
 		$flow->steps->map(function($step, $index) use ($transaction, &$firstStepNumber) {
-			$priorityNumber = $index === 0 ? $this->generateNumberFor($step->department, $service) : null;
-			if($index === 0) $firstStepNumber = $priorityNumber;
-			$step->services->map(function($step) use ($transaction, $priorityNumber, $index) {
-
+			$step->services->map(function($service) use ($transaction, $index) {
+				$priorityNumber = $index === 0 ? $this->generateNumberFor($step->department, $service) : null;
+				if($index === 0) $firstStepNumber = $priorityNumber;
+				$this->saveQueues($transaction, $service, $priorityNumber, $index === 0 ? 'processing' : 'queueing');
 			});
-			$this->saveQueues($transaction, $step->department, $priorityNumber, $index === 0 ? 'processing' : 'queueing');
 		});
+		$waitingTime = $this->generateWaitingTimeFor($transaction);
 
-		return response()->json(['status' => true, 'priority_number' => $firstStepNumber]);
+		return response()->json(['status' => true, 'priority_number' => $firstStepNumber, 'waiting_time' => $waitingTime,]);
 	}
 
 	public function generateWaitingTimeFor($transaction){
@@ -68,7 +68,7 @@ class TransactionRepository extends Repository{
 								->whereDate('service_transaction.created_at', \Carbon\Carbon::today())
 								->first();
 		if(!$service) return 0;
-		
+
 		$avgDuration = \App\Service::join('server_service', 'services.id', '=', 'server_service.service_id')
 			->join('servers', 'server_service.server_id', '=', 'servers.id')
 			->where('servers.department_id', $transaction->department->id)

@@ -29,9 +29,9 @@ class Department extends Model
     public function steps(){
         return $this->hasMany('App\Step', 'department_id', 'id');
     }
-    
-    public function transactions(){
-        return $this->hasMany('App\Transaction', 'department_id', 'id');
+
+    public function queues(){
+        return $this->hasMany('App\Queue', 'department_id', 'id');
     }
     
 }

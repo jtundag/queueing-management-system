@@ -29,5 +29,9 @@ class Step extends Model
     public function services(){
         return $this->belongsToMany('App\Service', 'service_step', 'step_id', 'service_id');
     }
+
+    public function transactionFlows(){
+        return $this->belongsToMany('App\TransactionFlow', 'transction_flow_steps', 'step_id', 'transaction_flow_id');
+    }
     
 }

@@ -20,8 +20,5 @@ class PredefinedFlow extends Model
     public function steps(){
         return $this->hasMany('App\Step', 'flow_id', 'id');
     }
-
-    public function transactions(){
-        return $this->hasMany('App\Transaction', 'flow_id', 'id');
-    }
+    
 }

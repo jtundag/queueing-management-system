@@ -22,9 +22,7 @@ class PredefinedFlowsRepository extends Repository implements TableContract{
 				'department_id' => $step['department']['id'],
 				'name' => $step->get('name'),
 			]);
-
 			$stepInstance->services()->sync(collect($step['services'])->pluck('id'));
-
 		});
 		return $flow;
 	}
