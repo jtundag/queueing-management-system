@@ -23,6 +23,8 @@ import ConfigPredefinedFlows from '@/views/Config/PredefinedFlows.vue'
 import ConfigPredefinedFlowForm from '@/views/Config/PredefinedFlowForm.vue'
 
 import Guest from '@/views/Guest/Guest.vue'
+import Kiosk from '@/views/Kiosk/Kiosk.vue'
+import Server from '@/views/Server/Server.vue'
 
 Vue.use(Router)
 
@@ -170,9 +172,15 @@ const router = new Router({
 		}
 	}, {
 		path: '/kiosk',
-		component: Guest,
+		component: Kiosk,
 		meta: {
 			title: 'Kiosk'
+		}
+	}, {
+		path: '/server',
+		component: Server,
+		meta: {
+			title: 'Server'
 		}
 	}]
 })
