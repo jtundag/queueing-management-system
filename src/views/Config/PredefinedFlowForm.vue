@@ -31,7 +31,7 @@
                         </div>
                     </transition-group>
                 </draggable>
-                <div class="cursor-pointer bg-grey-lighter inline-block hover:bg-grey-light w-32 h-32 align-top relative" title="Add a Step" v-tippy="{arrow: true}" @click="showStepInfo({ name: null, department: {name: null}, services: null })">
+                <div class="cursor-pointer bg-grey-lighter inline-block hover:bg-grey-light w-32 h-32 align-top relative" title="Add a Step" v-tippy="{arrow: true}" @click="showStepInfo({ name: null, department: {name: null}, service: {name: null} })">
                     <span class="fez-plus text-5xl absolute pin flex items-center justify-center text-center"></span>
                 </div>
             </div>
@@ -67,20 +67,18 @@
                         {{ props.suggestion.name }}
                     </div>
                 </InputSuggestions>
-                <SelectList v-if="activeStep.department.name" 
-                        max-height="450px"
-                        filter-with="name"
-                        placeholder="Search services..."
-                        :api-url="`/config/services/for-department?department_id=${activeStep.department.id}`"
-                        primary-key="id"
-                        v-model="activeStep.services"
-                        ref="servicesSelectList">
-                        <div slot-scope="props">
-                            <div class="font-bold">
-                                {{ props.item.name }}
-                            </div>
-                        </div>
-                    </SelectList>
+                <InputSuggestions v-if="activeStep.department.name"
+                    label="Department" 
+                    name="department" 
+                    placeholder="Enter Department"
+                    :text="activeStep.service.name"
+                    v-model="activeStep.service"
+                    :validation-rules="`required`"
+                    :api-url="`/config/services/for-department?department_id=${activeStep.department.id}`">
+                    <div slot-scope="props">
+                        {{ props.suggestion.name }}
+                    </div>
+                </InputSuggestions>
             </template>
             <template slot="footer">
                 <Button type="default" 
