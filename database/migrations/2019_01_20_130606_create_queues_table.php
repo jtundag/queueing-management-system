@@ -35,7 +35,7 @@ class CreateQueuesTable extends Migration
 
             $table->foreign('service_id')
                 ->references('id')
-                ->on('steps')
+                ->on('services')
                 ->onDelete('cascade');
         });
     }

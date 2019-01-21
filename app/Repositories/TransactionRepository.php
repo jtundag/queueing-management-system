@@ -52,16 +52,13 @@ class TransactionRepository extends Repository{
 		$transaction->flow
 				->steps()
 				->attach($flow->steps);
-		$transaction->flow->steps->map(function($step, $stepindex) use ($transaction) {
-			$queue = $this->createQueueFor($transaction, [
-				'department_id' => $step->department->id,
-				'service_id' => $step->service->id,
-			]);
-			$waitingTime = $this->generateWaitingTimeFor($queue);
-			dd($queue);
-		});
+		$queue = $this->createQueueFor($transaction, [
+			'department_id' => $transaction->flow->steps->first()->department->id,
+			'service_id' => $transaction->flow->steps->first()->service->id,
+		]);
+		$waitingTime = $this->generateWaitingTimeFor($queue);
 
-		return response()->json(['status' => true, 'priority_number' => $firstStepNumber, 'waiting_time' => $waitingTime,]);
+		return response()->json(['status' => true, 'priority_number' => $queue->priority_number, 'waiting_time' => $waitingTime,]);
 	}
 
 	public function generateWaitingTimeFor($queue){
