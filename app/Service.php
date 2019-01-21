@@ -22,7 +22,7 @@ class Service extends Model
     }
     
     public function steps(){
-        return $this->belongsToMany('App\Step', 'service_step', 'service_id', 'step_id');
+        return $this->hasMany('App\Step', 'service_id', 'id');
     }
 
     public function queues(){

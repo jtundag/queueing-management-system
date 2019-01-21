@@ -9,6 +9,8 @@ class Step extends Model
     protected $table = 'steps';
     
     protected $fillable = [
+        'service_id',
+        'flow_id',
         'department_id',
         'name',
     ];
@@ -26,12 +28,12 @@ class Step extends Model
         return $this->belongsTo('App\Department');
     }
     
-    public function services(){
-        return $this->belongsToMany('App\Service', 'service_step', 'step_id', 'service_id');
+    public function service(){
+        return $this->belongsTo('App\Service');
     }
 
     public function transactionFlows(){
-        return $this->belongsToMany('App\TransactionFlow', 'transction_flow_steps', 'step_id', 'transaction_flow_id');
+        return $this->belongsToMany('App\TransactionFlow', 'transaction_flow_steps', 'step_id', 'transaction_flow_id');
     }
     
 }

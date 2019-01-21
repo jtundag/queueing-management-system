@@ -45,16 +45,21 @@ class TransactionRepository extends Repository{
 			
 			return response()->json(['status' => true, 'priority_number' => $queue->priority_number, 'waiting_time' => $waitingTime]);
 		}
+		$transaction->flow()->create([
+			'flow_id' => $request->flow_id,
+		]);
 		$flow = $this->flowRepo->findById($request->flow_id);
-		$firstStepNumber = null;
-		$flow->steps->map(function($step, $index) use ($transaction, &$firstStepNumber) {
-			$step->services->map(function($service) use ($transaction, $index) {
-				$priorityNumber = $index === 0 ? $this->generateNumberFor($step->department, $service) : null;
-				if($index === 0) $firstStepNumber = $priorityNumber;
-				$this->saveQueues($transaction, $service, $priorityNumber, $index === 0 ? 'processing' : 'queueing');
-			});
+		$transaction->flow
+				->steps()
+				->attach($flow->steps);
+		$transaction->flow->steps->map(function($step, $stepindex) use ($transaction) {
+			$queue = $this->createQueueFor($transaction, [
+				'department_id' => $step->department->id,
+				'service_id' => $step->service->id,
+			]);
+			$waitingTime = $this->generateWaitingTimeFor($queue);
+			dd($queue);
 		});
-		$waitingTime = $this->generateWaitingTimeFor($queue);
 
 		return response()->json(['status' => true, 'priority_number' => $firstStepNumber, 'waiting_time' => $waitingTime,]);
 	}

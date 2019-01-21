@@ -17,12 +17,11 @@ class PredefinedFlowsRepository extends Repository implements TableContract{
 			'name' => $data->get('name'),
 		]);
 		collect($data->get('steps'))->map(function($step) use ($flow) {
-			$step = collect($step);
 			$stepInstance = $flow->steps()->create([
+				'service_id' => $step['service']['id'],
 				'department_id' => $step['department']['id'],
-				'name' => $step->get('name'),
+				'name' => $step['name'],
 			]);
-			$stepInstance->services()->sync(collect($step['services'])->pluck('id'));
 		});
 		return $flow;
 	}
@@ -36,13 +35,11 @@ class PredefinedFlowsRepository extends Repository implements TableContract{
 		$flow->name = $request->name;
 		$flow->steps()->delete();
 		collect($request->steps)->map(function($step) use ($flow) {
-			$step = collect($step);
 			$stepInstance = $flow->steps()->create([
+				'service_id' => $step['service']['id'],
 				'department_id' => $step['department']['id'],
-				'name' => $step->get('name'),
+				'name' => $step['name'],
 			]);
-
-			$stepInstance->services()->sync(collect($step['services'])->pluck('id'));
 		});
 		$flow->save();
 		return $flow;

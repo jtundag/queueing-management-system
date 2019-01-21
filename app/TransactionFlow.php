@@ -11,17 +11,14 @@ class TransactionFlow extends Model
         'flow_id',
         'transaction_id',
     ];
-    protected $dates = [
-        'created_at',
-        'updated_at',
-    ];
+    public $timestamps = false;
 
     public function transaction(){
         return $this->belongsTo('App\Transaction');
     }
     
     public function steps(){
-        return $this->belongsToMany('App\Step', 'transction_flow_steps', 'transaction_flow_id', 'step_id');
+        return $this->belongsToMany('App\Step', 'transaction_flow_steps', 'transaction_flow_id', 'step_id');
     }
     
 }
