@@ -22,7 +22,7 @@ class QueueController extends Controller
     
     public function retrieveWaitingTime($id){
         return response()->json([
-            'waiting_time' => $this->transactionRepo->generateWaitingTimeFor($this->transactionRepo->findById($id)),
+            'waiting_time' => $this->transactionRepo->generateWaitingTimeFor($this->transactionRepo->findQueueById($id)),
         ]);
     }
     

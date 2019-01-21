@@ -19,7 +19,7 @@ class UsersController extends Controller
     }
 
     public function create(Request $request){
-        $request->password = \Hash::make($request->password);
+        $request->merge(['password' => \Hash::make($request->password)]);
         $user = $this->userRepository
                         ->create($request->all());
                         
@@ -42,7 +42,6 @@ class UsersController extends Controller
     public function find(Request $request){
         $user = $this->userRepository
                     ->findById($request->id);
-
         $user['department'] = $user->department;
                     
         return response()->json([

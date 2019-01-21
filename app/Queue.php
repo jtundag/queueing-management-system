@@ -9,6 +9,7 @@ class Queue extends Model
     protected $table = 'queues';
     protected $fillable = [
         'transaction_id',
+        'department_id',
         'service_id',
         'priority_number',
         'status',

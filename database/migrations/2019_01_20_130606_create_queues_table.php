@@ -16,7 +16,7 @@ class CreateQueuesTable extends Migration
         Schema::create('queues', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('transaction_id');
-            $table->unsignedInteger('deparment_id');
+            $table->unsignedInteger('department_id');
             $table->unsignedInteger('service_id');
             $table->string('priority_number');
             $table->string('status')

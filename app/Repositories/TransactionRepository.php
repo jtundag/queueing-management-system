@@ -28,26 +28,22 @@ class TransactionRepository extends Repository{
 		return '\App\Transaction';
 	}
 
+	
 	public function push($request, $user){
 		$transaction = $this->create([
-			'department_id' => $request->department_id,
-			'flow_id' => $request->flow_id,
 			'user_id' => $user->id, 
 			'status' => 'processing',
 		]);
 		// If the transaction is custom
 		if(!$request->has('flow_id')){
-			$service = $this->serviceRepo
-							->findById($request->service_id);
+			$queue = $this->createQueueFor($transaction, [
+				'department_id' => $request->department_id,
+				'service_id' => $request->service_id,
+			]);
+			if(!$queue) return response()->json(['status' => false, 'message' => 'Cannot create queue.']);
+			$waitingTime = $this->generateWaitingTimeFor($queue);
 			
-			$department = $this->departmentRepo
-								->findById($request->department_id);
-			if(!$transaction) return response()->json(['status' => false, 'message' => 'Cannot create transaction.']);
-			$priorityNumber = $this->generateNumberFor($department, $service);
-			$attached = $this->saveQueues($transaction, $service, $priorityNumber);
-			$waitingTime = $this->generateWaitingTimeFor($transaction);
-			
-			return response()->json(['status' => $attached ? true : false, 'priority_number' => $priorityNumber, 'waiting_time' => $waitingTime]);
+			return response()->json(['status' => true, 'priority_number' => $queue->priority_number, 'waiting_time' => $waitingTime]);
 		}
 		$flow = $this->flowRepo->findById($request->flow_id);
 		$firstStepNumber = null;
@@ -58,35 +54,31 @@ class TransactionRepository extends Repository{
 				$this->saveQueues($transaction, $service, $priorityNumber, $index === 0 ? 'processing' : 'queueing');
 			});
 		});
-		$waitingTime = $this->generateWaitingTimeFor($transaction);
+		$waitingTime = $this->generateWaitingTimeFor($queue);
 
 		return response()->json(['status' => true, 'priority_number' => $firstStepNumber, 'waiting_time' => $waitingTime,]);
 	}
 
-	public function generateWaitingTimeFor($transaction){
-		$service = $transaction->queues()
-								->whereDate('service_transaction.created_at', \Carbon\Carbon::today())
-								->first();
-		if(!$service) return 0;
-
+	public function generateWaitingTimeFor($queue){
 		$avgDuration = \App\Service::join('server_service', 'services.id', '=', 'server_service.service_id')
 			->join('servers', 'server_service.server_id', '=', 'servers.id')
-			->where('servers.department_id', $transaction->department->id)
-			->where('services.id', $service->id)
+			->where('servers.department_id', $queue->department->id)
+			->where('services.id', $queue->service->id)
 			->avg('server_service.duration');
 
-		$waitingTime = $service->queues()
-							->where('service_transaction.status', 'queueing')
-							->whereDate('service_transaction.created_at', '<=', $service->pivot->created_at->toDateString())
-							->whereTime('service_transaction.created_at', '<=', $service->pivot->created_at->toTimeString())
+		$queuesCount =\App\Queue::where('service_id', $queue->service->id)
+							->where('department_id', $queue->department->id)
+							->whereDate('created_at', $queue->created_at->toDateString())
+							->whereTime('created_at', '<=', $queue->created_at->toTimeString())
+							->where('status', 'queueing')
 							->count();
 
-		return $waitingTime * $avgDuration;
+		return ($queuesCount - 1) * $avgDuration;
 	}
 
 	private function generateNumberFor($department, $service){
 		$countToday = $service->queues()
-							->whereDate('transactions.created_at', '=', \Carbon\Carbon::today())
+							->whereDate('queues.created_at', '=', \Carbon\Carbon::today())
 							->count();
 		return $department->prefix . str_pad(($countToday + 1), 4, '0', STR_PAD_LEFT);
 	}
@@ -103,4 +95,17 @@ class TransactionRepository extends Repository{
 		return $transaction->queues()->attach($entryData);
 	}
 
+	public function createQueueFor($transaction, $data){
+		$department = $this->departmentRepo->findById($data['department_id']);
+		$service = $this->serviceRepo->findById($data['service_id']);
+		$priorityNumber = $this->generateNumberFor($department, $service);
+		$data['priority_number'] = $priorityNumber;
+		$queue = $transaction->queues()->create($data);
+		return $queue;
+	}
+	
+	public function findQueueById($id){
+		return \App\Queue::findOrFail($id);
+	}
+	
 }

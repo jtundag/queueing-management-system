@@ -15,16 +15,10 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('flow_id');
             $table->unsignedInteger('user_id');
             $table->string('status')
                 ->default('pending');
             $table->timestamps();
-
-            $table->foreign('flow_id')
-                ->references('id')
-                ->on('predefined_flows')
-                ->onDelete('cascade');
 
             $table->foreign('user_id')
                 ->references('id')

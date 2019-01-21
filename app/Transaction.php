@@ -25,7 +25,7 @@ class Transaction extends Model
     }
 
     public function queues(){
-        return $this->hasMany('App\Queue', 'transction_id', 'id');
+        return $this->hasMany('App\Queue', 'transaction_id', 'id');
     }
     
 }
