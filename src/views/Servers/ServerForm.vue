@@ -24,7 +24,7 @@
                     </InputSuggestions>
                 </div>
             </div>
-            <div class="flex mb-2">
+            <div class="flex mb-2" v-if="formData.department.name">
                 <div class="flex-grow px-2">
                     <label class="pl-1 block text-sm mb-2">
                         Server Personnels

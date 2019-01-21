@@ -16,7 +16,7 @@
                 {{ props.rowData.first_name }} {{ props.rowData.last_name }}
             </template>
 
-            <template slot="department" slot-scope="props">
+            <template slot="department" v-if="props.rowData.department" slot-scope="props">
                 {{ props.rowData.department.name }}
             </template>
             

@@ -87,6 +87,7 @@ export default {
                 }
             })
                 .then((response) => {
+                    console.log(response.data.result)
                     this.result = response.data.result
                     this.$emit('after-load')
                 })
