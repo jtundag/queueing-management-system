@@ -40,4 +40,8 @@ class QueueController extends Controller
         ]);
     }
     
+    public function serveNext(Request $request){
+        
+    }
+    
 }
