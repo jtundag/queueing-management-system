@@ -33,5 +33,9 @@ class Department extends Model
     public function queues(){
         return $this->hasMany('App\Queue', 'department_id', 'id');
     }
+
+    public function serversWithServices(){
+        return $this->servers()->with('services');
+    }
     
 }

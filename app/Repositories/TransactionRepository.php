@@ -57,7 +57,7 @@ class TransactionRepository extends Repository{
 			'service_id' => $transaction->flow->steps->first()->service->id,
 		]);
 		$waitingTime = $this->generateWaitingTimeFor($queue);
-
+		
 		return response()->json(['status' => true, 'priority_number' => $queue->priority_number, 'waiting_time' => $waitingTime,]);
 	}
 

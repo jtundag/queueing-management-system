@@ -27,7 +27,7 @@ class PredefinedFlowsRepository extends Repository implements TableContract{
 	}
 
 	public function findWithRelatedModels($id){
-		return $this->model->find($id)->with(['steps','steps.department', 'steps.services'])->first();
+		return $this->model->find($id)->with(['steps','steps.department', 'steps.service'])->first();
 	}
 
 	public function update($request, $id){

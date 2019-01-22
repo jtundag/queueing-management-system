@@ -47,8 +47,12 @@ class ServicesController extends Controller
     }
 
     public function forDepartment(Request $request){
+        $services = \App\Department::find($request->department_id)->servers()->whereHas('services', function($q) use ($request) {
+            $q->where('name', 'like', '%' . $request->keyword . '%');
+        })->get();
+        
         return response()->json([
-            'result' => \App\Department::find($request->department_id)->servers()->whereHas('services')->with('services')->get()->pluck('services')->flatten()->unique('id'),
+            'result' => $services->pluck('services')->flatten()->unique('id'),
         ]);
     }
     

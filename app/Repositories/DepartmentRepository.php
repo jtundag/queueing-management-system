@@ -12,11 +12,14 @@ class DepartmentRepository extends Repository implements TableContract{
 	}
 
 	public function forTable(\Illuminate\Http\Request $request){
+		$departments = $this->model->with('group');
+		
+		if($request->keyword){
+			$departments = $departments->where('name', '%' . $request->keyword . '%');
+		}
+		
 		return [
-			'result' => $this->all()->map(function($department){
-				$department['group'] = $department->group;
-				return $department;
-			}),
+			'result' => $departments->get(),
 		];
 	}
 }

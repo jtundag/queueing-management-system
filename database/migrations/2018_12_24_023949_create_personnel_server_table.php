@@ -17,7 +17,6 @@ class CreatePersonnelServerTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('personnel_id');
             $table->unsignedInteger('server_id');
-            $table->timestamps();
 
             $table->foreign('personnel_id')
                 ->references('id')

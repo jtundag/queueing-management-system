@@ -73,6 +73,10 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1'], function(){
         });
     });
 
+    Route::group(['prefix' => '/server', 'as' => 'server.'], function(){
+        Route::get('/queues', 'QueueController@getQueues')->name('get_queues');
+    });
+
     Route::post('/push', 'QueueController@push')->name('push_queue');
     Route::get('/{id}/waiting-time', 'QueueController@retrieveWaitingTime')->name('retrieve_waiting_time');
 

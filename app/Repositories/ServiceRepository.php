@@ -11,13 +11,14 @@ class ServiceRepository extends Repository implements TableContract{
 	}
 	
 	public function forTable(\Illuminate\Http\Request $request){
-		$items = $this->all()->map(function($service){
-			$service['department'] = $service->department;
-			return $service;
-		});
+		$services = $this->model;
+		
+		if($request->keyword){
+			$services = $services->where('name', 'like', '%' . $request->keyword . '%');
+		}
 		
 		return [
-			'result' => $items,
+			'result' => $services->get(),
 		];
 	}
 }

@@ -25,5 +25,19 @@ class QueueController extends Controller
             'waiting_time' => $this->transactionRepo->generateWaitingTimeFor($this->transactionRepo->findQueueById($id)),
         ]);
     }
+
+    public function getQueues(Request $request){
+        $user = auth('api')->user();
+
+        $serviceIds = $user->myServersServices->pluck('services')->flatten()->unique('id')->pluck('id');
+
+        $queues = \App\Queue::whereIn('service_id', $serviceIds)
+                            ->whereDate('created_at', \Carbon\Carbon::today())
+                            ->get();
+        
+        return response()->json([
+            'result' => $queues,
+        ]);
+    }
     
 }
