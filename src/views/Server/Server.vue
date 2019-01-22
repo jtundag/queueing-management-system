@@ -1,9 +1,71 @@
+<template>
+    <ContentContainer title="Server" class-names="relative pb-0 pt-0 pl-0 pr-0 flex">
+        <div class="flex w-12 h-full bg-white pt-4 fez123-border-right side-navbar w-64 text-sm flex-col">
+            <div class="bold fez123-border-bottom pb-4 px-3">
+                <strong>
+                    Queueing
+                </strong>
+            </div>
+            <div class="pt-4 px-3" v-for="(queue, index) in queues" :key="index">
+                <span class="align-middle">
+                    {{ queue.priority_number }}
+                </span>
+                <small class="float-right align-middle mr-4 text-grey-light" v-if="index == 0">
+                    <strong>
+                        Next &raquo;
+                    </strong>
+                </small>
+            </div>
+        </div>
+        <div class="flex-grow subcontent px-5 py-3 relative">
+            <div>
+                Currently Serving:
+            </div>
+            <div class="text-center">
+                <div class="num-box p-16 inline-block rounded-lg m-auto mt-24">
+                    <strong class="num text-5xl">
+                        D20023
+                    </strong>
+                </div>
+            </div>
+
+            <div class="queue-actions flex absolute pin-b pin-l w-full fez123-border-top">
+                <button type="button" class="text-4xl flex-grow text-grey hover:text-grey-dark py-4">
+                    <strong>
+                        SKIP
+                    </strong>
+                    <span class="text-5xl">
+                        &raquo;
+                    </span>
+                </button>
+
+                <button type="button" class="text-4xl flex-grow text-grey hover:text-grey-dark py-4 fez123-border-left">
+                    <strong>
+                        NEXT
+                    </strong>
+                    <span class="text-5xl">
+                        &rarr;
+                    </span>
+                </button>
+            </div>
+        </div>
+    </ContentContainer>
+</template>
+
 <script>
+
+import { mapGetters } from 'vuex'
+
 export default {
-    
+    async created(){
+        this.$store.dispatch('toggleFullLoader', true)
+        await this.$store.dispatch('getQueues')
+        this.$store.dispatch('toggleFullLoader', false)
+    },
+    computed: {
+        ...mapGetters({
+            'queues': 'queues'
+        })
+    }
 }
 </script>
-
-<template>
-    <div></div>
-</template>

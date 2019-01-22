@@ -35,7 +35,7 @@
                     <span class="fez-plus text-5xl absolute pin flex items-center justify-center text-center"></span>
                 </div>
             </div>
-            <div class="w-full fez123-border-top px-10 py-4 text-right bg-white mt-8">
+            <div class="w-full fez123-border-top px-10 py-4 text-right bg-white mt-8 absolute pin-b pin-l">
                 <button type="reset" class="mr-3 px-4 py-2 text-center leading-normal rounded-sm hover:bg-grey-lighter no-outline">
                     Reset
                 </button>
@@ -68,9 +68,9 @@
                     </div>
                 </InputSuggestions>
                 <InputSuggestions v-if="activeStep.department.name"
-                    label="Department" 
-                    name="department" 
-                    placeholder="Enter Department"
+                    label="Service" 
+                    name="service" 
+                    placeholder="Enter Service"
                     :text="activeStep.service.name"
                     v-model="activeStep.service"
                     :validation-rules="`required`"
@@ -94,13 +94,11 @@
 </template>
 
 <script>
-import SelectList from '@/components/Base/SelectList.vue'
 import VodalExt from '@/components/Base/Vodal/VodalExt.vue'
 import draggable from 'vuedraggable'
 
 export default {
     components: {
-        SelectList,
         VodalExt,
         draggable
     },

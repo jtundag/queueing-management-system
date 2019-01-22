@@ -67,7 +67,7 @@ export default {
             this.$emit('selected', suggestion)
         },
         async getSuggestions(){
-            let response = await this.$http.get(this.apiUrl)
+            let response = await this.$http.get(this.apiUrl, { params: { keyword: this.textModel } })
             this.list = response.data.result
         },
         hideSuggestions(){
