@@ -24,7 +24,7 @@
             <div class="text-center">
                 <div class="num-box p-16 inline-block rounded-lg m-auto mt-24">
                     <strong class="num text-5xl">
-                        D20023
+                        N/A
                     </strong>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                     </span>
                 </button>
 
-                <button type="button" class="text-4xl flex-grow text-grey hover:text-grey-dark py-4 fez123-border-left">
+                <button type="button" class="text-4xl flex-grow text-grey hover:text-grey-dark py-4 fez123-border-left" @click="serveNext">
                     <strong>
                         NEXT
                     </strong>
@@ -64,8 +64,16 @@ export default {
     },
     computed: {
         ...mapGetters({
-            'queues': 'queues'
+            'queues': 'queues',
+            'currentlyServing': 'currentlyServing'
         })
+    },
+    methods: {
+        async serveNext(){
+            this.$store.dispatch('toggleFullLoader', true)
+            let response = await this.$store.dispatch('serveNext')
+            this.$store.dispatch('toggleFullLoader', false)
+        }
     }
 }
 </script>

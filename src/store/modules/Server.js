@@ -19,6 +19,9 @@ const actions = {
                     .then((response) => {
                         context.commit('QUEUES', response.data.result)
                     })
+    },
+    serveNext(){
+        
     }
 }
 
