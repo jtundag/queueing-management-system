@@ -26,6 +26,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1'], function(){
     Route::group(['prefix' => '/users', 'as' => 'users.'], function(){
         Route::get('/', 'UsersController@get')->name('get');
         Route::get('/find', 'UsersController@find')->name('find');
+        Route::get('/{id}/queues', 'UsersController@queues')->name('queues');
         Route::post('/create', 'UsersController@create')->name('create');
         Route::patch('/update', 'UsersController@update')->name('update');
         Route::delete('/delete', 'UsersController@delete')->name('delete');

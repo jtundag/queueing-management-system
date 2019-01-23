@@ -58,10 +58,11 @@ class AuthController extends Controller
     public function me(){
         $status = true;
         $user = null;
-        $message = '';
+        $message = 'Success!';
         
         try {
             $user = \JWTAuth::parseToken()->authenticate();
+            $user['roles'] = $user->roles;
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
             $status = false;
             $message = 'Expired token. Please try to re-login.';
@@ -107,9 +108,11 @@ class AuthController extends Controller
     * @return \Illuminate\Http\JsonResponse
     */
     protected function respondWithToken($token){
+        $user = $this->guard()->user();
+        $user['roles'] = $user->roles;
         return response()->json([
             'access_token' => $token,
-            'user' => $this->guard()->user(),
+            'user' => $user,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60
         ]);

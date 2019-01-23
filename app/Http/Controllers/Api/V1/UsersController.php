@@ -80,5 +80,22 @@ class UsersController extends Controller
             'password' => $newPassword,
         ]);
     }
+
+    public function queues($id, Request $request){
+        $user = \Auth::Guard('api')->user();
+        $queues = $user->queues();
+
+        if($request->date){
+            $queues = $queues->whereDate('queues.created_at', \Carbon\Carbon::parse($request->date)->toDateString());
+        }
+
+        return response()->json([
+            'result' => $queues->get(),
+        ]);
+    }
+
+    public function offices($id, Request $request){
+        
+    }
     
 }

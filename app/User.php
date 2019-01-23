@@ -71,4 +71,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->servers()->with('services');
     }
     
+    public function queues(){
+        return $this->hasManyThrough('App\Queue', 'App\Transaction');
+    }
+    
 }
