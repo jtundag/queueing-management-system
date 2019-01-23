@@ -14,7 +14,7 @@ class AuthController extends Controller
     * @return void
     */
     public function __construct(){
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'me']]);
     }
 
     /**
@@ -56,7 +56,28 @@ class AuthController extends Controller
     * @return \Illuminate\Http\JsonResponse
     */
     public function me(){
-        return response()->json(auth('api')->user());
+        $status = true;
+        $user = null;
+        $message = '';
+        
+        try {
+            $user = \JWTAuth::parseToken()->authenticate();
+        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+            $status = false;
+            $message = 'Expired token. Please try to re-login.';
+        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+            $status = false;
+            $message = 'Invalid token.';
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            $status = false;
+            $message = 'Cannot find token.';
+        }
+
+        return response()->json([
+            'status' => $status,
+            'user' => $user,
+            'message' => $message,
+        ]);
     }
 
     /**
