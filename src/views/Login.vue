@@ -34,16 +34,24 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  name: 'login',
-  data(){
-      return {
-          formData: {
-              username: null,
-              password: null
-          }
-      }
-  },
+    name: 'login',
+    data(){
+        return {
+            formData: {
+                username: null,
+                password: null
+            }
+        }
+    },
+    computed: {
+        ...mapGetters({
+            'user': 'user',
+            'isPersonnel': 'isPersonnel'
+        })
+    },
     methods: {
         login(){
             this.$store.dispatch('toggleFullLoader', true)
@@ -59,10 +67,12 @@ export default {
                             }
                             this.$store.commit('LOGIN_SUCCESS', response)
                             this.$vueOnToast.pop('success', 'Login Success', "Redirecting...")
+                            if(this.isPersonnel){
+                                return this.$router.go('/server')
+                            }
                             this.$router.go('/dashboard')
                         })
                         .catch((response) => {
-                            console.log('asds')
                             this.$store.dispatch('toggleFullLoader', false)
                             this.$vueOnToast.pop('error', 'Login Failed', response.data.error)
                         })

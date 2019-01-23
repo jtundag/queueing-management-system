@@ -173,19 +173,21 @@ const router = new Router({
 	}, {
 		path: '/kiosk',
 		component: Kiosk,
+		beforeEnter: Middlewares.userAuth,
 		meta: {
 			title: 'Kiosk'
 		}
 	}, {
 		path: '/server',
 		component: Server,
+		beforeEnter: Middlewares.userAuth,
 		meta: {
 			title: 'Server'
 		}
 	}]
 })
 
-router.beforeEach(async (to, from, next) => {
+router.afterEach(async (to, from) => {
 	if(to.path == '/login') return false
 	store.dispatch('toggleFullLoader', true)
 	let { data: { status, message } } = await store.dispatch('checkUser')
@@ -194,7 +196,7 @@ router.beforeEach(async (to, from, next) => {
 		await store.dispatch('logout')
 		return router.go(`/login/?message=${message}`)
 	}
-	return next()
+	return false
 })
 
 export default router

@@ -3,7 +3,7 @@
 	<div v-if="isLoggedIn" key="loggedIn">
 		<div class="flex bg-white fez123-border-bottom justify-between">
 			<div class="flex">
-				<div class="text-center">
+				<div class="text-center" v-if="isAdmin">
 					<button type="button" 
 						class="no-outline fez123-border-right"
 						@click="toggleSideNavbar">
@@ -20,11 +20,11 @@
 			</div>
 			<div class="flex-initial">
 				<div class="flex flex-row">
-					<div class="relative">
+					<!-- <div class="relative">
 						<button type="button" class="no-outline" title="Notifications" v-tippy="{ placement: 'left', arrow: true }">
 							<span class="fez-bell text-5xl"></span>
 						</button>
-					</div>
+					</div> -->
 					<div class="mr-3">
 						<Dropdown :actions="accountActions"
 						@action-click="accountActionClicked($event)" 
@@ -38,7 +38,7 @@
 		<div class="flex main-content">
 			<div class="flex-none w-12 h-full bg-white pt-10 fez123-border-right side-navbar"
 				key="mainnav"
-				v-if="hasSideNavbar" style="animation-duration: .3s">
+				v-if="hasSideNavbar && isAdmin" style="animation-duration: .3s">
 				<div class="flex-column">
 					<div v-for="(link, index) in navLinks"
 					:key="index">
@@ -158,7 +158,8 @@ export default {
 			isFullLoading: 'isFullLoading',
 			navLinks: 'navLinks',
 			subnavLinks: 'subnavLinks',
-			isLoggedIn: 'isLoggedIn'
+			isLoggedIn: 'isLoggedIn',
+			isAdmin: 'isAdmin'
 		})
 	}
 };
