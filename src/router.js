@@ -186,15 +186,13 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-	if(localStorage.getItem('jwt-auth-token')){
-		// store.dispatch('checkUser')
-		// 	.then((response) => {
-		// 		if(!response.data) return next()
-		// 		return router.replace('/login')
-		// 	}).catch((response) => {
-		// 		return router.replace('/login')
-		// 	})
-		return next()
+	if(to.path == '/login') return false
+	store.dispatch('toggleFullLoader', true)
+	let { data: { status, message } } = await store.dispatch('checkUser')
+	store.dispatch('toggleFullLoader', false)
+	if(!status){
+		await store.dispatch('logout')
+		return router.go(`/login/?message=${message}`)
 	}
 	return next()
 })
