@@ -1,5 +1,5 @@
 <template>
-    <ContentContainer title="Create Personnel" class-names="relative pb-0">
+    <ContentContainer title="Create Personnel" class-names="relative pb-32 mb-24">
         <Form @submit="save" ref="createForm">
             <div class="text-lg mb-5 mt-4 fez123-border-bottom pb-3 px-2">
                 Account Information
@@ -106,7 +106,7 @@
                         v-model="formData.email"/>
                 </div>
             </div>
-            <div class="w-full fez123-border-top px-10 py-4 text-right bg-white mt-8">
+            <div class="w-full fez123-border-top px-10 py-4 text-right bg-white mt-8 fixed pin-b pin-l">
                 <button type="reset" class="mr-3 px-4 py-2 text-center leading-normal rounded-sm hover:bg-grey-lighter no-outline">
                     Reset
                 </button>

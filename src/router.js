@@ -24,6 +24,7 @@ import ConfigPredefinedFlowForm from '@/views/Config/PredefinedFlowForm.vue'
 
 import Guest from '@/views/Guest/Guest.vue'
 import Kiosk from '@/views/Kiosk/Kiosk.vue'
+import ServiceScreen from '@/views/ServiceScreen/ServiceScreen.vue'
 import Server from '@/views/Server/Server.vue'
 
 Vue.use(Router)
@@ -33,170 +34,192 @@ const router = new Router({
 	routes: [{
 		path: '/login',
 		component: Login,
-		beforeEnter: Middlewares.userNotAuth,
 		meta: {
-			title: 'Login'
+			title: 'Login',
+			requireAuth: false
 		}
 	}, {
 		path: '/',
 		alias: '/dashboard',
 		component: Home,
-		beforeEnter: Middlewares.userAuth,
 		meta: {
-			title: 'Dashboard'
+			title: 'Dashboard',
+			requireAuth: true
 		}
 	}, {
 		path: '/users',
 		component: NestedRouteView,
-		beforeEnter: Middlewares.userAuth,
 		children: [{
 				path: '/users/students',
 				component: Students,
 				meta: {
-					title: 'Students'
+					title: 'Students',
+					requireAuth: true
 				}
 			},
 			{
 				path: '/users/students/create',
 				component: StudentForm,
 				meta: {
-					title: 'Create Student'
+					title: 'Create Student',
+					requireAuth: true
 				}
 			}, {
 				path: '/users/students/:id/edit',
 				component: StudentForm,
 				meta: {
-					title: 'Edit Student'
+					title: 'Edit Student',
+					requireAuth: true
 				}
 			},
 			{
 				path: '/users/personnels',
 				component: Personnels,
 				meta: {
-					title: 'Personnels'
+					title: 'Personnels',
+					requireAuth: true
 				}
 			}, {
 				path: '/users/personnels/create',
 				component: PersonnelForm,
 				meta: {
-					title: 'Create Personnel'
+					title: 'Create Personnel',
+					requireAuth: true
 				}
 			}, {
 				path: '/users/personnels/:id/edit',
 				component: PersonnelForm,
 				meta: {
-					title: 'Edit Personnel'
+					title: 'Edit Personnel',
+					requireAuth: true
 				}
 			}
 		]
 	}, {
 		path: '/servers',
 		component: NestedRouteView,
-		beforeEnter: Middlewares.userAuth,
 		children: [{
 				path: '/',
 				component: Servers,
 				meta: {
-					title: 'Servers'
+					title: 'Servers',
+					requireAuth: true
 				}
 			},
 			{
 				path: '/servers/create',
 				component: ServerForm,
 				meta: {
-					title: 'Create Server'
+					title: 'Create Server',
+					requireAuth: true
 				}
 			}, {
 				path: '/servers/:id/edit',
 				component: ServerForm,
 				meta: {
-					title: 'Edit Server'
+					title: 'Edit Server',
+					requireAuth: true
 				}
 			}
 		]
 	}, {
 		path: '/config',
 		component: NestedRouteView,
-		beforeEnter: Middlewares.userAuth,
 		children: [{
 				path: '/',
 				component: ConfigGeneral,
 				meta: {
-					title: 'General'
+					title: 'General',
+					requireAuth: true
 				}
 			},
 			{
 				path: '/config/services',
 				component: ConfigServices,
 				meta: {
-					title: 'Services'
+					title: 'Services',
+					requireAuth: true
 				}
 			}, {
 				path: '/config/groups',
 				component: ConfigGroups,
 				meta: {
-					title: 'Groups'
+					title: 'Groups',
+					requireAuth: true
 				}
 			}, {
 				path: '/config/departments',
 				component: ConfigDepartments,
 				meta: {
-					title: 'Departments'
+					title: 'Departments',
+					requireAuth: true
 				}
 			}, {
 				path: '/config/predefined-flows',
 				component: ConfigPredefinedFlows,
 				meta: {
-					title: 'Predefined Flows'
+					title: 'Predefined Flows',
+					requireAuth: true
 				}
 			}, {
 				path: '/config/predefined-flows/create',
 				component: ConfigPredefinedFlowForm,
 				meta: {
-					title: 'Create New Flow'
+					title: 'Create New Flow',
+					requireAuth: true
 				}
 			}, {
 				path: '/config/predefined-flows/:id/edit',
 				component: ConfigPredefinedFlowForm,
 				meta: {
-					title: 'Edit Flow'
+					title: 'Edit Flow',
+					requireAuth: true
 				}
 			}
 		]
 	}, {
 		path: '/guest',
 		component: Guest,
-		beforeEnter: Middlewares.userAuth,
 		meta: {
-			title: 'Guest'
+			title: 'Guest',
+			requireAuth: false
 		}
 	}, {
 		path: '/kiosk',
 		component: Kiosk,
-		beforeEnter: Middlewares.userAuth,
 		meta: {
-			title: 'Kiosk'
+			title: 'Kiosk',
+			requireAuth: false
+		}
+	}, {
+		path: '/service-screen',
+		component: ServiceScreen,
+		meta: {
+			title: 'Service Screen',
+			requireAuth: false
 		}
 	}, {
 		path: '/server',
 		component: Server,
-		beforeEnter: Middlewares.userAuth,
 		meta: {
-			title: 'Server'
+			title: 'Server',
+			requireAuth: true
 		}
 	}]
 })
 
-router.afterEach(async (to, from) => {
-	if(to.path == '/login') return false
+router.beforeEach(async (to, from, next) => {
+	if(!to.meta.requireAuth) return next()
+	if (!localStorage.getItem('jwt-auth-token')) return router.replace(`/login`)
 	store.dispatch('toggleFullLoader', true)
-	let { data: { status, message } } = await store.dispatch('checkUser')
+	let response = await store.dispatch('checkUser')
 	store.dispatch('toggleFullLoader', false)
-	if(!status){
+	if(!response.data.status){
 		await store.dispatch('logout')
-		return router.go(`/login/?message=${message}`)
+		return router.replace(`/login/?message=${response.data.message}`)
 	}
-	return false
+	store.commit('LOGIN_SUCCESS', response)
+	return next()
 })
 
 export default router

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-	<div v-if="isLoggedIn" key="loggedIn">
+	<div v-if="isLoggedIn" class="logged-in" key="loggedIn">
 		<div class="flex bg-white fez123-border-bottom justify-between">
 			<div class="flex">
 				<div class="text-center" v-if="isAdmin">
@@ -66,7 +66,7 @@
 			</div>
 			<div class="flex-none h-full w-48 bg-white pt-6 fez123-border-right side-subnavbar" 
 			key="subnav"
-			v-if="subnavLinks && hasSideNavbar">
+			v-if="subnavLinks && hasSideNavbar && isAdmin">
 				<div class="subnav-section mb-3 fez123-border-bottom pb-2"
 					v-for="(subnavSection, sectionIndex) in subnavLinks"
 					:key="sectionIndex">
@@ -147,7 +147,7 @@ export default {
 				case 'Logout':
 					this.$store.dispatch('logout')
 						.then(() => {
-							this.$router.go('/login')
+							this.$router.replace('/login')
 						})
                     break;
             }

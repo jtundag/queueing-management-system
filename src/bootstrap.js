@@ -21,7 +21,14 @@ try {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwt-auth-token')}`;
+axios.interceptors.request.use(function (config) {
+    config.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwt-auth-token')}`;
+    return config;
+}, function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+});
+
 window.axios.defaults.baseURL = 'http://queueing-api.test/api/v1/';
 
 /**

@@ -38,6 +38,11 @@ import { mapGetters } from 'vuex'
 
 export default {
     name: 'login',
+    mounted(){
+        if(this.$route.query.message){
+            this.$vueOnToast.pop('error', 'Login Failed', this.$route.query.message)
+        }
+    },
     data(){
         return {
             formData: {
@@ -68,9 +73,9 @@ export default {
                             this.$store.commit('LOGIN_SUCCESS', response)
                             this.$vueOnToast.pop('success', 'Login Success', "Redirecting...")
                             if(this.isPersonnel){
-                                return this.$router.go('/server')
+                                return this.$router.replace('/server')
                             }
-                            this.$router.go('/dashboard')
+                            this.$router.replace('/dashboard')
                         })
                         .catch((response) => {
                             this.$store.dispatch('toggleFullLoader', false)

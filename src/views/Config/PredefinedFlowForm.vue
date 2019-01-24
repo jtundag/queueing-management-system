@@ -35,7 +35,7 @@
                     <span class="fez-plus text-5xl absolute pin flex items-center justify-center text-center"></span>
                 </div>
             </div>
-            <div class="w-full fez123-border-top px-10 py-4 text-right bg-white mt-8 absolute pin-b pin-l">
+            <div class="w-full fez123-border-top px-10 py-4 text-right bg-white mt-8 fixed pin-b pin-l">
                 <button type="reset" class="mr-3 px-4 py-2 text-center leading-normal rounded-sm hover:bg-grey-lighter no-outline">
                     Reset
                 </button>

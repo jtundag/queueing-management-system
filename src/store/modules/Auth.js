@@ -8,11 +8,17 @@ const mutations = {
         state.accessToken = access_token
         localStorage.setItem('jwt-auth-user', JSON.stringify(user))
         localStorage.setItem('jwt-auth-token', access_token)
+    },
+    LOGOUT_SUCCESS(state){
+        state.user = null
+        state.accessToken = null
+        localStorage.removeItem('jwt-auth-user')
+        localStorage.removeItem('jwt-auth-token')
     }
 }
 const getters = {
-    isLoggedIn(){
-        return localStorage.getItem('jwt-auth-user')  && localStorage.getItem('jwt-auth-token')
+    isLoggedIn(state){
+        return (state.user && state.accessToken) ? true : false
     },
     user(state){
         return state.user
@@ -27,7 +33,7 @@ const getters = {
     isAdmin(state) {
         if (!state.user) return false
         return window._.findIndex(state.user.roles, {
-            name: 'admmin'
+            name: 'admin'
         }) !== -1
     }
 }
@@ -35,9 +41,8 @@ const actions = {
     login(context, data){
         return window.axios.post('/auth/login', data)
     },
-    logout(){
-        localStorage.removeItem('jwt-auth-user')
-        localStorage.removeItem('jwt-auth-token')
+    logout(context){
+        context.commit('LOGOUT_SUCCESS')
     },
     checkUser(){
         return window.axios.post('/auth/me')

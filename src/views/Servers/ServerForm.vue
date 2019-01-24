@@ -1,5 +1,5 @@
 <template>
-    <ContentContainer title="Create Server" class-names="relative pb-0">
+    <ContentContainer title="Create Server" class-names="relative pb-32 mb-24">
         <Form @submit="save" ref="createForm">
             <div class="flex mb-2">
                 <div class="flex-grow px-2">
@@ -84,7 +84,7 @@
                     </SelectList>
                 </div>
             </div>
-            <div class="w-full fez123-border-top px-10 py-4 text-right bg-white mt-8 absolute pin-b pin-l">
+            <div class="w-full fez123-border-top px-10 py-4 text-right bg-white mt-8 fixed pin-b pin-l">
                 <button type="reset" class="mr-3 px-4 py-2 text-center leading-normal rounded-sm hover:bg-grey-lighter no-outline">
                     Reset
                 </button>

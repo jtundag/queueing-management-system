@@ -24,7 +24,7 @@
             <div class="text-center">
                 <div class="num-box p-16 inline-block rounded-lg m-auto mt-24">
                     <strong class="num text-5xl">
-                        N/A
+                        {{ currentlyServing ? currentlyServing.priority_number : 'N/A' }}
                     </strong>
                 </div>
             </div>
@@ -57,21 +57,25 @@
 import { mapGetters } from 'vuex'
 
 export default {
-    async created(){
-        this.$store.dispatch('toggleFullLoader', true)
-        await this.$store.dispatch('getQueues')
-        this.$store.dispatch('toggleFullLoader', false)
+    created(){
+        this._loadQueues()
     },
     computed: {
         ...mapGetters({
             'queues': 'queues',
-            'currentlyServing': 'currentlyServing'
+            'currentlyServing': 'currentlyServing',
+            'serverId': 'serverId'
         })
     },
     methods: {
         async serveNext(){
             this.$store.dispatch('toggleFullLoader', true)
             let response = await this.$store.dispatch('serveNext')
+            this._loadQueues()
+        },
+        async _loadQueues(){
+            this.$store.dispatch('toggleFullLoader', true)
+            await this.$store.dispatch('getQueues')
             this.$store.dispatch('toggleFullLoader', false)
         }
     }
