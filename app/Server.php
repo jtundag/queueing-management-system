@@ -29,4 +29,8 @@ class Server extends Model
         return $this->belongsTo('App\Department');
     }
     
+    public function queues(){
+        return $this->hasMany('App\Queue', 'server_id', 'id');
+    }
+    
 }

@@ -18,7 +18,7 @@ class TransactionFlow extends Model
     }
     
     public function steps(){
-        return $this->belongsToMany('App\Step', 'transaction_flow_steps', 'transaction_flow_id', 'step_id');
+        return $this->belongsToMany('App\Step', 'transaction_flow_steps', 'transaction_flow_id', 'step_id')->withPivot(['status']);
     }
     
 }

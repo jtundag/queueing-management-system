@@ -52,10 +52,13 @@ class TransactionRepository extends Repository{
 		$transaction->flow
 				->steps()
 				->attach($flow->steps);
+		$firstStep = $transaction->flow->steps->first();
 		$queue = $this->createQueueFor($transaction, [
-			'department_id' => $transaction->flow->steps->first()->department->id,
-			'service_id' => $transaction->flow->steps->first()->service->id,
+			'department_id' => $firstStep->department->id,
+			'service_id' => $firstStep->service->id,
 		]);
+		$firstStep->pivot->status = 'processing';
+		$firstStep->pivot->save();
 		$waitingTime = $this->generateWaitingTimeFor($queue);
 		
 		return response()->json(['status' => true, 'priority_number' => $queue->priority_number, 'waiting_time' => $waitingTime,]);
@@ -78,8 +81,8 @@ class TransactionRepository extends Repository{
 		return ($queuesCount - 1) * $avgDuration;
 	}
 
-	private function generateNumberFor($department, $service){
-		$countToday = $service->queues()
+	private function generateNumberFor($department){
+		$countToday = $department->queues()
 							->whereDate('queues.created_at', '=', \Carbon\Carbon::today())
 							->count();
 		return $department->prefix . str_pad(($countToday + 1), 4, '0', STR_PAD_LEFT);
@@ -100,7 +103,7 @@ class TransactionRepository extends Repository{
 	public function createQueueFor($transaction, $data){
 		$department = $this->departmentRepo->findById($data['department_id']);
 		$service = $this->serviceRepo->findById($data['service_id']);
-		$priorityNumber = $this->generateNumberFor($department, $service);
+		$priorityNumber = $this->generateNumberFor($department);
 		$data['priority_number'] = $priorityNumber;
 		$queue = $transaction->queues()->create($data);
 		return $queue;

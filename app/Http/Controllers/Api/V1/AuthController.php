@@ -73,10 +73,10 @@ class AuthController extends Controller
             $status = false;
             $message = 'Cannot find token.';
         }
-
         return response()->json([
             'status' => $status,
             'user' => $user,
+            'access_token' => auth('api')->getToken()->get(),
             'message' => $message,
         ]);
     }

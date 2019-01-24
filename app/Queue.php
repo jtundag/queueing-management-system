@@ -30,5 +30,9 @@ class Queue extends Model
     public function service(){
         return $this->belongsTo('App\Service');
     }
+
+    public function server(){
+        return $this->belongsTo('App\Server');
+    }
     
 }

@@ -33,7 +33,7 @@ class Step extends Model
     }
 
     public function transactionFlows(){
-        return $this->belongsToMany('App\TransactionFlow', 'transaction_flow_steps', 'step_id', 'transaction_flow_id');
+        return $this->belongsToMany('App\TransactionFlow', 'transaction_flow_steps', 'step_id', 'transaction_flow_id')->withPivot(['status']);
     }
     
 }
