@@ -30,7 +30,6 @@ class UserRepository extends Repository implements TableContract{
 		return $this->model
                     ->whereNull('verified_at')
 					->where('uuid', '=', $request->uuid)
-                    ->where('email', '=', $request->email)
                     ->first();
 	}
 	

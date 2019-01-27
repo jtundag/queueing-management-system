@@ -20,5 +20,9 @@ class PredefinedFlow extends Model
     public function steps(){
         return $this->hasMany('App\Step', 'flow_id', 'id');
     }
+
+    public function tags(){
+        return $this->belongsToMany('App\Tag', 'predefined_flow_tag', 'flow_id', 'tag_id');
+    }
     
 }

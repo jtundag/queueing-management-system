@@ -15,7 +15,7 @@ class DepartmentRepository extends Repository implements TableContract{
 		$departments = $this->model->with('group');
 		
 		if($request->keyword){
-			$departments = $departments->where('name', '%' . $request->keyword . '%');
+			$departments = $departments->where('name', 'like', '%' . $request->keyword . '%');
 		}
 		
 		return [

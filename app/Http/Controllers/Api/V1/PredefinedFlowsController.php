@@ -30,11 +30,23 @@ class PredefinedFlowsController extends Controller
     }
     
     public function create(Request $request){
-        $created = $this->predefinedFlowsRepo
+        $flow = $this->predefinedFlowsRepo
             ->create($request->all());
 
+        $tagIds = [];
+        collect($request->tags)->map(function($i) use (&$tagIds) {
+            if(isset($i['id'])){
+                array_push($tagIds, $i['id']);
+                return false;
+            }
+
+            $tag = \App\Tag::create(['text' => $i['text']]);
+            array_push($tagIds, $tag['id']);
+        });
+        $flow->tags()->sync($tagIds);
+
         return response()->json([
-            'status' => $created ? true : false,
+            'status' => $flow ? true : false,
         ]);
     }
     
@@ -48,11 +60,23 @@ class PredefinedFlowsController extends Controller
     }
 
     public function update($id, Request $request){
-        $updated = $this->predefinedFlowsRepo
+        $flow = $this->predefinedFlowsRepo
                         ->update($request, $id);
+        $tagIds = [];
+        collect($request->tags)->map(function($i) use (&$tagIds) {
+            if(isset($i['id'])){
+                array_push($tagIds, $i['id']);
+                return false;
+            }
+
+            $tag = \App\Tag::create(['text' => $i['text']]);
+            array_push($tagIds, $tag['id']);
+        });
+
+        $flow->tags()->sync($tagIds);
 
         return response()->json([
-            'status' => $updated ? true : false,
+            'status' => $flow ? true : false,
         ]);
     }
 }

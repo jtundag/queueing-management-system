@@ -27,7 +27,7 @@ class PredefinedFlowsRepository extends Repository implements TableContract{
 	}
 
 	public function findWithRelatedModels($id){
-		return $this->model->find($id)->with(['steps','steps.department', 'steps.service'])->first();
+		return $this->model->with(['steps','steps.department', 'steps.service', 'tags'])->where('id', $id)->first();
 	}
 
 	public function update($request, $id){
@@ -46,11 +46,16 @@ class PredefinedFlowsRepository extends Repository implements TableContract{
 	}
 
 	public function forTable(\Illuminate\Http\Request $request){
+		$result = $this->model;
+		
+		if($request->has('tags')){
+			$result = $result->whereHas('tags', function($q) use ($request) {
+				$q->whereIn('tags.text', explode(',', $request->tags));
+			});
+		}
+
 		return [
-			'result' => $this->all()->map(function($predefinedFlow){
-				$predefinedFlow['group'] = $predefinedFlow->group;
-				return $predefinedFlow;
-			}),
+			'result' => $result->get(),
 		];
 	}
 }

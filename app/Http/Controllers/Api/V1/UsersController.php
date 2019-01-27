@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
+use League\Csv\Reader;
 
 class UsersController extends Controller
 {
@@ -61,23 +62,56 @@ class UsersController extends Controller
         ]);
     }
 
+    public function requestVerification(Request $request){
+        $authyApi = new \Authy\AuthyApi(env('TWILIO_AUTHY_API'));
+
+        $user = $this->userRepository
+                    ->where('uuid', '=', $request->uuid)
+                    ->where('email', '=', $request->email)
+                    ->first();
+        
+        $sent = $authyApi->phoneVerificationStart($user->mobile_no, '+63', 'sms');
+
+        return response()->json([
+            'status' => $sent->ok(),
+            'message' => $sent->ok() ? 'Success!' : $sent->errors()->message,
+        ]);
+    }
+    
     public function verify(Request $request){
         $user = $this->userRepository
                     ->unverifiedUser($request);
 
-        if(!$user) return response()->json(['status' => false, 'message' => 'Cannot find an unverified account with an ID Number of ' . $request->uuid . ' and E-mail Address of ' . $request->email]);
+        if(!$user) return response()->json(['status' => false, 'message' => 'Cannot find an unverified account with an ID Number of ' . $request->uuid .  '.']);
+        $authyApi = new \Authy\AuthyApi(env('TWILIO_AUTHY_API'));
 
-        $newPassword = str_random();
+
+        $verification = $authyApi->phoneVerificationCheck($user->mobile_no, '+63', $request->code);
+
+        if(!$verification->ok()) return response()->json([
+            'status' => false,
+            'message' => $verification->errors()->message,
+        ]);
         
         $updated = $this->userRepository
                         ->updateById([
-                            'password' => \Hash::make($newPassword),
                             'verified_at' => \Carbon\Carbon::now(),
                         ], $user->id);
 
         return response()->json([
             'status' => $updated ? true : false,
-            'password' => $newPassword,
+        ]);
+    }
+
+    public function changePassword(Request $request){
+        $user = $this->userRepository
+                    ->where('uuid', '=', $request->uuid)
+                    ->first();
+        $user->password = \Hash::make($request->password);
+        $updated = $user->save();
+
+        return response()->json([
+            'status' => $updated,
         ]);
     }
 
@@ -96,6 +130,27 @@ class UsersController extends Controller
 
     public function offices($id, Request $request){
         
+    }
+
+    public function importCSV(Request $request){
+        $csv = Reader::createFromPath($request->file('file')->getPathName(), 'r');
+        $csv->setHeaderOffset(0);
+
+        $header = $csv->getHeader();
+        $records = $csv->getRecords();
+        $records->rewind();
+        foreach($records as $key => $value){
+            $value['password'] = \Hash::make($value['password']);
+
+            $user = $this->userRepository
+                            ->create($value);
+
+            \Bouncer::assign($request->role)->to($user);
+        }
+        return response()->json([
+            'status' => true,
+            'message' => 'Success!',
+        ]);
     }
     
 }

@@ -15,7 +15,7 @@ class QueueController extends Controller
     }
     
     public function push(Request $request){
-        $user = auth('api')->user();
+        $user = $request->has('uuid') ? \App\User::where('uuid', $request->uuid)->first() : auth('api')->user();
         if(!$user) return response()->json(['status' => false, 'message' => 'Cannot find user.']);
         return $this->transactionRepo->push($request, $user);
     }
@@ -73,6 +73,12 @@ class QueueController extends Controller
                     ]);
                     $nextStep->pivot->status = 'processing';
                     $nextStep->pivot->save();
+                }else {
+                    $currentlyServing->transaction->status = 'completed';
+                    $currentlyServing->transaction->save();
+
+                    $currentlyServing->transaction->flow->status = 'completed';
+                    $currentlyServing->transaction->flow->save();
                 }
             }
         }

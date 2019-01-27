@@ -10,6 +10,7 @@ class Server extends Model
     protected $fillable = [
         'department_id',
         'name',
+        'marker_location',
     ];
 
     protected $dates = [

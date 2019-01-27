@@ -22,6 +22,7 @@ class ServersController extends Controller {
         $tableData = [
             'name' => $request->name,
             'department_id' => $request->department_id,
+            'marker_location' => $request->marker_location,
         ];
         
         $server = $this->serverRepo
@@ -54,7 +55,11 @@ class ServersController extends Controller {
 
     public function update($id, Request $request){
         $server = $this->serverRepo
-                        ->updateById(['name' => $request->name], $id);
+                        ->updateById([
+                            'name' => $request->name, 
+                            'department_id' => $request->department_id,
+                            'marker_location' => $request->marker_location
+                        ], $id);
 
         $services = [];
 

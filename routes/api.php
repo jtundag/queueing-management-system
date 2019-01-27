@@ -30,6 +30,9 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1'], function(){
         Route::post('/create', 'UsersController@create')->name('create');
         Route::patch('/update', 'UsersController@update')->name('update');
         Route::delete('/delete', 'UsersController@delete')->name('delete');
+        Route::group(['prefix' => '/import', 'as' => 'import.'], function(){
+            Route::post('/csv', 'UsersController@importCSV')->name('csv');
+        });
     });
 
     Route::group(['prefix' => '/servers', 'as' => 'servers.'], function(){
@@ -84,5 +87,11 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1'], function(){
     
     Route::get('/service-queues', 'QueueController@serviceQueues')->name('push_queue');
 
+    Route::post('/request-verification', 'UsersController@requestVerification')->name('request_verification');
     Route::post('/verify', 'UsersController@verify')->name('verify');
+    Route::patch('/change-password', 'UsersController@changePassword')->name('change_password');
+
+    Route::group(['prefix' => 'tags', 'name' => '.tags'], function(){
+        Route::get('/', 'TagsController@get')->name('get');
+    });
 });
