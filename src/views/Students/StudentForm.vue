@@ -182,14 +182,14 @@ export default {
                     if(this.$route.params.id){
                         if(!this.formData.password) delete this.formData.password
                         this.$store.dispatch('updateUser', this.formData)
-                        .then((response) => {
+                        .then(() => {
                             this.$router.replace('/users/students')
                         })
                         return true
                     }
                     
                     this.$store.dispatch('createUser', this.formData)
-                        .then((response) => {
+                        .then(() => {
                             this.$router.replace('/users/students')
                         })
                 })

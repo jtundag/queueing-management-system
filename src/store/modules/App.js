@@ -89,23 +89,6 @@ const state = {
                 }]
             }
         }
-        // Temp Menu
-        , {
-            name: 'guest',
-            title: 'Guest',
-            icon: 'fez-desktop',
-            link: '/guest'
-        }, {
-            name: 'kiosk',
-            title: 'Kiosk',
-            icon: 'fez-desktop',
-            link: '/kiosk'
-        }, {
-            name: 'server',
-            title: 'Server',
-            icon: 'fez-desktop',
-            link: '/server'
-        }
     ],
     subnavLinks: null
 }

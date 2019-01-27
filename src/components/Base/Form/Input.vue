@@ -13,6 +13,7 @@
             :placeholder="placeholder"
             v-model="model"
             @input="$emit('input', $event.target.value)"
+            @keyup="$emit('keyup', $event)"
             :data-vv-as="label"
             v-validate="validationRules"
             :class="{ 'border-red': errors.has(name), 'focus:border-grey fez123-border': !errors.has(name) }"

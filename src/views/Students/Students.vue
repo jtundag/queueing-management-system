@@ -1,11 +1,15 @@
 <template>
     <ContentContainer title="Students">
+        <div class="text-right">
+            <Button type="primary" 
+                    text="Import CSV"
+                    @click="showImportCSVModal"/>
+        </div>
         <IconInput icon="fez-search" 
         placeholder="Search students..." 
         name="search_field" 
         v-model="searchKeyword"
         @tailing-icon-clicked="clearKeyword"/>
-        
         <Table ref="studentsTable"
             :columns="tableColumns"
             api="/users"
@@ -41,6 +45,27 @@
                     @click="deleteUser"/>
             </template>
         </VodalExt>
+        
+        <VodalExt ref="importCSVModal" 
+            title="Import data from CSV">
+            <template slot="body">
+                <file-upload
+                    ref="importCSVUpload"
+                    v-model="files"
+                    :post-action="`${axiosBaseURL}users/import/csv?role=student`"
+                    @input-file="importCSVSuccess"
+                    class="upload-container text-center w-full h-48 fez123-border m-auto inline-block relative border-dashed cursor-pointer hover:border-grey">
+                    <span class="center-float text-2xl">
+                        Click to Upload
+                    </span>
+                </file-upload>
+            </template>
+            <template slot="footer">
+                <Button type="primary" 
+                    text="Import"
+                    @click="importCSV"/>
+            </template>
+        </VodalExt>
 
     </ContentContainer>
 </template>
@@ -50,13 +75,15 @@ import IconInput from '@/components/Base/IconInput.vue'
 import Dropdown from '@/components/Base/Dropdown.vue'
 import Table from '@/components/Base/Table.vue'
 import VodalExt from '@/components/Base/Vodal/VodalExt.vue'
+import VueUploadComponent from 'vue-upload-component'
 
 export default {
     components: {
         IconInput,
         Dropdown,
         VodalExt,
-        Table
+        Table,
+        'file-upload': VueUploadComponent
     },
     data(){
         return {
@@ -93,7 +120,9 @@ export default {
                 }
             ],
             users: [],
-            readyForActionItem: null
+            readyForActionItem: null,
+            files: [],
+            axiosBaseURL: window.axios.defaults.baseURL
         }
     },
     methods: {
@@ -123,6 +152,24 @@ export default {
                     if(response.data.status) this.$refs.delModal.hide()
                     this.$refs.studentsTable.loadData()
                 })
+        },
+        showImportCSVModal(){
+            this.$refs.importCSVModal.show()
+        },
+        hideImportCSVModal(){
+            this.$refs.importCSVModal.hide()
+        },
+        importCSV(){
+            this.$store.dispatch('toggleFullLoader', true)
+            this.$refs.importCSVUpload.active = true
+            this.hideImportCSVModal()
+        },
+        importCSVSuccess(newFile, oldFile){
+            if(newFile && newFile.response.status){
+                this.$store.dispatch('toggleFullLoader', false)
+                this.hideImportCSVModal()
+                this.$refs.studentsTable.loadData()
+            }
         }
     }
 }

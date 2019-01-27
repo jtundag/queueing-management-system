@@ -10,6 +10,15 @@
                         v-model="formData.name"/>
                 </div>
             </div>
+            <div class="flex mb-2">
+                <div class="flex-grow px-2">
+                    <VueTagsInput
+                        v-model="tag"
+                        :tags="formData.tags"
+                        :autocomplete-items="autocompleteItems"
+                        @tags-changed="newTags => formData.tags = newTags"/>
+                </div>
+            </div>  
             <div>
                 <div class="text-lg mb-5 mt-4 fez123-border-bottom pb-3 px-2">
                     Steps
@@ -96,37 +105,37 @@
 <script>
 import VodalExt from '@/components/Base/Vodal/VodalExt.vue'
 import draggable from 'vuedraggable'
+import VueTagsInput from '@johmun/vue-tags-input';
 
 export default {
     components: {
         VodalExt,
-        draggable
+        draggable,
+        VueTagsInput
     },
-    created(){
+    async created(){
         this.$store.dispatch('toggleFullLoader', true)
-        this.$store.dispatch('getDepartments')
-            .then((response) => {
-                this.$store.dispatch('toggleFullLoader', false)
-                this.availableDepartments = response.data.result
-                if(this.$route.params.id){
-                    this.$store.dispatch('toggleFullLoader', true)
-                    this.$store.dispatch('findPredefinedFlow', this.$route.params.id)
-                        .then(({ data }) => {
-                            this.$store.dispatch('toggleFullLoader', false)
+        let response = await this.$store.dispatch('getTags')
+        this.availableTags = response.data.result
+    
+        response = await this.$store.dispatch('getDepartments')
+        this.$store.dispatch('toggleFullLoader', false)
+        this.availableDepartments = response.data.result
+        if(this.$route.params.id){
+            this.$store.dispatch('toggleFullLoader', true)
+            let { data } = await this.$store.dispatch('findPredefinedFlow', this.$route.params.id)
+            this.$store.dispatch('toggleFullLoader', false)
+            if(!data.status){
+                return false
+            }
 
-                            if(!data.status){
-                                return false
-                            }
-
-                            let flow = data.flow
-
-                            this.formData = {
-                                name: flow.name,
-                                steps: flow.steps
-                            }
-                        })
-                }
-            })
+            let flow = data.flow
+            this.formData = {
+                name: flow.name,
+                steps: flow.steps,
+                tags: flow.tags
+            }
+        }
             
     },
     data(){
@@ -134,11 +143,14 @@ export default {
             availableDepartments: [],
             formData: {
                 name: null,
-                steps: []
+                steps: [],
+                tags: []
             },
+            tag: "",
             activeStep: null,
             activeStepIndex: -1,
-            drag: false
+            drag: false,
+            availableTags: []
         }
     },
     methods: {
@@ -189,6 +201,11 @@ export default {
                             this.$router.replace('/config/predefined-flows')
                         })
                 })
+        }
+    },
+    computed: {
+        autocompleteItems(){
+            return this.availableTags.filter(i => i.text.toLowerCase().indexOf(this.tag.toLowerCase()) !== -1)
         }
     }
 }

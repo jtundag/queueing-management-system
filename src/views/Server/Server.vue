@@ -70,7 +70,7 @@ export default {
     methods: {
         async serveNext(){
             this.$store.dispatch('toggleFullLoader', true)
-            let response = await this.$store.dispatch('serveNext')
+            await this.$store.dispatch('serveNext')
             this._loadQueues()
         },
         async _loadQueues(){

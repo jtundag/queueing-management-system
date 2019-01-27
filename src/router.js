@@ -3,7 +3,6 @@ import store from '@/store'
 import Router from 'vue-router'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
-import Middlewares from './middlewares'
 
 import NestedRouteView from '@/views/NestedRouteView.vue'
 

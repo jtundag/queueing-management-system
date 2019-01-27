@@ -20,12 +20,7 @@
 			</div>
 			<div class="flex-initial">
 				<div class="flex flex-row">
-					<!-- <div class="relative">
-						<button type="button" class="no-outline" title="Notifications" v-tippy="{ placement: 'left', arrow: true }">
-							<span class="fez-bell text-5xl"></span>
-						</button>
-					</div> -->
-					<div class="mr-3">
+					<div class="mr-3" v-if="isLoggedIn && $route.meta.requireAuth">
 						<Dropdown :actions="accountActions"
 						@action-click="accountActionClicked($event)" 
 						icon-size="5" 

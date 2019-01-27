@@ -84,10 +84,13 @@
                     </SelectList>
                 </div>
             </div>
+            <div class="flex mb-2">
+                <mapbox accessToken="pk.eyJ1IjoiY3JvdzE3OTYiLCJhIjoiY2pqcXN1ZjFwMnl1cDNxbWRtZXI4Z2M1cSJ9.X4boJENMbxxk0oFuIw4T4A"
+                :map-options="mapOptions"
+                @map-click="setLocation"
+                @map-init="mapInit"/>
+            </div>
             <div class="w-full fez123-border-top px-10 py-4 text-right bg-white mt-8 fixed pin-b pin-l">
-                <button type="reset" class="mr-3 px-4 py-2 text-center leading-normal rounded-sm hover:bg-grey-lighter no-outline">
-                    Reset
-                </button>
                 <button class="fez123-button-primary px-4 py-2 text-center leading-normal rounded-sm no-outline">
                     {{ $route.params.id ? 'Save' : 'Create' }}
                 </button>
@@ -98,9 +101,12 @@
 
 <script>
 import SelectList from '@/components/Base/SelectList.vue'
+import Mapbox from 'mapbox-gl-vue';
+
 export default {
     components: {
-        SelectList
+        SelectList,
+        Mapbox
     },
     created(){
         this.$store.dispatch('toggleFullLoader', true)
@@ -125,7 +131,11 @@ export default {
                                 department: server.department,
                                 department_id: server.department.id,
                                 personnels: server.personnels,
-                                services: server.services
+                                services: server.services,
+                                marker_location: server.marker_location ? JSON.parse(server.marker_location) : null
+                            }
+                            if(this.map){
+                                this._setMarker(this.map, this.formData.marker_location)
                             }
                         })
                 }
@@ -141,8 +151,20 @@ export default {
                 department: {name: null},
                 department_id: null,
                 personnels: [],
-                services: []
-            }
+                services: [],
+                marker_location: null
+            },
+            mapOptions: {
+                style: 'mapbox://styles/crow1796/cjregm9nv1yon2tptb42o6ibn',
+                center: [124.656700, 8.485778], 
+                zoom: 17.5, 
+                maxBounds: [
+                    124.653,8.484,
+                    124.660,8.487
+                ]
+            },
+            marker: {},
+            map: null
         }
     },
     methods: {
@@ -182,6 +204,27 @@ export default {
                             this.$router.replace('/servers')
                         })
                 })
+        },
+        setLocation(map, t){
+            this.formData.marker_location = JSON.stringify(t.lngLat)
+            this._setMarker(map, t.lngLat)
+        },
+        mapInit(map){
+            this.map = map
+            var el = document.createElement('div');
+            el.className = 'marker';
+
+            this.marker = new mapboxgl.Marker(el)
+            
+            map.setMinZoom(17.5)
+            map.setMaxZoom(17.5)
+
+            if(this.formData.marker_location) this._setMarker(map, this.formData.marker_location)
+        },
+        _setMarker(map, loc){
+            this.marker
+                .setLngLat(loc)
+                .addTo(map)
         }
     }
 }
