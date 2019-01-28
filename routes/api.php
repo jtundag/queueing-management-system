@@ -94,4 +94,8 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1'], function(){
     Route::group(['prefix' => 'tags', 'name' => '.tags'], function(){
         Route::get('/', 'TagsController@get')->name('get');
     });
+
+    Route::group(['prefix' => 'transactions', 'name' => '.transactions'], function(){
+        Route::get('/find', 'QueueController@find')->name('find');
+    });
 });

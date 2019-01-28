@@ -120,4 +120,9 @@ class QueueController extends Controller
         ]);
     }
     
+    public function find(Request $request){
+        $transaction = $this->transactionRepo->findById($request->id);
+        return response()->json($transaction->queues()->with('service', 'service.servers')->get());
+    }
+    
 }
