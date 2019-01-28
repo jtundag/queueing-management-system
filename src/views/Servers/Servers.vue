@@ -113,6 +113,9 @@ export default {
                 case 'Delete':
                     this.$refs.delModal.show()
                     break;
+                case 'Reports':
+                    this.$router.push(`/servers/${server.id}/reports`)
+                    break;
                 case 'Edit':
                     this.$router.push(`/servers/${server.id}/edit`)
                     break;

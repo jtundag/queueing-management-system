@@ -12,6 +12,7 @@ import Personnels from '@/views/Personnels/Personnels.vue'
 import PersonnelForm from '@/views/Personnels/PersonnelForm.vue'
 
 import Servers from '@/views/Servers/Servers.vue'
+import ServerReports from '@/views/Servers/ServerReports.vue'
 import ServerForm from '@/views/Servers/ServerForm.vue'
 
 import ConfigGeneral from '@/views/Config/General.vue'
@@ -102,6 +103,13 @@ const router = new Router({
 				component: Servers,
 				meta: {
 					title: 'Servers',
+					requireAuth: true
+				}
+		}, {
+				path: '/servers/:id/reports',
+				component: ServerReports,
+				meta: {
+					title: 'Server Reports',
 					requireAuth: true
 				}
 			},
