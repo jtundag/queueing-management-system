@@ -94,9 +94,22 @@ class ServersController extends Controller {
     public function reports($id, Request $request){
         $server = $this->serverRepo
                         ->findById($id);
-        dd(\Carbon\Carbon::now()->month(1)->toDateString());
-        $server->queues()
-                ->whereDate('created_at', \Carbon\Carbon::month(1));
+        $monthlyReport = $server->queues()
+                    ->select(\DB::raw('count(id) as total'), \DB::raw('date_format(created_at, "%m-%Y") as dates'))
+                    ->where('queues.status', 'served')
+                    ->groupBy('dates')
+                    ->orderBy('dates')
+                    ->get();
+        
+        $skippedQueues = [];
+        foreach($monthlyReport as $report){
+            array_push($skippedQueues, $server->skippedQueues()->where(\DB::raw('date_format(skipped_queues.created_at, "%m-%Y")'), $report->dates)->count());
+        }
+
+        return response()->json([
+            'monthly_report' => $monthlyReport->pluck('total')->flatten(),
+            'skipped_queues' => $skippedQueues,
+        ]);
     }
     
 }

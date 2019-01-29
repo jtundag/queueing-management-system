@@ -75,7 +75,7 @@ class TransactionRepository extends Repository{
 							->where('department_id', $queue->department->id)
 							->whereDate('created_at', $queue->created_at->toDateString())
 							->whereTime('created_at', '<=', $queue->created_at->toTimeString())
-							->where('status', 'queueing')
+							->whereIn('status', ['skipped', 'queueing'])
 							->count();
 
 		return ($queuesCount - 1) * $avgDuration;

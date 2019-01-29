@@ -32,7 +32,8 @@ class QueueController extends Controller
         $serviceIds = $user->myServersServices->pluck('services')->flatten()->unique('id')->pluck('id');
         $queues = \App\Queue::whereIn('service_id', $serviceIds)
                             ->whereDate('created_at', \Carbon\Carbon::today())
-                            ->where('status', 'queueing')
+                            ->whereIn('status', ['queueing', 'skipped'])
+                            ->orderBy('status')
                             ->get();
 
         $currentlyServing = \App\Queue::where('server_id', $request->server_id)
@@ -52,8 +53,9 @@ class QueueController extends Controller
         $user = auth('api')->user();
         
         $serviceIds = $user->myServersServices->pluck('services')->flatten()->unique('id')->pluck('id');
-
-        $currentlyServing = \App\Queue::where('server_id', $request->server_id)
+        $server = \App\Server::find($request->server_id);
+        
+        $currentlyServing = \App\Queue::where('server_id', $server->id)
                             ->whereDate('created_at', \Carbon\Carbon::today())
                             ->where('status', 'serving')
                             ->limit(1)
@@ -61,10 +63,14 @@ class QueueController extends Controller
                             ->first();
         
         if($currentlyServing){
-            $currentlyServing->status = 'served';
+            if($request->action == 'skip') {
+                $server->skippedQueues()->attach($currentlyServing);
+            }
+            $currentlyServing->status = $request->action == 'skip' ? 'skipped' : 'served';
+            $currentlyServing->updated_at = \Carbon\Carbon::now();
             $currentlyServing->save();
             $nextStep = null;
-            if($currentlyServing->transaction->flow()->exists()){
+            if($currentlyServing->transaction->flow()->exists() && $request->action != 'skip'){
                 $nextStep = $currentlyServing->transaction->flow->steps()->where('status', 'queueing')->first();
                 if($nextStep){
                     $this->transactionRepo->createQueueFor($currentlyServing->transaction, [
@@ -85,7 +91,8 @@ class QueueController extends Controller
 
         $queue = \App\Queue::whereIn('service_id', $serviceIds)
                             ->whereDate('created_at', \Carbon\Carbon::today())
-                            ->where('status', 'queueing')
+                            ->whereIn('status', ['queueing', 'skipped'])
+                            ->orderBy('updated_at')
                             ->limit(1)
                             ->get()
                             ->first();

@@ -34,4 +34,8 @@ class Server extends Model
         return $this->hasMany('App\Queue', 'server_id', 'id');
     }
     
+    public function skippedQueues(){
+        return $this->belongsToMany('App\Queue', 'skipped_queues', 'server_id', 'queue_id')->withTimestamps();
+    }
+    
 }
