@@ -3,7 +3,10 @@
         animation="slideDown" 
         @hide="hide" 
         :height="height"
-        :width="width">
+        :width="width"
+        :close-button="closable"
+        :close-on-esc="closable"
+        :close-on-click-mask="closable">
         <div class="flex flex-col justify-between text-sm">
             <div class="modal-title fez123-border-bottom pb-3 pt-1 font-bold">
                 {{ title }}
@@ -35,6 +38,10 @@ export default {
         },
         width: {
             type: Number
+        },
+        closable: {
+            type: Boolean,
+            default: true
         }
     },
     data(){

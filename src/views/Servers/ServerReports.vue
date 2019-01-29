@@ -1,6 +1,6 @@
 <template>
     <ContentContainer title="Server Reports" class-names="relative pb-32 mb-24">
-        <highcharts :options="chartOptions"></highcharts>
+        <highcharts :options="monthlyReportOptions"></highcharts>
     </ContentContainer>
 </template>
 
@@ -11,12 +11,16 @@ export default {
 	components: {
 		highcharts: Chart
 	},
-	created(){
-
+	async created(){
+    this.$store.dispatch('toggleFullLoader', true)
+    let response = await this.$store.dispatch('getServerReports', this.$route.params.id)
+    this.$store.dispatch('toggleFullLoader', false)
+    this.monthlyReportOptions.series[0].data = response.data.monthly_report
+    this.monthlyReportOptions.series[1].data = response.data.skipped_queues
 	},
 	data() {
 		return {
-		chartOptions: {
+		monthlyReportOptions: {
 			chart: {
 				type: "spline"
 			},
@@ -66,7 +70,14 @@ export default {
 				{
 					name: "Served",
 					marker: {
-					symbol: "square"
+            symbol: "square"
+					},
+					data: []
+        },
+        {
+					name: "Skipped",
+					marker: {
+            symbol: "circle"
 					},
 					data: []
 				}

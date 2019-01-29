@@ -22,6 +22,9 @@ const actions = {
                 id
             }
         })
+    },
+    getServerReports(context, id){
+        return window.axios.get(`/servers/${id}/reports`)
     }
 }
 

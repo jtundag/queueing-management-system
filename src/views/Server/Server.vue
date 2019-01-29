@@ -30,7 +30,9 @@
             </div>
 
             <div class="queue-actions flex absolute pin-b pin-l w-full fez123-border-top">
-                <button type="button" class="text-4xl flex-grow text-grey hover:text-grey-dark py-4">
+                <button type="button" class="text-4xl flex-grow text-grey hover:text-grey-dark py-4" 
+                    v-if="currentlyServing"
+                    @click="skipNext">
                     <strong>
                         SKIP
                     </strong>
@@ -49,16 +51,48 @@
                 </button>
             </div>
         </div>
+
+        <VodalExt ref="serverIdModal" 
+            title="Server ID"
+            :width="500"
+            :height="210"
+            :closable="false">
+            <template slot="body">
+                <Input label="Server ID" 
+                        name="serverId" 
+                        placeholder="Enter Server ID"
+                        :required="true"
+                        v-model="manualServerId"/>
+            </template>
+            <template slot="footer">
+                <Button type="primary" 
+                    text="Save"
+                    @click="setServerId"/>
+            </template>
+        </VodalExt>
+
     </ContentContainer>
 </template>
 
 <script>
-
+import VodalExt from '@/components/Base/Vodal/VodalExt.vue'
 import { mapGetters } from 'vuex'
 
 export default {
-    created(){
+    components: {
+        VodalExt
+    },
+    mounted(){
+        if(!this.serverId){
+            this.$refs.serverIdModal.show()
+            return
+        }
         this._loadQueues()
+    },
+    data(){
+        return {
+            manualServerId: null
+        }
     },
     computed: {
         ...mapGetters({
@@ -73,10 +107,20 @@ export default {
             await this.$store.dispatch('serveNext')
             this._loadQueues()
         },
+        async skipNext(){
+            this.$store.dispatch('toggleFullLoader', true)
+            await this.$store.dispatch('serveNext', { action: 'skip' })
+            this._loadQueues()
+        },
         async _loadQueues(){
             this.$store.dispatch('toggleFullLoader', true)
             await this.$store.dispatch('getQueues')
             this.$store.dispatch('toggleFullLoader', false)
+        },
+        setServerId(){
+            localStorage.setItem('server_id', this.manualServerId)
+            this.$refs.serverIdModal.hide()
+            this._loadQueues()
         }
     }
 }
