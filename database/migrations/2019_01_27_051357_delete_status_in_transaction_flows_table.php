@@ -14,6 +14,7 @@ class DeleteStatusInTransactionFlowsTable extends Migration
     public function up()
     {
         Schema::table('transaction_flows', function (Blueprint $table) {
+            if(!Schema::hasColumn('transaction_flows', 'status')) return false;
             $table->dropColumn('status');
         });
     }

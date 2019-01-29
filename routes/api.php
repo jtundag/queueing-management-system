@@ -38,6 +38,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1'], function(){
     Route::group(['prefix' => '/servers', 'as' => 'servers.'], function(){
         Route::get('/', 'ServersController@get')->name('get');
         Route::get('/find', 'ServersController@find')->name('find');
+        Route::get('/{id}/reports', 'ServersController@reports')->name('reports');
         Route::post('/create', 'ServersController@create')->name('create');
         Route::patch('/{id}/update', 'ServersController@update')->name('update');
         Route::delete('/delete', 'ServersController@delete')->name('delete');

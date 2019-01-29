@@ -91,4 +91,12 @@ class ServersController extends Controller {
         ]);
     }
 
+    public function reports($id, Request $request){
+        $server = $this->serverRepo
+                        ->findById($id);
+        dd(\Carbon\Carbon::now()->month(1)->toDateString());
+        $server->queues()
+                ->whereDate('created_at', \Carbon\Carbon::month(1));
+    }
+    
 }
