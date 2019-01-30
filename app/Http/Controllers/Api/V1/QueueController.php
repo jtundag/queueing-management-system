@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Api\V1;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\TransactionRepository;
+use SMSGatewayMe\Client\ApiClient;
+use SMSGatewayMe\Client\Configuration;
+use SMSGatewayMe\Client\Api\MessageApi;
+use SMSGatewayMe\Client\Model\SendMessageRequest;
 
 class QueueController extends Controller
 {
@@ -102,7 +106,24 @@ class QueueController extends Controller
             $queue->server_id = $request->server_id;
             $updated = $queue->save();
 
-            \Twilio::message($queue->transaction->user->mobile_no, 'Your Number(' . $queue->priority_number . ') is being currently served in ' . $server->name);
+            $deviceID = env('SMSGATEWAYME_DEVICE_ID', '');
+            $number = $queue->transaction->user->mobile_no;
+            $message = 'Your Number(' . $queue->priority_number . ') is currently being served in ' . $server->name;
+            
+            $config = Configuration::getDefaultConfiguration();
+            $config->setApiKey('Authorization', env('SMSGATEWAYME_API', ''));
+            $apiClient = new ApiClient($config);
+            $messageClient = new MessageApi($apiClient);
+
+            $sendMessageRequest1 = new SendMessageRequest([
+                'phoneNumber' => $number,
+                'message' => $message,
+                'deviceId' => $deviceID,
+            ]);
+
+            $sendMessages = $messageClient->sendMessages([
+                $sendMessageRequest1,
+            ]);
         }
 
         return response()->json([
