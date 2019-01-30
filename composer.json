@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.1.3",
+        "aloha/twilio": "^4.0",
         "authy/php": "^3.0",
         "barryvdh/laravel-cors": "^0.11.2",
         "fideloper/proxy": "^4.0",

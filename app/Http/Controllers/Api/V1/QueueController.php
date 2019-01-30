@@ -54,7 +54,6 @@ class QueueController extends Controller
         
         $serviceIds = $user->myServersServices->pluck('services')->flatten()->unique('id')->pluck('id');
         $server = \App\Server::find($request->server_id);
-        
         $currentlyServing = \App\Queue::where('server_id', $server->id)
                             ->whereDate('created_at', \Carbon\Carbon::today())
                             ->where('status', 'serving')
@@ -102,6 +101,8 @@ class QueueController extends Controller
             $queue->status = 'serving';
             $queue->server_id = $request->server_id;
             $updated = $queue->save();
+
+            \Twilio::message($queue->transaction->user->mobile_no, 'Your Number(' . $queue->priority_number . ') is being currently served in ' . $server->name);
         }
 
         return response()->json([
