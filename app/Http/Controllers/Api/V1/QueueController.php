@@ -115,14 +115,14 @@ class QueueController extends Controller
             $apiClient = new ApiClient($config);
             $messageClient = new MessageApi($apiClient);
 
-            $sendMessageRequest1 = new SendMessageRequest([
+            $sendMessageRequest = new SendMessageRequest([
                 'phoneNumber' => $number,
                 'message' => $message,
                 'deviceId' => $deviceID,
             ]);
 
             $sendMessages = $messageClient->sendMessages([
-                $sendMessageRequest1,
+                $sendMessageRequest,
             ]);
         }
 
