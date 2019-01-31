@@ -105,6 +105,11 @@ class QueueController extends Controller
             $queue->status = 'serving';
             $queue->server_id = $request->server_id;
             $updated = $queue->save();
+            
+            if(!$queue->transaction->user->mobile_no) return response()->json([
+            'status' => $queue ? $updated : true,
+            'currently_serving' => $queue,
+        ]);
 
             $deviceID = env('SMSGATEWAYME_DEVICE_ID', '');
             $number = $queue->transaction->user->mobile_no;
