@@ -92,11 +92,39 @@ class UsersController extends Controller
             'status' => false,
             'message' => $verification->errors()->message,
         ]);
+
+        $requestBody = [
+            'app_id' => env('ONE_SIGNAL_APP_ID', ''),
+            'device_type' => $request->device_type,
+            'device_model' => $request->device_model,
+            'device_os' => $request->device_os,
+            'notification_types' => 1,
+            'test_type' => $request->test_type,
+            'game_version' => $request->game_version,
+        ];
+
+        $ch = curl_init(); 
+        curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/players"); 
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json')); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
+        curl_setopt($ch, CURLOPT_HEADER, FALSE); 
+        curl_setopt($ch, CURLOPT_POST, TRUE); 
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($requestBody)); 
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
+
+        $response = curl_exec($ch); 
+        curl_close($ch); 
+        $response = json_decode($response, true);
         
-        $updated = $this->userRepository
+        $updated = false;
+        
+        if($response['success']){
+            $updated = $this->userRepository
                         ->updateById([
                             'verified_at' => \Carbon\Carbon::now(),
+                            'player_id' => $response['id'],
                         ], $user->id);
+        }
 
         return response()->json([
             'status' => $updated ? true : false,

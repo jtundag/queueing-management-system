@@ -23,8 +23,8 @@
         "laravel/tinker": "^1.0",
         "league/csv": "^9.1",
         "silber/bouncer": "v1.0.0-rc.4",
-        "tymon/jwt-auth": "1.0.*",
-        "smsgatewayme/client": "^0.0.1"
+        "smsgatewayme/client": "^0.0.1",
+        "tymon/jwt-auth": "1.0.*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

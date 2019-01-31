@@ -173,6 +173,12 @@ abstract class Repository implements RepositoryContract{
                     ->findBySlugOrFail($slug);
     }
 
+    public function findBy($col, $val = null){
+        if(!is_array($col)) return $this->model->where($col, $val)->limit(1)->first();
+
+        return $this->model->where($col)->limit(1)->first();
+    }
+    
     /**
      * Find a record by it's id.
      * @param  mixed $id 
