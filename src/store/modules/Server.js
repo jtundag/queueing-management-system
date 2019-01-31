@@ -9,6 +9,11 @@ const mutations = {
     },
     CURRENTLY_SERVING(state, queue){
         state.currentlyServing = queue
+    },
+    SERVER_ID(state, id){
+        state.serverId = id
+        if(!id) return localStorage.removeItem('server_id')
+        localStorage.setItem('server_id', id)
     }
 }
 const getters = {

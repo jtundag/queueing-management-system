@@ -73,6 +73,7 @@ export default {
                             this.$store.commit('LOGIN_SUCCESS', response)
                             this.$vueOnToast.pop('success', 'Login Success', "Redirecting...")
                             if(this.isPersonnel){
+                                this.$store.commit('SERVER_ID', null)
                                 return this.$router.replace('/server')
                             }
                             this.$router.replace('/dashboard')

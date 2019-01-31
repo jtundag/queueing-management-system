@@ -118,7 +118,8 @@ export default {
             this.$store.dispatch('toggleFullLoader', false)
         },
         setServerId(){
-            localStorage.setItem('server_id', this.manualServerId)
+            if(!this.manualServerId) return false
+            this.$store.commit('SERVER_ID', this.manualServerId)
             this.$refs.serverIdModal.hide()
             this._loadQueues()
         }

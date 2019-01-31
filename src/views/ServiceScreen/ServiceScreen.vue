@@ -1,16 +1,40 @@
 <script>
+import VodalExt from '@/components/Base/Vodal/VodalExt.vue'
 import { mapGetters } from 'vuex'
 
 export default {
-    async created(){
-        this.$store.dispatch('toggleFullLoader', true)
-        await this.$store.dispatch('getServiceQueues', { department_id: this.$route.query.department_id })
-        this.$store.dispatch('toggleFullLoader', false)
+    components: {
+        VodalExt
+    },
+    mounted(){
+        if(!this.$route.query.department_id){
+            this.$refs.departmentIdModal.show()
+            return
+        }
+        this._loadQueues()
     },
     computed: {
         ...mapGetters({
             'serviceQueues': 'serviceQueues'
         })
+    },
+    data(){
+        return {
+            manualDepartmentId: null
+        }
+    },
+    methods: {
+        async _loadQueues(){
+            this.$store.dispatch('toggleFullLoader', true)
+            await this.$store.dispatch('getServiceQueues', { department_id: this.$route.query.department_id })
+            this.$store.dispatch('toggleFullLoader', false)
+        },
+        setDepartmentId(){
+            if(!this.manualDepartmentId) return false
+            this.$router.replace(`/service-screen/?department_id=${this.manualDepartmentId}`)
+            this.$refs.departmentIdModal.hide()
+            this._loadQueues()
+        }
     }
 }
 </script>
@@ -28,5 +52,24 @@ export default {
                 </span>
             </h3>
         </div>
+
+        <VodalExt ref="departmentIdModal" 
+            title="Department ID"
+            :width="500"
+            :height="210"
+            :closable="false">
+            <template slot="body">
+                <Input label="Department ID" 
+                        name="departmentId" 
+                        placeholder="Enter Department ID"
+                        :required="true"
+                        v-model="manualDepartmentId"/>
+            </template>
+            <template slot="footer">
+                <Button type="primary" 
+                    text="Save"
+                    @click="setDepartmentId"/>
+            </template>
+        </VodalExt>
     </ContentContainer>
 </template>

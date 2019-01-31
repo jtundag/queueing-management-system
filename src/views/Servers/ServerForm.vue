@@ -132,7 +132,7 @@ export default {
                                 department_id: server.department.id,
                                 personnels: server.personnels,
                                 services: server.services,
-                                marker_location: server.marker_location ? JSON.parse(server.marker_location) : null
+                                marker_location: server.department.marker_location ? JSON.parse(server.department.marker_location) : null
                             }
                             if(this.map){
                                 this._setMarker(this.map, this.formData.marker_location)
@@ -174,6 +174,8 @@ export default {
         selectDepartment(department){
             this.$store.dispatch('toggleFullLoader', true)
             this.formData.department_id = department.id
+            this.formData.marker_location = department.marker_location
+            if(department.marker_location) this._setMarker(this.map, JSON.parse(department.marker_location))
             this.$store.dispatch('getUsers', { params: { role: 'personnel', department_id: department.id } })
                 .then((response) => {
                     this.$store.dispatch('toggleFullLoader', false)
