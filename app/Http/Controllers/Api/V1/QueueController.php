@@ -125,9 +125,9 @@ class QueueController extends Controller
                 $sendMessageRequest,
             ]);
 
-            \OneSignal::sendNotificationToUser(
+            if($queue->transaction->user->player_id) \OneSignal::sendNotificationToUser(
                 $message,
-                $queue->transaction->user->player_id,
+                $queue->transaction->user->player_id
             );
         }
 
