@@ -55,7 +55,7 @@ class QueueController extends Controller
     
     public function serveNext(Request $request){
         $user = auth('api')->user();
-        
+
         $serviceIds = $user->myServersServices->pluck('services')->flatten()->unique('id')->pluck('id');
         $server = \App\Server::find($request->server_id);
         $currentlyServing = \App\Queue::where('server_id', $server->id)
@@ -108,7 +108,7 @@ class QueueController extends Controller
 
             $deviceID = env('SMSGATEWAYME_DEVICE_ID', '');
             $number = $queue->transaction->user->mobile_no;
-            $message = 'Your Number(' . $queue->priority_number . ') is currently being served in ' . $server->name;
+            $message = 'ITS YOUR TURN! Please present your priority number (' . $queue->priority_number . ') to ' . $server->name;
             
             $config = Configuration::getDefaultConfiguration();
             $config->setApiKey('Authorization', env('SMSGATEWAYME_API', ''));
@@ -124,6 +124,11 @@ class QueueController extends Controller
             $sendMessages = $messageClient->sendMessages([
                 $sendMessageRequest,
             ]);
+
+            \OneSignal::sendNotificationToUser(
+                $message,
+                $queue->transaction->user->player_id,
+            );
         }
 
         return response()->json([

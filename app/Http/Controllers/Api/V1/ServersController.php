@@ -22,7 +22,6 @@ class ServersController extends Controller {
         $tableData = [
             'name' => $request->name,
             'department_id' => $request->department_id,
-            'marker_location' => $request->marker_location,
         ];
         
         $server = $this->serverRepo
@@ -36,6 +35,8 @@ class ServersController extends Controller {
             ];
         }
         
+        $server->department->marker_location = $request->marker_location;
+        $server->department->save();
         $server->services()->sync($services);
         $server->personnels()->sync(collect($request->personnels)->pluck('id'));
 
@@ -69,6 +70,8 @@ class ServersController extends Controller {
             ];
         }
         
+        $server->department->marker_location = $request->marker_location;
+        $server->department->save();
         $server->services()->sync($services);
         $server->personnels()->sync(collect($request->personnels)->pluck('id'));
 

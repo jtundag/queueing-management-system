@@ -92,39 +92,11 @@ class UsersController extends Controller
             'status' => false,
             'message' => $verification->errors()->message,
         ]);
-
-        $requestBody = [
-            'app_id' => env('ONE_SIGNAL_APP_ID', ''),
-            'device_type' => $request->device_type,
-            'device_model' => $request->device_model,
-            'device_os' => $request->device_os,
-            'notification_types' => 1,
-            'test_type' => $request->test_type,
-            'game_version' => $request->game_version,
-        ];
-
-        $ch = curl_init(); 
-        curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/players"); 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json')); 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
-        curl_setopt($ch, CURLOPT_HEADER, FALSE); 
-        curl_setopt($ch, CURLOPT_POST, TRUE); 
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($requestBody)); 
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
-
-        $response = curl_exec($ch); 
-        curl_close($ch); 
-        $response = json_decode($response, true);
         
-        $updated = false;
-        
-        if($response['success']){
-            $updated = $this->userRepository
-                        ->updateById([
-                            'verified_at' => \Carbon\Carbon::now(),
-                            'player_id' => $response['id'],
-                        ], $user->id);
-        }
+        $updated = $this->userRepository
+                    ->updateById([
+                        'verified_at' => \Carbon\Carbon::now(),
+                    ], $user->id);
 
         return response()->json([
             'status' => $updated ? true : false,
@@ -143,13 +115,12 @@ class UsersController extends Controller
         ]);
     }
 
-    public function queues($id, Request $request){
-        $user = \Auth::Guard('api')->user();
-        $queues = $user->queues();
-
-        if($request->date){
-            $queues = $queues->whereDate('queues.created_at', \Carbon\Carbon::parse($request->date)->toDateString());
-        }
+    public function queues(Request $request){
+        $user = auth('api')->user();
+        $queues = $user->queues()
+                    ->with('department')
+                    ->whereDate('queues.created_at', \Carbon\Carbon::parse($request->date)->toDateString())
+                    ->whereIn('queues.status', ['queueing', 'skipped',]);
 
         return response()->json([
             'result' => $queues->get(),
@@ -178,6 +149,24 @@ class UsersController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Success!',
+        ]);
+    }
+    
+    public function updatePlayerId(Request $request){
+        $user = auth('api')->user();
+        
+        if(!$user) return response()->json([
+            'status' => false,
+            'message' => 'Cannot find user. Please try again.',
+        ]);
+
+        $user->player_id = $request->player_id;
+        $updated = $user->save();
+
+        return response()->json([
+            'status' => $updated,
+            'message' => 'Success!',
+            'user' => $user,
         ]);
     }
     

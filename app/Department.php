@@ -12,6 +12,7 @@ class Department extends Model
         'group_id',
         'name',
         'prefix',
+        'marker_location',
     ];
 
     public function group(){
