@@ -5,14 +5,18 @@ namespace App\Http\Controllers\Api\V1;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
+use App\Repositories\TransactionRepository;
 use League\Csv\Reader;
 
 class UsersController extends Controller
 {
     private $userRepository;
+    private $transactionRepository;
 
-    public function __construct(UserRepository $userRepository){
+    public function __construct(UserRepository $userRepository,
+    TransactionRepository $transactionRepository){
         $this->userRepository = $userRepository;
+        $this->transactionRepository = $transactionRepository;
     }
     
     public function get(Request $request){
@@ -105,8 +109,7 @@ class UsersController extends Controller
 
     public function changePassword(Request $request){
         $user = $this->userRepository
-                    ->where('uuid', '=', $request->uuid)
-                    ->first();
+                    ->findBy('uuid', $request->uuid);
         $user->password = \Hash::make($request->password);
         $updated = $user->save();
 
@@ -117,18 +120,24 @@ class UsersController extends Controller
 
     public function queues(Request $request){
         $user = auth('api')->user();
+        
+        $transactions = $user->transactions()->with('flow', 'flow.steps', 'queues')->whereDate('transactions.created_at', \Carbon\Carbon::today())->whereHas('queues', function($q){ $q->whereIn('queues.status', ['queueing', 'skipped',]); })->get();
+
+        dd($transactions);
+        
         $queues = $user->queues()
                     ->with('department')
-                    ->whereDate('queues.created_at', \Carbon\Carbon::parse($request->date)->toDateString())
+                    ->whereDate('queues.created_at', \Carbon\Carbon::today()->toDateString())
                     ->whereIn('queues.status', ['queueing', 'skipped',]);
 
-        return response()->json([
-            'result' => $queues->get(),
-        ]);
-    }
-
-    public function offices($id, Request $request){
+        $queues = $queues->get()->map(function($queue){
+            $queue['waiting_time'] = $this->transactionRepository->generateWaitingTimeFor($queue);
+            return $queue;
+        });
         
+        return response()->json([
+            'result' => $queues,
+        ]);
     }
 
     public function importCSV(Request $request){

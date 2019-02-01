@@ -89,7 +89,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1'], function(){
 
     Route::post('/request-verification', 'UsersController@requestVerification')->name('request_verification');
     Route::post('/verify', 'UsersController@verify')->name('verify');
-    Route::patch('/change-password', 'UsersController@changePassword')->name('change_password');
+    Route::post('/change-password', 'UsersController@changePassword')->name('change_password');
 
     Route::group(['prefix' => 'tags', 'name' => '.tags'], function(){
         Route::get('/', 'TagsController@get')->name('get');
