@@ -1,0 +1,17 @@
+stages:
+- deploy
+
+deploy_prod:
+  before_script:
+  stage: deploy
+  script:
+  - cd /var/www/queueing-api/ && git clean && git pull
+  - cd /var/www/queueing-api/ && composer install
+  - cd /var/www/queueing-api/ && php artisan migrate
+  environment:
+    name: live
+    url: https://157.230.47.161
+  only:
+  - master
+  tags:
+  - prod
