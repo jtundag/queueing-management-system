@@ -87,7 +87,6 @@
             <div class="flex mb-2">
                 <mapbox accessToken="pk.eyJ1IjoiY3JvdzE3OTYiLCJhIjoiY2pqcXN1ZjFwMnl1cDNxbWRtZXI4Z2M1cSJ9.X4boJENMbxxk0oFuIw4T4A"
                 :map-options="mapOptions"
-                @map-click="setLocation"
                 @map-init="mapInit"/>
             </div>
             <div class="w-full fez123-border-top px-10 py-4 text-right bg-white mt-8 fixed pin-b pin-l">
