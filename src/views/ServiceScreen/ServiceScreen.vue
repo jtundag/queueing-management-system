@@ -68,7 +68,7 @@ export default {
                             {{ queue.priority_number }}
                         </span>
                         <small class="float-right align-middle mr-4 text-grey-light">
-                            <strong class="font-uppercase">
+                            <strong class="uppercase">
                                 {{ queue.status }}
                             </strong>
                         </small>
