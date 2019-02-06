@@ -14,6 +14,7 @@ const mutations = {
         state.accessToken = null
         localStorage.removeItem('jwt-auth-user')
         localStorage.removeItem('jwt-auth-token')
+        localStorage.clear()
     }
 }
 const getters = {
