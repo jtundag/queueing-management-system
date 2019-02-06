@@ -15,7 +15,8 @@ export default {
     },
     computed: {
         ...mapGetters({
-            'serviceQueues': 'serviceQueues'
+            'serviceQueues': 'serviceQueues',
+            'pastServiceQueues': 'pastServiceQueues'
         })
     },
     data(){
@@ -41,16 +42,39 @@ export default {
 
 <template>
     <ContentContainer title="Service Screen" class-names="relative pt-0 pr-0 pb-0 pl-0">
-        <div class="fez123-border-bottom p-4 w-full" v-for="(server, index) in serviceQueues" :key="index">
-            <h2>
-                {{ server.name }}
-            </h2>
-            <h3 class="mt-2">
-                Serving: 
-                <span class="text-red">
-                    {{ server.queues.length ? server.queues[0].priority_number : 'N/A' }}
-                </span>
-            </h3>
+        <div class="flex h-full">
+            <div class="flex-grow">
+                <div class="fez123-border-bottom p-4 w-full" v-for="(server, index) in serviceQueues" :key="index">
+                    <h2>
+                        {{ server.name }}
+                    </h2>
+                    <h3 class="mt-2">
+                        Serving: 
+                        <span class="text-red">
+                            {{ server.queues.length ? server.queues[0].priority_number : 'N/A' }}
+                        </span>
+                    </h3>
+                </div>
+            </div>
+            <div class="flex">
+                <div class="flex w-12 h-full bg-white pt-4 fez123-border-left side-navbar w-64 text-sm flex-col">
+                    <div class="bold fez123-border-bottom pb-4 px-3">
+                        <strong>
+                            Past Queues
+                        </strong>
+                    </div>
+                    <div class="pt-4 px-3" v-for="(queue, index) in pastServiceQueues" :key="index">
+                        <span class="align-middle">
+                            {{ queue.priority_number }}
+                        </span>
+                        <small class="float-right align-middle mr-4 text-grey-light" v-if="index == 0">
+                            <strong class="text-uppercase">
+                                {{ queue.status }}
+                            </strong>
+                        </small>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <VodalExt ref="departmentIdModal" 
