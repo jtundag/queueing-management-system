@@ -67,8 +67,8 @@ export default {
                         <span class="align-middle">
                             {{ queue.priority_number }}
                         </span>
-                        <small class="float-right align-middle mr-4 text-grey-light" v-if="index == 0">
-                            <strong class="text-uppercase">
+                        <small class="float-right align-middle mr-4 text-grey-light">
+                            <strong class="font-uppercase">
                                 {{ queue.status }}
                             </strong>
                         </small>
