@@ -29,7 +29,7 @@ axios.interceptors.request.use(function (config) {
     return Promise.reject(error);
 });
 
-window.axios.defaults.baseURL = 'http://178.128.120.140/api/v1/';
+window.axios.defaults.baseURL = 'http://queueing-api.test/api/v1/';
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

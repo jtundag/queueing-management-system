@@ -29,7 +29,7 @@
                 </div>
             </Form>
         </div>
-        <toast-container></toast-container>
+        <toast-container/>
     </div>
 </template>
 

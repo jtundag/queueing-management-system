@@ -1,11 +1,11 @@
 <template>
-    <ContentContainer title="Kiosk">
+    <ContentContainer title="Kiosk" class="relative pb-32">
         <Form @submit="pushQueue" ref="kioskQueue" class="mt-16 mx-32">
             <Input label="ID Number" 
-                        name="idnum" 
-                        placeholder="Enter ID Number"
-                        :required="true"
-                        v-model="formData.uuid"/>
+                    name="idnum" 
+                    placeholder="Enter ID Number"
+                    :required="true"
+                    v-model="formData.uuid"/>
             <div class="mt-4">
                 <InputSuggestions label="Department" 
                     name="department" 
@@ -33,10 +33,9 @@
                     </div>
                 </InputSuggestions>
             </div>
-            <div class="mt-5 text-right">
-                <button type="submit" 
-                    class="py-2 px-5 no-outline rounded-sm text-sm mr-2 fez123-button-primary">
-                    Submit
+            <div class="w-full fez123-border-top px-10 py-4 text-right bg-white mt-8 fixed pin-b pin-l">
+                <button class="fez123-button-primary px-4 py-2 text-center leading-normal rounded-sm no-outline">
+                    {{ $route.params.id ? 'Save' : 'Create' }}
                 </button>
             </div>
         </Form>
@@ -54,7 +53,7 @@
                 </div>
             </template>
         </VodalExt>
-        
+        <toast-container/>
     </ContentContainer>
 </template>
 
@@ -77,15 +76,24 @@ export default {
     },
     methods: {
         async pushQueue(){
-            this.$refs.prioNumModal.show()
             this.$store.dispatch('toggleFullLoader', true)
-            let response = await this.$store.dispatch('pushQueue', {
-                ...this.formData,
-                department_id: this.formData.department.id,
-                service_id: this.formData.service.id
-            })
-            this.$store.dispatch('toggleFullLoader', false)
-            this.priorityNumber = response.data.priority_number
+            this.$refs.kioskQueue.validate()
+                .then(async (result) => {
+                    this.$store.dispatch('toggleFullLoader', false)
+                    if(!result) return false
+                    let response = await this.$store.dispatch('pushQueue', {
+                        ...this.formData,
+                        department_id: this.formData.department.id,
+                        service_id: this.formData.service.id
+                    })
+                    this.$store.dispatch('toggleFullLoader', false)
+                    if(!response.data.status){
+                        this.$vueOnToast.pop('error', 'Failed', response.data.message)
+                        return false
+                    }
+                    this.$refs.prioNumModal.show()
+                    this.priorityNumber = response.data.priority_number
+                })
         },
         clearForm(){
             this.formData = {
