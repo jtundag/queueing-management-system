@@ -22,7 +22,6 @@ import ConfigDepartments from '@/views/Config/Departments.vue'
 import ConfigPredefinedFlows from '@/views/Config/PredefinedFlows.vue'
 import ConfigPredefinedFlowForm from '@/views/Config/PredefinedFlowForm.vue'
 
-import Guest from '@/views/Guest/Guest.vue'
 import Kiosk from '@/views/Kiosk/Kiosk.vue'
 import ServiceScreen from '@/views/ServiceScreen/ServiceScreen.vue'
 import Server from '@/views/Server/Server.vue'
@@ -184,13 +183,6 @@ const router = new Router({
 				}
 			}
 		]
-	}, {
-		path: '/guest',
-		component: Guest,
-		meta: {
-			title: 'Guest',
-			requireAuth: false
-		}
 	}, {
 		path: '/kiosk',
 		component: Kiosk,
