@@ -71,7 +71,7 @@
                 <button type="reset" class="mr-3 px-4 py-2 text-center leading-normal rounded-sm hover:bg-grey-lighter no-outline">
                     Reset
                 </button>
-                <button class="fez123-button-primary px-4 py-2 text-center leading-normal rounded-sm no-outline" @click="pushQueue">
+                <button class="fez123-button-primary px-4 py-2 text-center leading-normal rounded-sm no-outline">
                     Create
                 </button>
             </div>
